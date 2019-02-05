@@ -1,0 +1,163 @@
+﻿  #include<Servo.h>
+#include<math.h>
+Servo myservo_A,myservo_B,myservo_C,myservo_D,myservo_E,myservo_F;
+
+
+struct num {
+  char index;
+  char num_c[4];
+  int coint;
+  void invert();
+  int toint();
+  void processing();
+  num() 
+  { coint = 0;
+  index=0;
+  }
+};
+
+
+
+//Buf buf; // имитирует буфер serial порта
+    //  int n = 0;
+void setup() {
+
+Serial.begin(9600);
+ myservo_A.attach(3);
+ myservo_B.attach(5);
+ myservo_C.attach(6);
+ myservo_D.attach(9);
+ myservo_E.attach(10);
+ myservo_F.attach(11);
+ Serial.println("Start");
+}
+
+
+void loop() {
+num buf3;
+while(Serial.available()) {}
+buf3.processing();
+
+  if(buf3.index=='a'){
+  int  port =buf3.toint();
+if(port>0&&port<181){
+myservo_A.write(port);
+Serial.print("index=");
+Serial.println(buf3.index);
+Serial.print("ugol=");
+Serial.println(port);
+        }
+    }
+     if(buf3.index=='b'){
+  int  port =buf3.toint();
+if(port>0&&port<181){
+myservo_B.write(port);
+Serial.print("index=");
+Serial.println(buf3.index);
+Serial.print("ugol=");
+Serial.println(port);
+        }
+    }
+     if(buf3.index=='c'){
+  int  port =buf3.toint();
+if(port>0&&port<181){
+myservo_C.write(port);
+Serial.print("index=");
+Serial.println(buf3.index);
+Serial.print("ugol=");
+Serial.println(port);
+        }
+    }
+     if(buf3.index=='d'){
+  int  port =buf3.toint();
+if(port>0&&port<181){
+myservo_D.write(port);
+Serial.print("index=");
+Serial.println(buf3.index);
+Serial.print("ugol=");
+Serial.println(port);
+        }
+    }
+    if(buf3.index=='e'){
+  int  port =buf3.toint();
+if(port>0&&port<181){
+myservo_E.write(port);
+Serial.print("index=");
+Serial.println(buf3.index);
+Serial.print("ugol=");
+Serial.println(port);
+        }
+    }
+    if(buf3.index=='f'){
+  int  port =buf3.toint();
+if(port>0&&port<181){
+myservo_F.write(port);
+Serial.print("index=");
+Serial.println(buf3.index);
+Serial.print("ugol=");
+Serial.println(port);
+        }
+    }
+ 
+  }
+////////////////NUM////////////////////
+int num::toint()
+{
+  invert();
+  int  toint=0;
+  for (int i = 0; i < coint;i++) {
+    if(num_c[i]>='0'&&num_c[i]<='9'){
+      toint += (((int)num_c[i]) - 48)*pow(10,i);
+     // Serial.println(toint);
+    }
+  }
+  return toint;
+}
+
+void num::invert()
+{
+  char temp;
+  switch (coint)
+  {
+  case 2:
+     temp = num_c[0];
+    num_c[0] = num_c[1];
+    num_c[1] = temp;
+    break;
+  case 3:
+     temp = num_c[0];
+    num_c[0] = num_c[2];
+    num_c[2] = temp;
+    break;
+  default:
+    break;
+  }
+  return ;
+}
+
+void num::processing() {
+  int i = 0;
+  char temp;
+  while (1) {
+
+    temp=Serial.read();  ///TODO
+    if (temp >= 'A'&&temp < 'z') {
+     // Serial.print("read index  ");
+      index = temp;
+     //  Serial.println(index);
+      i++;
+    }
+    else if (temp >= '0'&&temp <= '9') {
+//Serial.print("read num ");
+      num_c[coint] = temp;
+   //   Serial.println(num_c[coint]);
+      i++;
+      coint++;
+    }
+    else if (temp == 'z') {
+     // Serial.println("break");
+      break;
+    }
+  }
+
+}

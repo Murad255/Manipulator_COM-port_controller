@@ -198,12 +198,13 @@
             // 
             // connectButton
             // 
+            this.connectButton.BackColor = System.Drawing.SystemColors.Control;
             this.connectButton.Location = new System.Drawing.Point(244, 20);
             this.connectButton.Name = "connectButton";
             this.connectButton.Size = new System.Drawing.Size(75, 23);
             this.connectButton.TabIndex = 3;
             this.connectButton.Text = "button1";
-            this.connectButton.UseVisualStyleBackColor = true;
+            this.connectButton.UseVisualStyleBackColor = false;
             this.connectButton.Click += new System.EventHandler(this.connectButton_Click_1);
             // 
             // label7

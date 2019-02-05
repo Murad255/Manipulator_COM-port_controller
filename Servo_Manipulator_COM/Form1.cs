@@ -22,6 +22,7 @@ namespace Servo_Manipulator_COM
             }
             comboBox.SelectedIndex = 0;
             connectButton.Text = "отк";
+            connectButton.BackColor = Color.Tomato;
         }
 
 
@@ -37,49 +38,43 @@ namespace Servo_Manipulator_COM
 
         private void connectButton_Click_1(object sender, EventArgs e)
         {
-            if (!serialPort.IsOpen)
-            {
-                serialPort.PortName = ((string)comboBox.SelectedItem);
-                connectButton.Text = "вкл";
-                serialPort.Open();
-            }
-            else
-            {
-                connectButton.Text = "Откл";
-                serialPort.Close();
-            }
-        }
-
-        private void trackBar1_Scroll(object sender, EventArgs e)
-        {
             try
             {
-                serialPort.Write(trackBar1.Value.ToString());
-                textBox1.Text = trackBar1.Value.ToString();
+                if (!serialPort.IsOpen)
+                {
+                    serialPort.PortName = ((string)comboBox.SelectedItem);
+                    connectButton.Text = "вкл";
+                    connectButton.BackColor = Color.GreenYellow; 
+                    serialPort.Open();
+                }
+                else
+                {
+                    connectButton.Text = "откл";
+                    connectButton.BackColor = Color.Tomato;
+                    serialPort.Close();
+                }
+            }
+            catch (UnauthorizedAccessException )
+            {
+                MessageBox.Show("COM порт занят.", "Ошибка!");
             }
             catch (Exception ce)
             {
-                MessageBox.Show(ce.ToString());
+                MessageBox.Show(ce.ToString(), "Ошибка!");
             }
+        }
 
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            serialWrite(trackBar1.Value.ToString());
+            textBox1.Text = trackBar1.Value.ToString();
         }
 
         private void trackBar2_Scroll(object sender, EventArgs e)
         {
-            try
-            {
-                serialPort.Write('b'+trackBar2.Value.ToString()+'z');
-                textBox1.Text = trackBar2.Value.ToString();
-            }
-            
-            catch (InvalidOperationException)
-            {
-                MessageBox.Show("COM порт закрыт","Ошибка");
-            }
-            catch (Exception ce)
-            {
-                MessageBox.Show(ce.ToString(),"Ошибка");
-            }
+            serialWrite('b'+trackBar2.Value.ToString()+'z');
+            textBox1.Text = trackBar2.Value.ToString();
         }
 
         private void tabPage1_Click(object sender, EventArgs e)
@@ -94,18 +89,24 @@ namespace Servo_Manipulator_COM
 
         private void button1_Click(object sender, EventArgs e)
         {
+                serialWrite(textBox2.Text);
+                textBox2.Text = " ";
+        }
+
+        private   void serialWrite(string message)
+        {
             try
             {
-                serialPort.Write(textBox2.Text);
-                textBox2.Text = " ";
+                serialPort.Write(message);
             }
+
             catch (InvalidOperationException)
             {
                 MessageBox.Show("COM порт закрыт", "Ошибка");
             }
             catch (Exception ce)
             {
-                MessageBox.Show(ce.ToString(),"Ошибка");
+                MessageBox.Show(ce.ToString(), "Ошибка");
             }
         }
     }
