@@ -71,9 +71,41 @@ namespace Servo_Manipulator_COM
                 serialPort.Write('b'+trackBar2.Value.ToString()+'z');
                 textBox1.Text = trackBar2.Value.ToString();
             }
+            
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show("COM порт закрыт","Ошибка");
+            }
             catch (Exception ce)
             {
-                textBox1.Text = ce.ToString();
+                MessageBox.Show(ce.ToString(),"Ошибка");
+            }
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                serialPort.Write(textBox2.Text);
+                textBox2.Text = " ";
+            }
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show("COM порт закрыт", "Ошибка");
+            }
+            catch (Exception ce)
+            {
+                MessageBox.Show(ce.ToString(),"Ошибка");
             }
         }
     }
