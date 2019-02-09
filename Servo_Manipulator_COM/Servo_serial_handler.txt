@@ -1,4 +1,4 @@
-﻿  #include<Servo.h>
+﻿#include<Servo.h>
 #include<math.h>
 Servo myservo_A,myservo_B,myservo_C,myservo_D,myservo_E,myservo_F;
 
@@ -17,9 +17,6 @@ struct num {
 };
 
 
-
-//Buf buf; // имитирует буфер serial порта
-    //  int n = 0;
 void setup() {
 
 Serial.begin(9600);
@@ -42,60 +39,40 @@ buf3.processing();
   int  port =buf3.toint();
 if(port>0&&port<181){
 myservo_A.write(port);
-Serial.print("index=");
-Serial.println(buf3.index);
-Serial.print("ugol=");
-Serial.println(port);
+//Serial.print("index=");
+//Serial.println(buf3.index);
+//Serial.print("ugol=");
+//Serial.println(port);
         }
     }
      if(buf3.index=='b'){
   int  port =buf3.toint();
 if(port>0&&port<181){
 myservo_B.write(port);
-Serial.print("index=");
-Serial.println(buf3.index);
-Serial.print("ugol=");
-Serial.println(port);
         }
     }
      if(buf3.index=='c'){
   int  port =buf3.toint();
 if(port>0&&port<181){
 myservo_C.write(port);
-Serial.print("index=");
-Serial.println(buf3.index);
-Serial.print("ugol=");
-Serial.println(port);
         }
     }
      if(buf3.index=='d'){
   int  port =buf3.toint();
 if(port>0&&port<181){
 myservo_D.write(port);
-Serial.print("index=");
-Serial.println(buf3.index);
-Serial.print("ugol=");
-Serial.println(port);
         }
     }
     if(buf3.index=='e'){
   int  port =buf3.toint();
 if(port>0&&port<181){
 myservo_E.write(port);
-Serial.print("index=");
-Serial.println(buf3.index);
-Serial.print("ugol=");
-Serial.println(port);
         }
     }
     if(buf3.index=='f'){
   int  port =buf3.toint();
 if(port>0&&port<181){
 myservo_F.write(port);
-Serial.print("index=");
-Serial.println(buf3.index);
-Serial.print("ugol=");
-Serial.println(port);
         }
     }
  
@@ -159,5 +136,4 @@ void num::processing() {
       break;
     }
   }
-
 }

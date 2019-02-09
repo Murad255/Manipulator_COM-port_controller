@@ -16,6 +16,7 @@ namespace Servo_Manipulator_COM
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+    
             Application.Run(new Form1());
         }
     }
