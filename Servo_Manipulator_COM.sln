@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servo_Manipulator_COM", "Servo_Manipulator_COM\Servo_Manipulator_COM.csproj", "{EEFEC4B6-5A6B-47BB-9A28-C12BBABDF0EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dataSendTest", "dataSendTest\dataSendTest.csproj", "{24110464-FC99-41F0-A183-EF547FD1D70A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{EEFEC4B6-5A6B-47BB-9A28-C12BBABDF0EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEFEC4B6-5A6B-47BB-9A28-C12BBABDF0EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEFEC4B6-5A6B-47BB-9A28-C12BBABDF0EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24110464-FC99-41F0-A183-EF547FD1D70A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24110464-FC99-41F0-A183-EF547FD1D70A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24110464-FC99-41F0-A183-EF547FD1D70A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24110464-FC99-41F0-A183-EF547FD1D70A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

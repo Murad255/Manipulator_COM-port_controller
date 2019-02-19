@@ -62,6 +62,7 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label8 = new System.Windows.Forms.Label();
+            this.SendButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_A)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_F)).BeginInit();
@@ -348,6 +349,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.SendButton);
             this.tabPage2.Controls.Add(this.button1);
             this.tabPage2.Controls.Add(this.textBox2);
             this.tabPage2.Controls.Add(this.label7);
@@ -397,6 +399,16 @@
             this.label8.Size = new System.Drawing.Size(66, 15);
             this.label8.TabIndex = 14;
             this.label8.Text = "COM порт";
+            // 
+            // SendButton
+            // 
+            this.SendButton.Location = new System.Drawing.Point(164, 361);
+            this.SendButton.Name = "SendButton";
+            this.SendButton.Size = new System.Drawing.Size(75, 23);
+            this.SendButton.TabIndex = 15;
+            this.SendButton.Text = "принять";
+            this.SendButton.UseVisualStyleBackColor = true;
+            this.SendButton.Click += new System.EventHandler(this.SendButton_Click);
             // 
             // Form1
             // 
@@ -461,6 +473,7 @@
         private System.Windows.Forms.Label label_B;
         private System.Windows.Forms.Button gripButton;
         private System.Windows.Forms.Button HomeButton;
+        private System.Windows.Forms.Button SendButton;
     }
 }
 

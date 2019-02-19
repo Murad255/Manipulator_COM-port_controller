@@ -13,8 +13,8 @@ namespace Servo_Manipulator_COM
 {
     public partial class Form1 : Form
     {
-      //  int rxidx;
-       // private byte[] rxdata;
+        int rxidx;
+        private byte[] rxdata=new byte[500];
         private const int WAIT_ANSWER_TIMEOUT = 500;
 
         bool gripFlag = true;
@@ -201,26 +201,46 @@ namespace Servo_Manipulator_COM
         private void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
 
-            //SerialPort sp = (SerialPort)sender;
-            //try
-            //{
-            //    while (0 != sp.BytesToRead)
-            //    {
-            //        if (rxidx < rxdata.Length - 2)
-            //        {
-            //            rxdata[rxidx++] = (byte)sp.ReadByte();
-            //            rxdata[rxidx] = 0;
-            //        }
-            //        else
-            //            sp.ReadByte();
-            //    }
-            //   // textBox1.Text = rxdata.ToString();
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.ToString(), "Ошибка");
-            //}
+
+            try
+            {
+                SerialPort sp = (SerialPort)sender;
+                while (0 != sp.BytesToRead)
+                {
+                    if (rxidx < rxdata.Length - 2)
+                    {
+                        rxdata[rxidx++] = (byte)sp.ReadByte();
+                        rxdata[rxidx] = 0;
+                    }
+                    else
+                        sp.ReadByte();
+                }
+               //  textBox1.Text = rxdata.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Ошибка",
+                               MessageBoxButtons.OK,
+                               MessageBoxIcon.Error);
+            }
         }
 
+        private void SendButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //textBox1.Text = rxdata.ToString();
+                foreach (char c in rxdata)
+                {
+                    textBox1.Text += c;
+                }
+            }
+            catch(Exception se)
+            {
+                MessageBox.Show(se.ToString(), "Ошибка",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
+        }
     }
 }
