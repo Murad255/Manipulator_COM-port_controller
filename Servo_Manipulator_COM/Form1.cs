@@ -26,11 +26,9 @@ namespace Servo_Manipulator_COM
             {
                 comboBox.Items.Add(portName);
             }
-            comboBox.SelectedIndex = 2;
-            comboHomeMode.SelectedIndex = 0;
+            comboBox.SelectedIndex = 0;
             connectButton.Text = "отк";
             connectButton.BackColor = Color.Tomato;
-
             
         }
 
@@ -180,49 +178,24 @@ namespace Servo_Manipulator_COM
 
        private void Home()
         {
-            if ((string)comboHomeMode.SelectedItem == "work")
-            {
-
-                serialWrite("a90z");
-                serialWrite("b40z");
-                serialWrite("c47z");
-                serialWrite("d160z");
-                serialWrite("e90z");
-                serialWrite("f140z");
-                trackBar_A.Value = Convert.ToInt32(90);
-                trackBar_B.Value = Convert.ToInt32(40);
-                trackBar_C.Value = Convert.ToInt32(47);
-                trackBar_D.Value = Convert.ToInt32(160);
-                trackBar_E.Value = Convert.ToInt32(90);
-                trackBar_F.Value = Convert.ToInt32(140);
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-            }
-            else if ((string)comboHomeMode.SelectedItem == "steady")
-            {
-                serialWrite("a90z");
-                serialWrite("b30z");
-                serialWrite("c14z");
-                serialWrite("d1z");
-                serialWrite("e90z");
-                serialWrite("f155z");
-                trackBar_A.Value = Convert.ToInt32(90);
-                trackBar_B.Value = Convert.ToInt32(30);
-                trackBar_C.Value = Convert.ToInt32(14);
-                trackBar_D.Value = Convert.ToInt32(1);
-                trackBar_E.Value = Convert.ToInt32(90);
-                trackBar_F.Value = Convert.ToInt32(155);
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-            }
+            serialWrite("a90z");
+            serialWrite("b40z");
+            serialWrite("c47z");
+            serialWrite("d90z");
+            serialWrite("e150z");
+            serialWrite("f155z");
+            trackBar_A.Value = Convert.ToInt32(90);
+            trackBar_B.Value = Convert.ToInt32(40);
+            trackBar_C.Value = Convert.ToInt32(47);
+            trackBar_D.Value = Convert.ToInt32(90);
+            trackBar_E.Value = Convert.ToInt32(150);
+            trackBar_F.Value = Convert.ToInt32(155);
+            label_D.Text = trackBar_D.Value.ToString();
+            label_D.Text = trackBar_D.Value.ToString();
+            label_D.Text = trackBar_D.Value.ToString();
+            label_D.Text = trackBar_D.Value.ToString();
+            label_D.Text = trackBar_D.Value.ToString();
+            label_D.Text = trackBar_D.Value.ToString();
         }
 
         private void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
@@ -249,6 +222,5 @@ namespace Servo_Manipulator_COM
             //}
         }
 
-        
     }
 }
