@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServPoint.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -81,6 +82,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Servo_serial_handler.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\координата_пересечения_шаров\Intersection.csproj">
+      <Project>{b23dc9ea-c4fc-4549-b145-024aeedc8542}</Project>
+      <Name>Intersection</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

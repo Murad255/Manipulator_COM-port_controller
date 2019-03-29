@@ -5,9 +5,13 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servo_Manipulator_COM", "Servo_Manipulator_COM\Servo_Manipulator_COM.csproj", "{EEFEC4B6-5A6B-47BB-9A28-C12BBABDF0EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "координата_пересечения_шаров", "координата_пересечения_шаров\координата_пересечения_шаров.csproj", "{B23DC9EA-C4FC-4549-B145-024AEEDC8542}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intersection", "координата_пересечения_шаров\Intersection.csproj", "{B23DC9EA-C4FC-4549-B145-024AEEDC8542}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DecCoordTransform", "DecCoordTransform\DecCoordTransform.vcxproj", "{A9924FCC-17B9-42BC-9F6C-2925733E3922}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Point", "Point\Point.csproj", "{B2233034-2CBE-499B-B35C-7C742A9E79FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "point_test", "point_test\point_test.csproj", "{E4903F62-45F3-4C15-857F-9D9B91FEE70A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +57,30 @@ Global
 		{A9924FCC-17B9-42BC-9F6C-2925733E3922}.Release|x64.Build.0 = Release|x64
 		{A9924FCC-17B9-42BC-9F6C-2925733E3922}.Release|x86.ActiveCfg = Release|Win32
 		{A9924FCC-17B9-42BC-9F6C-2925733E3922}.Release|x86.Build.0 = Release|Win32
+		{B2233034-2CBE-499B-B35C-7C742A9E79FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2233034-2CBE-499B-B35C-7C742A9E79FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2233034-2CBE-499B-B35C-7C742A9E79FD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B2233034-2CBE-499B-B35C-7C742A9E79FD}.Debug|x64.Build.0 = Debug|Any CPU
+		{B2233034-2CBE-499B-B35C-7C742A9E79FD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B2233034-2CBE-499B-B35C-7C742A9E79FD}.Debug|x86.Build.0 = Debug|Any CPU
+		{B2233034-2CBE-499B-B35C-7C742A9E79FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2233034-2CBE-499B-B35C-7C742A9E79FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2233034-2CBE-499B-B35C-7C742A9E79FD}.Release|x64.ActiveCfg = Release|Any CPU
+		{B2233034-2CBE-499B-B35C-7C742A9E79FD}.Release|x64.Build.0 = Release|Any CPU
+		{B2233034-2CBE-499B-B35C-7C742A9E79FD}.Release|x86.ActiveCfg = Release|Any CPU
+		{B2233034-2CBE-499B-B35C-7C742A9E79FD}.Release|x86.Build.0 = Release|Any CPU
+		{E4903F62-45F3-4C15-857F-9D9B91FEE70A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4903F62-45F3-4C15-857F-9D9B91FEE70A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4903F62-45F3-4C15-857F-9D9B91FEE70A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E4903F62-45F3-4C15-857F-9D9B91FEE70A}.Debug|x64.Build.0 = Debug|Any CPU
+		{E4903F62-45F3-4C15-857F-9D9B91FEE70A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E4903F62-45F3-4C15-857F-9D9B91FEE70A}.Debug|x86.Build.0 = Debug|Any CPU
+		{E4903F62-45F3-4C15-857F-9D9B91FEE70A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4903F62-45F3-4C15-857F-9D9B91FEE70A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4903F62-45F3-4C15-857F-9D9B91FEE70A}.Release|x64.ActiveCfg = Release|Any CPU
+		{E4903F62-45F3-4C15-857F-9D9B91FEE70A}.Release|x64.Build.0 = Release|Any CPU
+		{E4903F62-45F3-4C15-857F-9D9B91FEE70A}.Release|x86.ActiveCfg = Release|Any CPU
+		{E4903F62-45F3-4C15-857F-9D9B91FEE70A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

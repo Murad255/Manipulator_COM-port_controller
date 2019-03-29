@@ -2,38 +2,51 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
+//using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
+using Intersection;
+using PointSpase;
 
 namespace Servo_Manipulator_COM
 {
     public partial class Form1 : Form
     {
-      //  int rxidx;
-       // private byte[] rxdata;
         private const int WAIT_ANSWER_TIMEOUT = 500;
 
+        List<PointSpase.Point> points =new List<PointSpase.Point>();   // коллекция с точками, задающими координаты
+       
         bool gripFlag = true;
+
         public Form1()
         {
             InitializeComponent();
+            Point.sent = serialWrite;
             comboBox.Items.Clear();
             foreach (string portName in System.IO.Ports.SerialPort.GetPortNames())
             {
                 comboBox.Items.Add(portName);
             }
-            comboBox.SelectedIndex = 0;
+
+            try
+            {
+                comboBox.SelectedIndex = 0;
+            }
+            catch (ArgumentOutOfRangeException aore)
+            {
+                MessageBox.Show(aore.ToString(),
+                               "Ошибка",
+                               MessageBoxButtons.OK,
+                               MessageBoxIcon.Error);
+            }
             connectButton.Text = "отк";
-            connectButton.BackColor = Color.Tomato;
+            connectButton.BackColor = System.Drawing.Color.Tomato;
             
         }
-
-
-       
+        
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -53,22 +66,28 @@ namespace Servo_Manipulator_COM
                     serialPort.Open();
                     Home();
                     connectButton.Text = "вкл";
-                    connectButton.BackColor = Color.GreenYellow;
+                    connectButton.BackColor = System.Drawing.Color.GreenYellow;
                 }
                 else
                 {
                     serialPort.Close();
                     connectButton.Text = "откл";
-                    connectButton.BackColor = Color.Tomato;
+                    connectButton.BackColor = System.Drawing.Color.Tomato;
                 }
             }
             catch (UnauthorizedAccessException )
             {
-                MessageBox.Show("COM порт занят.", "Ошибка!");
+                MessageBox.Show("COM порт занят.",
+                                "Ошибка!",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
             }
             catch (Exception ce)
             {
-                MessageBox.Show(ce.ToString(), "Ошибка!");
+                MessageBox.Show(ce.ToString(),
+                                "Ошибка!",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
             }
         }
 
@@ -145,7 +164,7 @@ namespace Servo_Manipulator_COM
                 trackBar_F.Value = Convert.ToInt32(180);
             }
         }
-        private   void serialWrite(string message)
+        private void serialWrite(string message)
         {
             try
             {
@@ -222,5 +241,27 @@ namespace Servo_Manipulator_COM
             //}
         }
 
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            points.Add(new Point(                   
+                                trackBar_A.Value,
+                                trackBar_B.Value,
+                                trackBar_C.Value,
+                                trackBar_D.Value,
+                                trackBar_E.Value,
+                                trackBar_F.Value,
+                                Convert.ToInt32(delay.ToString())
+                                   ));
+
+            //PointListView.Text = points[Point.getNumPoints()].ToString();
+           PointListView.Text = " ";
+           foreach (Point p in points) PointListView.Text+= p.ToString(); //выводит список точек
+            
+        }
+
+        private void SentButton_Click(object sender, EventArgs e)
+        {
+            foreach (Point p in points)  p.write();
+        }
     }
 }
