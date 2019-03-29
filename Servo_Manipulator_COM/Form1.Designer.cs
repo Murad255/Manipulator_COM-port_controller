@@ -426,6 +426,7 @@
             // 
             // PointListView
             // 
+            this.PointListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.PointListView.Location = new System.Drawing.Point(13, 202);
             this.PointListView.Margin = new System.Windows.Forms.Padding(2);
             this.PointListView.Multiline = true;
@@ -504,6 +505,7 @@
             this.delay.Name = "delay";
             this.delay.Size = new System.Drawing.Size(45, 21);
             this.delay.TabIndex = 14;
+            this.delay.Text = "0";
             // 
             // checkBox1
             // 

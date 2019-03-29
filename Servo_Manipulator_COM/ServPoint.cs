@@ -61,5 +61,6 @@ namespace PointSpase
 
         public int getNumPoint() { return this.numPoint; }
         static public int getNumPoints() { return numPoints; }
+        public long getTime() { return this.time; }
     }
 }

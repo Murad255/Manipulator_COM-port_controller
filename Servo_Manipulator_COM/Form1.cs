@@ -17,7 +17,7 @@ namespace Servo_Manipulator_COM
     {
         private const int WAIT_ANSWER_TIMEOUT = 500;
 
-        List<PointSpase.Point> points =new List<PointSpase.Point>();   // коллекция с точками, задающими координаты
+        List<Point> points =new List<Point>();   // коллекция с точками, задающими координаты
        
         bool gripFlag = true;
 
@@ -243,20 +243,34 @@ namespace Servo_Manipulator_COM
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            points.Add(new Point(                   
-                                trackBar_A.Value,
-                                trackBar_B.Value,
-                                trackBar_C.Value,
-                                trackBar_D.Value,
-                                trackBar_E.Value,
-                                trackBar_F.Value,
-                                Convert.ToInt32(delay.ToString())
-                                   ));
+            try
+            {
+                points.Add(new Point(
+                                    trackBar_A.Value,
+                                    trackBar_B.Value,
+                                    trackBar_C.Value,
+                                    trackBar_D.Value,
+                                    trackBar_E.Value,
+                                    trackBar_F.Value,
+                                    Convert.ToInt32(delay.Text)
+                                      ));
+                PointListView.Text =" ";
+                foreach (Point p in points) PointListView.Text += p.ToString(); //выводит список точек
 
-            //PointListView.Text = points[Point.getNumPoints()].ToString();
-           PointListView.Text = " ";
-           foreach (Point p in points) PointListView.Text+= p.ToString(); //выводит список точек
-            
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Введите корректное значение задержки!", "Ошибка",
+                               MessageBoxButtons.OK,
+                               MessageBoxIcon.Error);
+            }
+            catch (Exception sve)
+            {
+                MessageBox.Show(sve.ToString(), "Ошибка",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
+
         }
 
         private void SentButton_Click(object sender, EventArgs e)
