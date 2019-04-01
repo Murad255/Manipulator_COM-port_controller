@@ -35,7 +35,7 @@ namespace PointSpase
                                 int canD, int canE, int canF, long time)    //функция для ввода и отправки значений обобщенных координат
             {
                 setAllCan(canA, canB, canC, canD, canE, canF, time);
-            //отправляет координаты и заключает их в символs: $- начало пакета, #- конец пакета
+            //отправляет координаты и заключает их в символs: $- начало точки #- конец точки, 
                 sent("$");
                     sent('a' + this.canA.ToString() + 'z');
                     sent('b' + this.canB.ToString() + 'z');

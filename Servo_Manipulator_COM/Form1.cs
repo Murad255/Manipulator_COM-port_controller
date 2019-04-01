@@ -275,7 +275,10 @@ namespace Servo_Manipulator_COM
 
         private void SentButton_Click(object sender, EventArgs e)
         {
+            //отправляет координаты и заключает их в символs: n- начало пакета, k- конец пакета
+            serialWrite("n");
             foreach (Point p in points)  p.write();
+            serialWrite("k");
         }
     }
 }
