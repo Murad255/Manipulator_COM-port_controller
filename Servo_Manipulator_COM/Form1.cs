@@ -254,7 +254,7 @@ namespace Servo_Manipulator_COM
                                     trackBar_F.Value,
                                     Convert.ToInt32(delay.Text)
                                       ));
-                PointListView.Text =" ";
+                PointListView.Text ="";
                 foreach (Point p in points) PointListView.Text += p.ToString(); //выводит список точек
 
             }

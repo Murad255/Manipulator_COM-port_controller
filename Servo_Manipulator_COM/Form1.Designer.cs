@@ -426,11 +426,12 @@
             // 
             // PointListView
             // 
-            this.PointListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.PointListView.Font = new System.Drawing.Font("T-FLEX Type B", 18F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.PointListView.Location = new System.Drawing.Point(13, 202);
             this.PointListView.Margin = new System.Windows.Forms.Padding(2);
             this.PointListView.Multiline = true;
             this.PointListView.Name = "PointListView";
+            this.PointListView.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.PointListView.Size = new System.Drawing.Size(292, 171);
             this.PointListView.TabIndex = 5;
             // 

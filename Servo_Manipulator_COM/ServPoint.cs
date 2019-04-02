@@ -56,7 +56,7 @@ namespace PointSpase
 
             public override string ToString()
             {
-                return "Point " + this.numPoint.ToString()+'\n';
+                return "Point " + this.numPoint.ToString()+'\t'+this.time.ToString()+" ms."+ '\r'+'\n';
             }
 
         public int getNumPoint() { return this.numPoint; }
