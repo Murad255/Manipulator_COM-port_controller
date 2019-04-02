@@ -198,10 +198,8 @@ namespace Servo_Manipulator_COM
             label_D.Text = trackBar_D.Value.ToString();
         }
 
-        private void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        private  void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-
-
             try
             {
                 SerialPort sp = (SerialPort)sender;
@@ -215,7 +213,26 @@ namespace Servo_Manipulator_COM
                     else
                         sp.ReadByte();
                 }
-               //  textBox1.Text = rxdata.ToString();
+                
+
+                bool uiMarshal = textBox1.InvokeRequired;
+                if (uiMarshal)
+                {
+                    textBox1.Invoke(new Action(() => {
+                        foreach (char c in rxdata)
+                        {
+                            textBox1.Text += c;
+                        }
+                    }));
+                }
+                else
+                {
+                    foreach (char c in rxdata)
+                    {
+                        textBox1.Text += c;
+                    }
+                }
+                
             }
             catch (Exception ex)
             {
@@ -225,22 +242,6 @@ namespace Servo_Manipulator_COM
             }
         }
 
-        private void SendButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                //textBox1.Text = rxdata.ToString();
-                foreach (char c in rxdata)
-                {
-                    textBox1.Text += c;
-                }
-            }
-            catch(Exception se)
-            {
-                MessageBox.Show(se.ToString(), "Ошибка",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-            }
-        }
+   
     }
 }

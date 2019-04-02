@@ -62,7 +62,6 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label8 = new System.Windows.Forms.Label();
-            this.SendButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_A)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_F)).BeginInit();
@@ -300,7 +299,8 @@
             this.textBox1.Location = new System.Drawing.Point(3, 47);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(300, 280);
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox1.Size = new System.Drawing.Size(300, 310);
             this.textBox1.TabIndex = 2;
             this.textBox1.Text = "text";
             // 
@@ -349,7 +349,6 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.SendButton);
             this.tabPage2.Controls.Add(this.button1);
             this.tabPage2.Controls.Add(this.textBox2);
             this.tabPage2.Controls.Add(this.label7);
@@ -364,7 +363,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(228, 334);
+            this.button1.Location = new System.Drawing.Point(228, 363);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 19);
             this.button1.TabIndex = 14;
@@ -374,7 +373,7 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(3, 334);
+            this.textBox2.Location = new System.Drawing.Point(3, 363);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(219, 20);
             this.textBox2.TabIndex = 13;
@@ -399,16 +398,6 @@
             this.label8.Size = new System.Drawing.Size(66, 15);
             this.label8.TabIndex = 14;
             this.label8.Text = "COM порт";
-            // 
-            // SendButton
-            // 
-            this.SendButton.Location = new System.Drawing.Point(164, 361);
-            this.SendButton.Name = "SendButton";
-            this.SendButton.Size = new System.Drawing.Size(75, 23);
-            this.SendButton.TabIndex = 15;
-            this.SendButton.Text = "принять";
-            this.SendButton.UseVisualStyleBackColor = true;
-            this.SendButton.Click += new System.EventHandler(this.SendButton_Click);
             // 
             // Form1
             // 
@@ -473,7 +462,6 @@
         private System.Windows.Forms.Label label_B;
         private System.Windows.Forms.Button gripButton;
         private System.Windows.Forms.Button HomeButton;
-        private System.Windows.Forms.Button SendButton;
     }
 }
 
