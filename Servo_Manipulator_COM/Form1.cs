@@ -13,23 +13,36 @@ namespace Servo_Manipulator_COM
 {
     public partial class Form1 : Form
     {
-        int rxidx;
-        private byte[] rxdata=new byte[500];
+        //int rxidx;
+        //private byte[] rxdata=new byte[500];
         private const int WAIT_ANSWER_TIMEOUT = 500;
+        Task dataReseive;
+        Queue<char> RX_data;
 
         bool gripFlag = true;
         public Form1()
         {
-            InitializeComponent();
-            comboBox.Items.Clear();
-            foreach (string portName in System.IO.Ports.SerialPort.GetPortNames())
+            try
             {
-                comboBox.Items.Add(portName);
+                InitializeComponent();
+                comboBox.Items.Clear();
+                foreach (string portName in System.IO.Ports.SerialPort.GetPortNames())
+                {
+                    comboBox.Items.Add(portName);
+                }
+                comboBox.SelectedIndex = 0;
+                connectButton.Text = "отк";
+                connectButton.BackColor = Color.Tomato;
+                RX_data = new Queue<char>();
+                dataReseive = new Task(SendData);
+                dataReseive.Start();
             }
-            comboBox.SelectedIndex = 0;
-            connectButton.Text = "отк";
-            connectButton.BackColor = Color.Tomato;
-            
+            catch (ArgumentOutOfRangeException ) {
+                MessageBox.Show("Не найдено ни одного COM порта!",
+                               "Ошибка",
+                               MessageBoxButtons.OK,
+                               MessageBoxIcon.Error);
+            }
         }
 
 
@@ -203,42 +216,46 @@ namespace Servo_Manipulator_COM
             try
             {
                 SerialPort sp = (SerialPort)sender;
-                while (0 != sp.BytesToRead)
-                {
-                    if (rxidx < rxdata.Length - 2)
-                    {
-                        rxdata[rxidx++] = (byte)sp.ReadByte();
-                        rxdata[rxidx] = 0;
-                    }
-                    else
-                        sp.ReadByte();
-                }
-                
-
-                bool uiMarshal = textBox1.InvokeRequired;
-                if (uiMarshal)
-                {
-                    textBox1.Invoke(new Action(() => {
-                        foreach (char c in rxdata)
-                        {
-                            textBox1.Text += c;
-                        }
-                    }));
-                }
-                else
-                {
-                    foreach (char c in rxdata)
-                    {
-                        textBox1.Text += c;
-                    }
-                }
-                
+                while (0 != sp.BytesToRead) RX_data.Enqueue((char)sp.ReadByte());
+                    //while (0!= sp.BytesToRead)
+                    //{
+                    //    if (rxidx < rxdata.Length - 2)
+                    //    {
+                    //        rxdata[rxidx++] = (byte)sp.ReadByte();
+                    //        rxdata[rxidx] = 0;
+                    //    }
+                    //    else
+                    //        sp.ReadByte();
+                    //}
+                    if (dataReseive.IsCompleted)
+                    dataReseive.Start();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), "Ошибка",
                                MessageBoxButtons.OK,
                                MessageBoxIcon.Error);
+            }
+        }
+
+        private void SendData(){
+            bool uiMarshal = textBox1.InvokeRequired;
+            if (uiMarshal)
+            {
+                textBox1.Invoke(new Action(() =>
+                {
+                    foreach (char c in RX_data)
+                    {
+                        textBox1.Text += c;
+                    }
+                }));
+            }
+            else
+            {
+                foreach (char c in RX_data)
+                {
+                    textBox1.Text += c;
+                }
             }
         }
 
