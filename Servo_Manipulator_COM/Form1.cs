@@ -13,25 +13,35 @@ namespace Servo_Manipulator_COM
 {
     public partial class Form1 : Form
     {
-      //  int rxidx;
-       // private byte[] rxdata;
         private const int WAIT_ANSWER_TIMEOUT = 500;
+      
+        Task send;
+        Queue<char> RX_data;
 
         bool gripFlag = true;
         public Form1()
         {
-            InitializeComponent();
-            comboBox.Items.Clear();
-            foreach (string portName in System.IO.Ports.SerialPort.GetPortNames())
+            try
             {
-                comboBox.Items.Add(portName);
-            }
-            comboBox.SelectedIndex = 2;
-            comboHomeMode.SelectedIndex = 0;
-            connectButton.Text = "отк";
-            connectButton.BackColor = Color.Tomato;
+                InitializeComponent();
+                comboBox.Items.Clear();
+                foreach (string portName in System.IO.Ports.SerialPort.GetPortNames())
+                {
+                    comboBox.Items.Add(portName);
+                }
+                comboBox.SelectedIndex = 0;
+                connectButton.Text = "отк";
+                connectButton.BackColor = Color.Tomato;
 
-            
+                send = new Task(SendData);
+                send.Start();
+            }
+            catch (ArgumentOutOfRangeException ) {
+                MessageBox.Show("Не найдено ни одного COM порта!",
+                               "Ошибка",
+                               MessageBoxButtons.OK,
+                               MessageBoxIcon.Error);
+            }
         }
 
 
@@ -225,30 +235,54 @@ namespace Servo_Manipulator_COM
             }
         }
 
-        private void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        private  void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-
-            //SerialPort sp = (SerialPort)sender;
-            //try
-            //{
-            //    while (0 != sp.BytesToRead)
-            //    {
-            //        if (rxidx < rxdata.Length - 2)
-            //        {
-            //            rxdata[rxidx++] = (byte)sp.ReadByte();
-            //            rxdata[rxidx] = 0;
-            //        }
-            //        else
-            //            sp.ReadByte();
-            //    }
-            //   // textBox1.Text = rxdata.ToString();
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.ToString(), "Ошибка");
-            //}
+            try
+            {
+                SerialPort sp = (SerialPort)sender;
+                RX_data = new Queue<char>();
+                while (0 != sp.BytesToRead) RX_data.Enqueue((char)sp.ReadByte());
+                if(send.IsCompleted)
+                    send= Task.Run(new Action(() =>{ SendData(RX_data);})); 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Ошибка",
+                               MessageBoxButtons.OK,
+                               MessageBoxIcon.Error);
+            }
         }
 
-        
+        private void SendData(Queue<char> data){
+            
+            if (InvokeRequired)
+            {
+                this.Invoke(new Action(() =>
+                {
+                    textBox1.Text += "\r\n";
+                    foreach (char c in data)
+                    {
+                        textBox1.Text += c;
+                    }
+                }));
+            }
+            else
+            {
+                foreach (char c in RX_data)
+                {
+                    textBox1.Text += c;
+                }
+            }
+        }
+        private void SendData()   
+        {
+            //TO-DO
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+           // textBox1.SelectionStart = textBox1.Text.Length;
+            textBox1.ScrollToCaret();
+        }
     }
 }

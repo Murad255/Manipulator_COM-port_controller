@@ -349,9 +349,11 @@
             this.textBox1.Location = new System.Drawing.Point(3, 47);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(300, 280);
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox1.Size = new System.Drawing.Size(300, 310);
             this.textBox1.TabIndex = 2;
             this.textBox1.Text = "text";
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // connectButton
             // 
@@ -413,7 +415,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(228, 334);
+            this.button1.Location = new System.Drawing.Point(228, 363);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 19);
             this.button1.TabIndex = 14;
@@ -423,7 +425,7 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(3, 334);
+            this.textBox2.Location = new System.Drawing.Point(3, 363);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(219, 20);
             this.textBox2.TabIndex = 13;
