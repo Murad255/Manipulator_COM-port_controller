@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,15 +10,16 @@ using System.IO.Ports;
 using Intersection;
 using PointSpase;
 
+
 namespace Servo_Manipulator_COM
 {
     public partial class Form1 : Form
     {
         private const int WAIT_ANSWER_TIMEOUT = 500;
-        private const int speed = 2;
+        private const int speed = 2;            
         private bool textBox2_status = false;
-        Task send;
-        Queue<char> RX_data;
+        Task send;                              //поток для приняти данных
+        Queue<char> RX_data;                    //буфер для принятых данных
 
         List<Point> points =new List<Point>();   // коллекция с точками, задающими координаты
        
@@ -35,9 +35,13 @@ namespace Servo_Manipulator_COM
                 comboBox.Items.Add(portName);
             }
 
+            send = new Task(SendData);
+            send.Start();
+
             try
             {
-                comboBox.SelectedIndex = 0;
+                comboBox.SelectedIndex = 2;
+                comboHomeMode.SelectedIndex = 0;
             }
             catch (ArgumentOutOfRangeException aore)
             {

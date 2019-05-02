@@ -33,6 +33,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.trackBar_A = new System.Windows.Forms.TrackBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboHomeMode = new System.Windows.Forms.ComboBox();
             this.gripButton = new System.Windows.Forms.Button();
             this.HomeButton = new System.Windows.Forms.Button();
             this.label_F = new System.Windows.Forms.Label();
@@ -111,6 +112,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.SystemColors.Control;
+            this.groupBox1.Controls.Add(this.comboHomeMode);
             this.groupBox1.Controls.Add(this.gripButton);
             this.groupBox1.Controls.Add(this.HomeButton);
             this.groupBox1.Controls.Add(this.label_F);
@@ -138,18 +140,9 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Углы серв";
             // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(235, 19);
-            this.button4.Margin = new System.Windows.Forms.Padding(2);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(56, 19);
-            this.button4.TabIndex = 20;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
             // comboHomeMode
             // 
+            this.comboHomeMode.Location = new System.Drawing.Point(9, 349);
             this.comboHomeMode.AutoCompleteCustomSource.AddRange(new string[] {
             "steady",
             "work"});
@@ -157,7 +150,6 @@
             this.comboHomeMode.Items.AddRange(new object[] {
             "steady",
             "work"});
-            this.comboHomeMode.Location = new System.Drawing.Point(6, 349);
             this.comboHomeMode.Margin = new System.Windows.Forms.Padding(2);
             this.comboHomeMode.Name = "comboHomeMode";
             this.comboHomeMode.Size = new System.Drawing.Size(62, 21);
@@ -165,9 +157,9 @@
             // 
             // gripButton
             // 
-            this.gripButton.Location = new System.Drawing.Point(146, 349);
+            this.gripButton.Location = new System.Drawing.Point(187, 349);
             this.gripButton.Name = "gripButton";
-            this.gripButton.Size = new System.Drawing.Size(135, 23);
+            this.gripButton.Size = new System.Drawing.Size(94, 23);
             this.gripButton.TabIndex = 18;
             this.gripButton.Text = "Захват";
             this.gripButton.UseVisualStyleBackColor = true;
@@ -175,9 +167,9 @@
             // 
             // HomeButton
             // 
-            this.HomeButton.Location = new System.Drawing.Point(21, 349);
+            this.HomeButton.Location = new System.Drawing.Point(77, 349);
             this.HomeButton.Name = "HomeButton";
-            this.HomeButton.Size = new System.Drawing.Size(119, 23);
+            this.HomeButton.Size = new System.Drawing.Size(104, 23);
             this.HomeButton.TabIndex = 17;
             this.HomeButton.Text = "Home";
             this.HomeButton.UseVisualStyleBackColor = true;
@@ -540,11 +532,6 @@
             this.delay.Size = new System.Drawing.Size(45, 21);
             this.delay.TabIndex = 14;
             this.delay.Text = "0";
-            this.textBox9.Location = new System.Drawing.Point(70, 98);
-            this.textBox9.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(45, 21);
-            this.textBox9.TabIndex = 14;
             // 
             // checkBox1
             // 
@@ -765,10 +752,11 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox delay;
         private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.ComboBox comboHomeMode;
+
         private System.Windows.Forms.Button button4;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.ComboBox comboHomeMode;
     }
 }
 
