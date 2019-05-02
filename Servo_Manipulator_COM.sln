@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servo_Manipulator_COM", "Se
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "decordTransform", "decordTransform\decordTransform.vcxproj", "{F5451D72-AA1A-4786-9228-905D42D20183}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "координата _пересечения", "ConsoleApp1\координата _пересечения.csproj", "{BC3A0F55-E521-4CA1-8FFA-1127FF9C8FDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "координата _пересечения", "ConsoleApp1\координата _пересечения.csproj", "{BC3A0F55-E521-4CA1-8FFA-1127FF9C8FDC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dataSendTest", "dataSendTest\dataSendTest.csproj", "{24110464-FC99-41F0-A183-EF547FD1D70A}"
 EndProject
@@ -57,8 +57,16 @@ Global
 		{BC3A0F55-E521-4CA1-8FFA-1127FF9C8FDC}.Release|x86.Build.0 = Release|Any CPU
 		{24110464-FC99-41F0-A183-EF547FD1D70A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{24110464-FC99-41F0-A183-EF547FD1D70A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24110464-FC99-41F0-A183-EF547FD1D70A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{24110464-FC99-41F0-A183-EF547FD1D70A}.Debug|x64.Build.0 = Debug|Any CPU
+		{24110464-FC99-41F0-A183-EF547FD1D70A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{24110464-FC99-41F0-A183-EF547FD1D70A}.Debug|x86.Build.0 = Debug|Any CPU
 		{24110464-FC99-41F0-A183-EF547FD1D70A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24110464-FC99-41F0-A183-EF547FD1D70A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24110464-FC99-41F0-A183-EF547FD1D70A}.Release|x64.ActiveCfg = Release|Any CPU
+		{24110464-FC99-41F0-A183-EF547FD1D70A}.Release|x64.Build.0 = Release|Any CPU
+		{24110464-FC99-41F0-A183-EF547FD1D70A}.Release|x86.ActiveCfg = Release|Any CPU
+		{24110464-FC99-41F0-A183-EF547FD1D70A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
