@@ -14,7 +14,8 @@ namespace Servo_Manipulator_COM
     public partial class Form1 : Form
     {
         private const int WAIT_ANSWER_TIMEOUT = 500;
-      
+        private const int speed = 2;
+        private bool textBox2_status = false;
         Task send;
         Queue<char> RX_data;
 
@@ -29,7 +30,8 @@ namespace Servo_Manipulator_COM
                 {
                     comboBox.Items.Add(portName);
                 }
-                comboBox.SelectedIndex = 0;
+                comboBox.SelectedIndex = 2;
+                comboHomeMode.SelectedIndex = 0;
                 connectButton.Text = "отк";
                 connectButton.BackColor = Color.Tomato;
 
@@ -115,7 +117,7 @@ namespace Servo_Manipulator_COM
             label_D.Text = trackBar_D.Value.ToString();
         }
 
-        private void trackBar_E_Scroll_1(object sender, EventArgs e)
+        private void trackBar_E_Scroll(object sender, EventArgs e)
         {
 
             serialWrite('e' + trackBar_E.Value.ToString() + 'z');
@@ -123,7 +125,7 @@ namespace Servo_Manipulator_COM
             label_E.Text = trackBar_E.Value.ToString();
         }
 
-        private void trackBar_F_Scroll_1(object sender, EventArgs e)
+        private void trackBar_F_Scroll(object sender, EventArgs e)
         {
 
             serialWrite('f' + trackBar_F.Value.ToString() + 'z');
@@ -132,12 +134,14 @@ namespace Servo_Manipulator_COM
         }
 
 
-        
+
         private void button1_Click(object sender, EventArgs e)
         {
-                serialWrite(textBox2.Text);
-                textBox2.Text = " ";
+            serialWrite(textBox2.Text);
+            textBox2.Text = " ";
         }
+              
+        
 
         private void HomeButton_Click(object sender, EventArgs e)=>Home();
         
@@ -147,13 +151,13 @@ namespace Servo_Manipulator_COM
             if (gripFlag == true)
             {
                 gripFlag = false;
-                serialWrite("f100z");
+                serialWrite("f90z");
                 trackBar_F.Value = Convert.ToInt32(100);
             }
             else if (gripFlag == false)
             {
                 gripFlag = true;
-                serialWrite("f180z");
+                serialWrite("f1z");
                 trackBar_F.Value = Convert.ToInt32(180);
             }
         }
@@ -162,7 +166,8 @@ namespace Servo_Manipulator_COM
             try
             {
                 serialPort.Write(message);
-                textBox1.Text = message;
+                textBox1.Text += "\r\n";
+                textBox1.Text += message;
              
             }
 
@@ -274,15 +279,137 @@ namespace Servo_Manipulator_COM
                 }
             }
         }
-        private void SendData()   
+        private void SendData()   //программа-заглушка для старта потока
         {
             //TO-DO
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-           // textBox1.SelectionStart = textBox1.Text.Length;
+            textBox1.SelectionStart = textBox1.Text.Length;
             textBox1.ScrollToCaret();
+        }
+
+        private void textBox2_KeyDown(object sender, KeyEventArgs e)    // Отправка текста при нажатии на Enter 
+        {
+            if (e.KeyCode == Keys.Enter) button1_Click(sender, e);
+        }
+
+
+        /*
+         * управление  каналами посредством нажатия клавиш:
+         *  Up и Down      для канала A
+         *  Left и Right   для канала B
+         *  W и S          для канала C
+         *  R и F          для канала D
+         *  A и D          для канала E
+         *  Spase для упровления захватом
+         *  H для возвращения на базу
+         */
+        private void tabControl1_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (textBox2_status == false)
+            {
+                if (e.KeyCode == Keys.Space) gripButton_Click(sender, e);
+                if (e.KeyCode == Keys.Up)
+                {
+                    if (trackBar_B.Value != trackBar_B.Maximum)
+                    {
+                        trackBar_B.Value+= speed;
+                        trackBar_B_Scroll(sender, e);
+                    }
+                }
+                if (e.KeyCode == Keys.Down)
+                {
+                    if (trackBar_B.Value != trackBar_B.Minimum)
+                    {
+                        trackBar_B.Value-=speed;
+                        trackBar_B_Scroll(sender, e);
+                    }
+                }
+
+                if (e.KeyCode == Keys.Right)
+                {
+                    if (trackBar_A.Value != trackBar_A.Maximum)
+                    {
+                        trackBar_A.Value += speed;
+                        trackBar_A_Scroll(sender, e);
+                    }
+                }
+                if (e.KeyCode == Keys.Left)
+                {
+                    if (trackBar_A.Value != trackBar_B.Minimum)
+                    {
+                        trackBar_A.Value -= speed;
+                        trackBar_A_Scroll(sender, e);
+                    }
+                }
+
+                if (e.KeyCode == Keys.W)
+                {
+                    if (trackBar_C.Value != trackBar_C.Maximum)
+                    {
+                        trackBar_C.Value += speed;
+                        trackBar_C_Scroll(sender, e);
+                    }
+                }
+                if (e.KeyCode == Keys.S)
+                {
+                    if (trackBar_C.Value != trackBar_C.Minimum)
+                    {
+                        trackBar_C.Value -= speed;
+                        trackBar_C_Scroll(sender, e);
+                    }
+                }
+
+                if (e.KeyCode == Keys.D)
+                {
+                    if (trackBar_E.Value != trackBar_E.Maximum)
+                    {
+                        trackBar_E.Value += speed*2;
+                        trackBar_E_Scroll(sender, e);
+                    }
+                }
+                if (e.KeyCode == Keys.A)
+                {
+                    if (trackBar_E.Value != trackBar_E.Minimum)
+                    {
+                        trackBar_E.Value -= speed*2;
+                        trackBar_E_Scroll(sender, e);
+                    }
+                }
+
+                if (e.KeyCode == Keys.R)
+                {
+                    if (trackBar_D.Value != trackBar_D.Maximum)
+                    {
+                        trackBar_D.Value += speed;
+                        trackBar_D_Scroll(sender, e);
+                    }
+                }
+                if (e.KeyCode == Keys.F)
+                {
+                    if (trackBar_D.Value != trackBar_D.Minimum)
+                    {
+                        trackBar_D.Value -= speed;
+                        trackBar_D_Scroll(sender, e);
+                    }
+                }
+
+                if (e.KeyCode == Keys.H) Home();
+                
+            }
+        }
+
+        private void textBox2_Enter(object sender, EventArgs e)
+        {
+            textBox2_status = true;
+        }
+
+        private void textBox2_Leave(object sender, EventArgs e)
+        {
+            textBox2_status = false;
         }
     }
 }
