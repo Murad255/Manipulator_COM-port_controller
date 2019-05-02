@@ -18,6 +18,7 @@
                 components.Dispose();
             }
             base.Dispose(disposing);
+            send.Dispose();
         }
 
         #region Код, автоматически созданный конструктором форм Windows
@@ -82,6 +83,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_A)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_F)).BeginInit();
@@ -135,6 +137,31 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Углы серв";
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(235, 19);
+            this.button4.Margin = new System.Windows.Forms.Padding(2);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(56, 19);
+            this.button4.TabIndex = 20;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // comboHomeMode
+            // 
+            this.comboHomeMode.AutoCompleteCustomSource.AddRange(new string[] {
+            "steady",
+            "work"});
+            this.comboHomeMode.FormattingEnabled = true;
+            this.comboHomeMode.Items.AddRange(new object[] {
+            "steady",
+            "work"});
+            this.comboHomeMode.Location = new System.Drawing.Point(6, 349);
+            this.comboHomeMode.Margin = new System.Windows.Forms.Padding(2);
+            this.comboHomeMode.Name = "comboHomeMode";
+            this.comboHomeMode.Size = new System.Drawing.Size(62, 21);
+            this.comboHomeMode.TabIndex = 19;
             // 
             // gripButton
             // 
@@ -273,7 +300,7 @@
             this.trackBar_F.Size = new System.Drawing.Size(228, 45);
             this.trackBar_F.TabIndex = 5;
             this.trackBar_F.Value = 115;
-            this.trackBar_F.Scroll += new System.EventHandler(this.trackBar_F_Scroll_1);
+            this.trackBar_F.Scroll += new System.EventHandler(this.trackBar_F_Scroll);
             // 
             // trackBar_E
             // 
@@ -282,8 +309,8 @@
             this.trackBar_E.Name = "trackBar_E";
             this.trackBar_E.Size = new System.Drawing.Size(228, 45);
             this.trackBar_E.TabIndex = 4;
-            this.trackBar_E.Value = 150;
-            this.trackBar_E.Scroll += new System.EventHandler(this.trackBar_E_Scroll_1);
+            this.trackBar_E.Value = 90;
+            this.trackBar_E.Scroll += new System.EventHandler(this.trackBar_E_Scroll);
             // 
             // trackBar_D
             // 
@@ -321,9 +348,11 @@
             this.textBox1.Location = new System.Drawing.Point(3, 47);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(300, 280);
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox1.Size = new System.Drawing.Size(300, 310);
             this.textBox1.TabIndex = 2;
             this.textBox1.Text = "text";
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // connectButton
             // 
@@ -368,6 +397,7 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(317, 415);
             this.tabControl1.TabIndex = 13;
+            this.tabControl1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tabControl1_KeyDown);
             // 
             // tabPage2
             // 
@@ -385,7 +415,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(228, 334);
+            this.button1.Location = new System.Drawing.Point(228, 363);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 19);
             this.button1.TabIndex = 14;
@@ -395,10 +425,13 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(3, 334);
+            this.textBox2.Location = new System.Drawing.Point(3, 363);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(219, 20);
             this.textBox2.TabIndex = 13;
+            this.textBox2.Enter += new System.EventHandler(this.textBox2_Enter);
+            this.textBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox2_KeyDown);
+            this.textBox2.Leave += new System.EventHandler(this.textBox2_Leave);
             // 
             // tabPage1
             // 
@@ -507,6 +540,11 @@
             this.delay.Size = new System.Drawing.Size(45, 21);
             this.delay.TabIndex = 14;
             this.delay.Text = "0";
+            this.textBox9.Location = new System.Drawing.Point(70, 98);
+            this.textBox9.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(45, 21);
+            this.textBox9.TabIndex = 14;
             // 
             // checkBox1
             // 
@@ -727,6 +765,9 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox delay;
         private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.ComboBox comboHomeMode;
+        private System.Windows.Forms.Button button4;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.CheckBox checkBox3;
     }
 }

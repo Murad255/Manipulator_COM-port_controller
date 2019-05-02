@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Point", "Point\Point.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "point_test", "point_test\point_test.csproj", "{E4903F62-45F3-4C15-857F-9D9B91FEE70A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dataSendTest", "dataSendTest\dataSendTest.csproj", "{24110464-FC99-41F0-A183-EF547FD1D70A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
