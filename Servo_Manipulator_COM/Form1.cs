@@ -13,10 +13,9 @@ namespace Servo_Manipulator_COM
 {
     public partial class Form1 : Form
     {
-        //int rxidx;
-        //private byte[] rxdata=new byte[500];
         private const int WAIT_ANSWER_TIMEOUT = 500;
-        Task dataReseive;
+      
+        Task send;
         Queue<char> RX_data;
 
         bool gripFlag = true;
@@ -33,9 +32,9 @@ namespace Servo_Manipulator_COM
                 comboBox.SelectedIndex = 0;
                 connectButton.Text = "отк";
                 connectButton.BackColor = Color.Tomato;
-                RX_data = new Queue<char>();
-                dataReseive = new Task(SendData);
-                dataReseive.Start();
+
+                send = new Task(SendData);
+                send.Start();
             }
             catch (ArgumentOutOfRangeException ) {
                 MessageBox.Show("Не найдено ни одного COM порта!",
@@ -216,19 +215,10 @@ namespace Servo_Manipulator_COM
             try
             {
                 SerialPort sp = (SerialPort)sender;
+                RX_data = new Queue<char>();
                 while (0 != sp.BytesToRead) RX_data.Enqueue((char)sp.ReadByte());
-                    //while (0!= sp.BytesToRead)
-                    //{
-                    //    if (rxidx < rxdata.Length - 2)
-                    //    {
-                    //        rxdata[rxidx++] = (byte)sp.ReadByte();
-                    //        rxdata[rxidx] = 0;
-                    //    }
-                    //    else
-                    //        sp.ReadByte();
-                    //}
-                    if (dataReseive.IsCompleted)
-                    dataReseive.Start();
+                if(send.IsCompleted)
+                    send= Task.Run(new Action(() =>{ SendData(RX_data);})); 
             }
             catch (Exception ex)
             {
@@ -238,13 +228,14 @@ namespace Servo_Manipulator_COM
             }
         }
 
-        private void SendData(){
-            bool uiMarshal = textBox1.InvokeRequired;
-            if (uiMarshal)
+        private void SendData(Queue<char> data){
+            
+            if (InvokeRequired)
             {
-                textBox1.Invoke(new Action(() =>
+                this.Invoke(new Action(() =>
                 {
-                    foreach (char c in RX_data)
+                    textBox1.Text += "\r\n";
+                    foreach (char c in data)
                     {
                         textBox1.Text += c;
                     }
@@ -258,7 +249,15 @@ namespace Servo_Manipulator_COM
                 }
             }
         }
+        private void SendData()   
+        {
+            //TO-DO
+        }
 
-   
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+           // textBox1.SelectionStart = textBox1.Text.Length;
+            textBox1.ScrollToCaret();
+        }
     }
 }
