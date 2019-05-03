@@ -16,13 +16,15 @@ namespace PointSpase
             private int canA, canB, canC, canD, canE, canF; //обобщенные координаты (углы поворота сервориводов)
             protected long time;                //задержка от начала выполнения (сначала устанавливается поворот, затем задержка)
 
+
             public Point(int canA = 0, int canB = 0, int canC = 0, int canD = 0, int canE = 0, int canF = 0, long time = 0)
             {
-                setAllCan(canA, canB, canC, canD, canE, canF, time);
+                setAllCanal(canA, canB, canC, canD, canE, canF, time);
                 numPoint= ++numPoints;
             }
-            public void setAllCan(int canA, int canB, int canC, int canD, int canE, int canF, long time)  //функция принимает значения для каждого канала обобщенных координат
-        {
+
+            public void setAllCanal(int canA, int canB, int canC, int canD, int canE, int canF, long time)  //функция принимает значения для каждого канала обобщенных координат
+            {
                 this.canA = canA;
                 this.canB = canB;
                 this.canC = canC;
@@ -31,10 +33,11 @@ namespace PointSpase
                 this.canF = canF;
                 this.time = time;
             }
+
             public void write(  int canA, int canB, int canC, 
                                 int canD, int canE, int canF, long time)    //функция для ввода и отправки значений обобщенных координат
             {
-                setAllCan(canA, canB, canC, canD, canE, canF, time);
+                setAllCanal(canA, canB, canC, canD, canE, canF, time);
             //отправляет координаты и заключает их в символs: $- начало точки #- конец точки, 
                 sent("$");
                     sent('a' + this.canA.ToString() + 'z');
@@ -46,6 +49,7 @@ namespace PointSpase
                     sent('t' + this.time.ToString() + 'z');
                 sent("#");
         }
+
             public void write() => write(   this.canA, 
                                             this.canB, 
                                             this.canC, 
@@ -54,7 +58,17 @@ namespace PointSpase
                                             this.canF,
                                             this.time   );
 
-            public override string ToString()
+        public void writeCanal()    //функция для отправки значений обобщенных координат не в виде пакета
+        {
+            sent('a' + this.canA.ToString() + 'z');
+            sent('b' + this.canB.ToString() + 'z');
+            sent('c' + this.canC.ToString() + 'z');
+            sent('d' + this.canD.ToString() + 'z');
+            sent('e' + this.canE.ToString() + 'z');
+            sent('f' + this.canF.ToString() + 'z');
+        }
+
+        public override string ToString()
             {
                 return "Point " + this.numPoint.ToString()+'\t'+this.time.ToString()+" ms."+ '\r'+'\n';
             }

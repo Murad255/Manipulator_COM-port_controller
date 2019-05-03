@@ -67,7 +67,7 @@
             this.PointListView = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.cycleStatus = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
             this.delay = new System.Windows.Forms.TextBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
@@ -85,6 +85,8 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.startExecution = new System.Windows.Forms.Button();
+            this.clearPoints = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_A)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_F)).BeginInit();
@@ -142,7 +144,6 @@
             // 
             // comboHomeMode
             // 
-            this.comboHomeMode.Location = new System.Drawing.Point(9, 349);
             this.comboHomeMode.AutoCompleteCustomSource.AddRange(new string[] {
             "steady",
             "work"});
@@ -150,6 +151,7 @@
             this.comboHomeMode.Items.AddRange(new object[] {
             "steady",
             "work"});
+            this.comboHomeMode.Location = new System.Drawing.Point(9, 349);
             this.comboHomeMode.Margin = new System.Windows.Forms.Padding(2);
             this.comboHomeMode.Name = "comboHomeMode";
             this.comboHomeMode.Size = new System.Drawing.Size(62, 21);
@@ -384,10 +386,10 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(12, 47);
+            this.tabControl1.Location = new System.Drawing.Point(-1, 47);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(317, 415);
+            this.tabControl1.Size = new System.Drawing.Size(646, 415);
             this.tabControl1.TabIndex = 13;
             this.tabControl1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tabControl1_KeyDown);
             // 
@@ -400,7 +402,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(309, 389);
+            this.tabPage2.Size = new System.Drawing.Size(638, 389);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Консоль";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -431,20 +433,21 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(309, 389);
+            this.tabPage1.Size = new System.Drawing.Size(638, 389);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "управление";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.clearPoints);
             this.tabPage3.Controls.Add(this.PointListView);
             this.tabPage3.Controls.Add(this.groupBox2);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage3.Size = new System.Drawing.Size(309, 389);
+            this.tabPage3.Size = new System.Drawing.Size(638, 389);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "перемещения по точкам";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -452,18 +455,19 @@
             // PointListView
             // 
             this.PointListView.Font = new System.Drawing.Font("T-FLEX Type B", 18F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.PointListView.Location = new System.Drawing.Point(13, 202);
+            this.PointListView.Location = new System.Drawing.Point(308, 44);
             this.PointListView.Margin = new System.Windows.Forms.Padding(2);
             this.PointListView.Multiline = true;
             this.PointListView.Name = "PointListView";
             this.PointListView.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.PointListView.Size = new System.Drawing.Size(292, 171);
+            this.PointListView.Size = new System.Drawing.Size(326, 337);
             this.PointListView.TabIndex = 5;
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.startExecution);
             this.groupBox2.Controls.Add(this.checkBox3);
-            this.groupBox2.Controls.Add(this.checkBox2);
+            this.groupBox2.Controls.Add(this.cycleStatus);
             this.groupBox2.Controls.Add(this.label14);
             this.groupBox2.Controls.Add(this.delay);
             this.groupBox2.Controls.Add(this.checkBox1);
@@ -484,7 +488,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox2.Size = new System.Drawing.Size(291, 176);
+            this.groupBox2.Size = new System.Drawing.Size(291, 222);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Координыты и значения";
@@ -503,16 +507,16 @@
             this.checkBox3.Text = "из управления";
             this.checkBox3.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // cycleStatus
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(7, 99);
-            this.checkBox2.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(70, 19);
-            this.checkBox2.TabIndex = 15;
-            this.checkBox2.Text = "в цикле";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.cycleStatus.AutoSize = true;
+            this.cycleStatus.Location = new System.Drawing.Point(7, 99);
+            this.cycleStatus.Margin = new System.Windows.Forms.Padding(2);
+            this.cycleStatus.Name = "cycleStatus";
+            this.cycleStatus.Size = new System.Drawing.Size(70, 19);
+            this.cycleStatus.TabIndex = 15;
+            this.cycleStatus.Text = "в цикле";
+            this.cycleStatus.UseVisualStyleBackColor = true;
             // 
             // label14
             // 
@@ -536,6 +540,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
+            this.checkBox1.Enabled = false;
             this.checkBox1.Location = new System.Drawing.Point(81, 99);
             this.checkBox1.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox1.Name = "checkBox1";
@@ -546,6 +551,7 @@
             // 
             // SentButton
             // 
+            this.SentButton.Enabled = false;
             this.SentButton.Location = new System.Drawing.Point(163, 136);
             this.SentButton.Margin = new System.Windows.Forms.Padding(2);
             this.SentButton.Name = "SentButton";
@@ -560,7 +566,7 @@
             this.SaveButton.Location = new System.Drawing.Point(17, 136);
             this.SaveButton.Margin = new System.Windows.Forms.Padding(2);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(97, 34);
+            this.SaveButton.Size = new System.Drawing.Size(107, 34);
             this.SaveButton.TabIndex = 2;
             this.SaveButton.Text = "сохранить";
             this.SaveButton.UseVisualStyleBackColor = true;
@@ -578,6 +584,7 @@
             // 
             // textBox7
             // 
+            this.textBox7.Enabled = false;
             this.textBox7.Location = new System.Drawing.Point(203, 49);
             this.textBox7.Margin = new System.Windows.Forms.Padding(2);
             this.textBox7.Name = "textBox7";
@@ -596,6 +603,7 @@
             // 
             // textBox6
             // 
+            this.textBox6.Enabled = false;
             this.textBox6.Location = new System.Drawing.Point(203, 22);
             this.textBox6.Margin = new System.Windows.Forms.Padding(2);
             this.textBox6.Name = "textBox6";
@@ -614,6 +622,7 @@
             // 
             // textBox5
             // 
+            this.textBox5.Enabled = false;
             this.textBox5.Location = new System.Drawing.Point(58, 72);
             this.textBox5.Margin = new System.Windows.Forms.Padding(2);
             this.textBox5.Name = "textBox5";
@@ -632,6 +641,7 @@
             // 
             // textBox4
             // 
+            this.textBox4.Enabled = false;
             this.textBox4.Location = new System.Drawing.Point(58, 46);
             this.textBox4.Margin = new System.Windows.Forms.Padding(2);
             this.textBox4.Name = "textBox4";
@@ -650,6 +660,7 @@
             // 
             // textBox3
             // 
+            this.textBox3.Enabled = false;
             this.textBox3.Location = new System.Drawing.Point(58, 22);
             this.textBox3.Margin = new System.Windows.Forms.Padding(2);
             this.textBox3.Name = "textBox3";
@@ -666,11 +677,31 @@
             this.label8.TabIndex = 14;
             this.label8.Text = "COM порт";
             // 
+            // startExecution
+            // 
+            this.startExecution.Location = new System.Drawing.Point(17, 176);
+            this.startExecution.Name = "startExecution";
+            this.startExecution.Size = new System.Drawing.Size(253, 30);
+            this.startExecution.TabIndex = 17;
+            this.startExecution.Text = "запуск локально";
+            this.startExecution.UseVisualStyleBackColor = true;
+            this.startExecution.Click += new System.EventHandler(this.startExecution_Click);
+            // 
+            // clearPoints
+            // 
+            this.clearPoints.Location = new System.Drawing.Point(516, 16);
+            this.clearPoints.Name = "clearPoints";
+            this.clearPoints.Size = new System.Drawing.Size(96, 23);
+            this.clearPoints.TabIndex = 6;
+            this.clearPoints.Text = "удалить все";
+            this.clearPoints.UseVisualStyleBackColor = true;
+            this.clearPoints.Click += new System.EventHandler(this.clearPoints_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(336, 474);
+            this.ClientSize = new System.Drawing.Size(646, 461);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.comboBox);
@@ -751,12 +782,14 @@
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox delay;
-        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox cycleStatus;
 
         private System.Windows.Forms.Button button4;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.ComboBox comboHomeMode;
+        private System.Windows.Forms.Button startExecution;
+        private System.Windows.Forms.Button clearPoints;
     }
 }
 

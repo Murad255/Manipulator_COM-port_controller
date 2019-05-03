@@ -9,39 +9,44 @@ using System.Windows.Forms;
 using System.IO.Ports;
 using Intersection;
 using PointSpase;
-
+using System.Threading;
 
 namespace Servo_Manipulator_COM
 {
     public partial class Form1 : Form
     {
         private const int WAIT_ANSWER_TIMEOUT = 500;
-        private const int speed = 2;            
-        private bool textBox2_status = false;
-        Task send;                              //поток для приняти данных
-        Queue<char> RX_data;                    //буфер для принятых данных
+        private const int speed = 1 ;            
+        private bool textBox2_status = false;       //флаг направленности фокуса на элемент textBox2
+        private volatile bool startExecution_status = false; //статус передачи комманд каналам
 
-        List<Point> points =new List<Point>();   // коллекция с точками, задающими координаты
+        Task send;                                  //поток для приняти данных
+        Task execution;
+        Queue<char> RX_data;                        //буфер для принятых данных
+                    
+        List<Point> points =new List<Point>();      //коллекция с точками, задающими координаты
        
         bool gripFlag = true;
 
         public Form1()
         {
             InitializeComponent();
-            Point.sent = serialWrite;
+            Point.sent = serialPort.Write;// serialWrite;
             comboBox.Items.Clear();
             foreach (string portName in System.IO.Ports.SerialPort.GetPortNames())
             {
                 comboBox.Items.Add(portName);
             }
 
-            send = new Task(SendData);
+            send = new Task(Stub);
             send.Start();
+            execution = new Task(Stub);
+            execution.Start();
 
             try
             {
                 comboBox.SelectedIndex = 2;
-                comboHomeMode.SelectedIndex = 0;
+                comboHomeMode.SelectedIndex = 1;
             }
             catch (ArgumentOutOfRangeException aore)
             {
@@ -292,7 +297,7 @@ namespace Servo_Manipulator_COM
                 }
             }
         }
-        private void SendData()   //программа-заглушка для старта потока
+        private void Stub()   //программа-заглушка для старта потока
         {
             //TO-DO
         }
@@ -311,21 +316,25 @@ namespace Servo_Manipulator_COM
 
         /*
          * управление  каналами посредством нажатия клавиш:
-         *  Up и Down      для канала A
-         *  Left и Right   для канала B
-         *  W и S          для канала C
-         *  R и F          для канала D
-         *  A и D          для канала E
+         *  I и K           для канала A
+         *  J и L           для канала B
+         *  W и S           для канала C
+         *  R и F           для канала D
+         *  A и D           для канала E
          *  Spase для упровления захватом
          *  H для возвращения на базу
+         *  Tab   сохраняет точку
          */
         private void tabControl1_KeyDown(object sender, KeyEventArgs e)
         {
 
             if (textBox2_status == false)
             {
-                if (e.KeyCode == Keys.Space) gripButton_Click(sender, e);
-                if (e.KeyCode == Keys.Up)
+                if (e.KeyCode == Keys.Space)    gripButton_Click(sender, e);
+                if (e.KeyCode == Keys.ShiftKey) SaveButton_Click(sender, e);
+                if (e.KeyCode == Keys.H)        Home();
+
+                if (e.KeyCode == Keys.I)
                 {
                     if (trackBar_B.Value != trackBar_B.Maximum)
                     {
@@ -333,7 +342,7 @@ namespace Servo_Manipulator_COM
                         trackBar_B_Scroll(sender, e);
                     }
                 }
-                if (e.KeyCode == Keys.Down)
+                if (e.KeyCode == Keys.K)
                 {
                     if (trackBar_B.Value != trackBar_B.Minimum)
                     {
@@ -342,7 +351,7 @@ namespace Servo_Manipulator_COM
                     }
                 }
 
-                if (e.KeyCode == Keys.Right)
+                if (e.KeyCode == Keys.J)
                 {
                     if (trackBar_A.Value != trackBar_A.Maximum)
                     {
@@ -350,7 +359,7 @@ namespace Servo_Manipulator_COM
                         trackBar_A_Scroll(sender, e);
                     }
                 }
-                if (e.KeyCode == Keys.Left)
+                if (e.KeyCode == Keys.L)
                 {
                     if (trackBar_A.Value != trackBar_B.Minimum)
                     {
@@ -378,7 +387,7 @@ namespace Servo_Manipulator_COM
 
                 if (e.KeyCode == Keys.D)
                 {
-                    if (trackBar_E.Value != trackBar_E.Maximum)
+                    if ((trackBar_E.Value != trackBar_E.Maximum) && (trackBar_E.Value + speed * 2 != trackBar_E.Maximum))
                     {
                         trackBar_E.Value += speed*2;
                         trackBar_E_Scroll(sender, e);
@@ -386,14 +395,14 @@ namespace Servo_Manipulator_COM
                 }
                 if (e.KeyCode == Keys.A)
                 {
-                    if (trackBar_E.Value != trackBar_E.Minimum)
+                    if ((trackBar_E.Value != trackBar_E.Minimum)&&(trackBar_E.Value- speed * 2 != trackBar_E.Minimum))
                     {
                         trackBar_E.Value -= speed*2;
                         trackBar_E_Scroll(sender, e);
                     }
                 }
 
-                if (e.KeyCode == Keys.R)
+                if (e.KeyCode == Keys.F)
                 {
                     if (trackBar_D.Value != trackBar_D.Maximum)
                     {
@@ -401,7 +410,7 @@ namespace Servo_Manipulator_COM
                         trackBar_D_Scroll(sender, e);
                     }
                 }
-                if (e.KeyCode == Keys.F)
+                if (e.KeyCode == Keys.R)
                 {
                     if (trackBar_D.Value != trackBar_D.Minimum)
                     {
@@ -410,7 +419,7 @@ namespace Servo_Manipulator_COM
                     }
                 }
 
-                if (e.KeyCode == Keys.H) Home();
+                
                 
             }
         }
@@ -457,11 +466,63 @@ namespace Servo_Manipulator_COM
         private void textBox2_Enter(object sender, EventArgs e)
         {
             textBox2_status = true;
+        
         }
 
         private void textBox2_Leave(object sender, EventArgs e)
         {
             textBox2_status = false;
+        }
+
+        private void startExecution_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!startExecution_status)
+                {
+                    startExecution_status=true;
+                    startExecution.Text = "Идёт отправка";
+                    startExecution.BackColor = System.Drawing.Color.GreenYellow;
+                    execution = Task.Run(new Action(() => {
+                        Point[] tempPoints=new Point[points.Count];
+                        points.CopyTo(tempPoints);
+                        do {
+                            foreach (Point p in tempPoints)
+                            {
+                                p.writeCanal();
+                                Thread.Sleep((int)p.getTime());
+                            }
+                            
+                        } while (cycleStatus.Checked&& startExecution_status);
+                        
+                    }));
+                }
+                else
+                {
+                    startExecution_status = false;
+                    startExecution.Text = "начать отправку";
+                    startExecution.BackColor = System.Drawing.Color.White;
+                    
+                }
+            }
+            
+            catch (Exception ce)
+            {
+                MessageBox.Show(ce.ToString(),
+                                "Ошибка!",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
+        }
+        private void startExecutionProcess()
+        {
+
+        }
+
+        private void clearPoints_Click(object sender, EventArgs e)
+        {
+            points = new List<Point>();
+            PointListView.Clear();
         }
     }
 }
