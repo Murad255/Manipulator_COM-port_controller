@@ -24,7 +24,7 @@ namespace Servo_Manipulator_COM
         Task execution;
         Queue<char> RX_data;                        //буфер для принятых данных
                     
-        List<Point> points =new List<Point>();      //коллекция с точками, задающими координаты
+        Points points =new Points();      //коллекция с точками, задающими координаты
        
         bool gripFlag = true;
 
@@ -418,9 +418,6 @@ namespace Servo_Manipulator_COM
                         trackBar_D_Scroll(sender, e);
                     }
                 }
-
-                
-                
             }
         }
 
@@ -428,6 +425,7 @@ namespace Servo_Manipulator_COM
         {
             try
             {
+                if (Convert.ToInt32(delay.Text) < 400) throw  new Exception("Задержка меньше 400 мс.\n");
                 points.Add(new Point(
                                     trackBar_A.Value,
                                     trackBar_B.Value,
@@ -438,7 +436,7 @@ namespace Servo_Manipulator_COM
                                     Convert.ToInt32(delay.Text)
                                       ));
                 PointListView.Text ="";
-                foreach (Point p in points) PointListView.Text += p.ToString(); //выводит список точек
+                foreach (Point p in points) PointListView.Text += p.numString(); //выводит список точек
 
             }
             catch (FormatException)
@@ -493,8 +491,11 @@ namespace Servo_Manipulator_COM
                                 Thread.Sleep((int)p.getTime());
                             }
                             
-                        } while (cycleStatus.Checked&& startExecution_status);
-                        
+                        } while (cycleStatus.Checked && startExecution_status);
+                       // startExecution_status = false;
+                       // startExecution.Text = "начать отправку";
+                       // startExecution.BackColor = System.Drawing.Color.White;
+
                     }));
                 }
                 else
@@ -514,15 +515,22 @@ namespace Servo_Manipulator_COM
                                 MessageBoxIcon.Error);
             }
         }
-        private void startExecutionProcess()
-        {
-
-        }
+        
 
         private void clearPoints_Click(object sender, EventArgs e)
         {
-            points = new List<Point>();
+            points = new Points();
             PointListView.Clear();
         }
+
+        private void SaveListButton_Click(object sender, EventArgs e) => points.Save(filePozition.Text);
+
+        private void LoadListButton_Click(object sender, EventArgs e)
+        {
+            points.Load(filePozition.Text);
+            PointListView.Text = "";
+            foreach (Point p in points) PointListView.Text += p.numString(); //выводит список точек
+        }
+    
     }
 }

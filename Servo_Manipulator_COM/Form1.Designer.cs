@@ -64,8 +64,15 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.filePozition = new System.Windows.Forms.TextBox();
+            this.LoadListButton = new System.Windows.Forms.Button();
+            this.SaveListButton = new System.Windows.Forms.Button();
+            this.label15 = new System.Windows.Forms.Label();
+            this.clearPoints = new System.Windows.Forms.Button();
             this.PointListView = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.startExecution = new System.Windows.Forms.Button();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.cycleStatus = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -85,8 +92,6 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.startExecution = new System.Windows.Forms.Button();
-            this.clearPoints = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_A)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_F)).BeginInit();
@@ -98,6 +103,7 @@
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -440,6 +446,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.groupBox3);
             this.tabPage3.Controls.Add(this.clearPoints);
             this.tabPage3.Controls.Add(this.PointListView);
             this.tabPage3.Controls.Add(this.groupBox2);
@@ -451,6 +458,66 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "перемещения по точкам";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.filePozition);
+            this.groupBox3.Controls.Add(this.LoadListButton);
+            this.groupBox3.Controls.Add(this.SaveListButton);
+            this.groupBox3.Controls.Add(this.label15);
+            this.groupBox3.Location = new System.Drawing.Point(13, 250);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(290, 130);
+            this.groupBox3.TabIndex = 7;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Записи";
+            // 
+            // filePozition
+            // 
+            this.filePozition.Location = new System.Drawing.Point(115, 28);
+            this.filePozition.Name = "filePozition";
+            this.filePozition.Size = new System.Drawing.Size(155, 20);
+            this.filePozition.TabIndex = 3;
+            this.filePozition.Text = "log.txt";
+            // 
+            // LoadListButton
+            // 
+            this.LoadListButton.Location = new System.Drawing.Point(163, 71);
+            this.LoadListButton.Name = "LoadListButton";
+            this.LoadListButton.Size = new System.Drawing.Size(107, 23);
+            this.LoadListButton.TabIndex = 2;
+            this.LoadListButton.Text = "Загрузить список";
+            this.LoadListButton.UseVisualStyleBackColor = true;
+            this.LoadListButton.Click += new System.EventHandler(this.LoadListButton_Click);
+            // 
+            // SaveListButton
+            // 
+            this.SaveListButton.Location = new System.Drawing.Point(17, 71);
+            this.SaveListButton.Name = "SaveListButton";
+            this.SaveListButton.Size = new System.Drawing.Size(107, 23);
+            this.SaveListButton.TabIndex = 1;
+            this.SaveListButton.Text = "Сохранить список";
+            this.SaveListButton.UseVisualStyleBackColor = true;
+            this.SaveListButton.Click += new System.EventHandler(this.SaveListButton_Click);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(14, 31);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(95, 13);
+            this.label15.TabIndex = 0;
+            this.label15.Text = "Название файла:";
+            // 
+            // clearPoints
+            // 
+            this.clearPoints.Location = new System.Drawing.Point(516, 16);
+            this.clearPoints.Name = "clearPoints";
+            this.clearPoints.Size = new System.Drawing.Size(96, 23);
+            this.clearPoints.TabIndex = 6;
+            this.clearPoints.Text = "удалить все";
+            this.clearPoints.UseVisualStyleBackColor = true;
+            this.clearPoints.Click += new System.EventHandler(this.clearPoints_Click);
             // 
             // PointListView
             // 
@@ -492,6 +559,16 @@
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Координыты и значения";
+            // 
+            // startExecution
+            // 
+            this.startExecution.Location = new System.Drawing.Point(17, 176);
+            this.startExecution.Name = "startExecution";
+            this.startExecution.Size = new System.Drawing.Size(253, 30);
+            this.startExecution.TabIndex = 17;
+            this.startExecution.Text = "запуск локально";
+            this.startExecution.UseVisualStyleBackColor = true;
+            this.startExecution.Click += new System.EventHandler(this.startExecution_Click);
             // 
             // checkBox3
             // 
@@ -677,26 +754,6 @@
             this.label8.TabIndex = 14;
             this.label8.Text = "COM порт";
             // 
-            // startExecution
-            // 
-            this.startExecution.Location = new System.Drawing.Point(17, 176);
-            this.startExecution.Name = "startExecution";
-            this.startExecution.Size = new System.Drawing.Size(253, 30);
-            this.startExecution.TabIndex = 17;
-            this.startExecution.Text = "запуск локально";
-            this.startExecution.UseVisualStyleBackColor = true;
-            this.startExecution.Click += new System.EventHandler(this.startExecution_Click);
-            // 
-            // clearPoints
-            // 
-            this.clearPoints.Location = new System.Drawing.Point(516, 16);
-            this.clearPoints.Name = "clearPoints";
-            this.clearPoints.Size = new System.Drawing.Size(96, 23);
-            this.clearPoints.TabIndex = 6;
-            this.clearPoints.Text = "удалить все";
-            this.clearPoints.UseVisualStyleBackColor = true;
-            this.clearPoints.Click += new System.EventHandler(this.clearPoints_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -723,6 +780,8 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -790,6 +849,11 @@
         private System.Windows.Forms.ComboBox comboHomeMode;
         private System.Windows.Forms.Button startExecution;
         private System.Windows.Forms.Button clearPoints;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TextBox filePozition;
+        private System.Windows.Forms.Button LoadListButton;
+        private System.Windows.Forms.Button SaveListButton;
+        private System.Windows.Forms.Label label15;
     }
 }
 
