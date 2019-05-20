@@ -62,13 +62,24 @@ namespace PointSpase
 
             public void writeCanal()    //функция для отправки значений обобщенных координат не в виде пакета
             {
-                sent('a' + this.canA.ToString() + 'z');
-                sent('b' + this.canB.ToString() + 'z');
-                sent('c' + this.canC.ToString() + 'z');
-                sent('d' + this.canD.ToString() + 'z');
-                sent('e' + this.canE.ToString() + 'z');
-                sent('f' + this.canF.ToString() + 'z');
+                try
+                {
+                    sent('a' + this.canA.ToString() + 'z');
+                    sent('b' + this.canB.ToString() + 'z');
+                    sent('c' + this.canC.ToString() + 'z');
+                    sent('d' + this.canD.ToString() + 'z');
+                    sent('e' + this.canE.ToString() + 'z');
+                    sent('f' + this.canF.ToString() + 'z');
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.ToString(),
+                                    "Ошибка!",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                }
             }
+            
 
             public override string ToString()
             {

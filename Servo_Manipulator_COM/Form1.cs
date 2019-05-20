@@ -492,9 +492,22 @@ namespace Servo_Manipulator_COM
                             }
                             
                         } while (cycleStatus.Checked && startExecution_status);
-                       // startExecution_status = false;
-                       // startExecution.Text = "начать отправку";
-                       // startExecution.BackColor = System.Drawing.Color.White;
+                       
+                        if (InvokeRequired)
+                        {
+                            this.Invoke(new Action(() =>
+                            {
+                                startExecution_status = false;
+                                startExecution.Text = "начать отправку";
+                                startExecution.BackColor = System.Drawing.Color.White;
+                            }));
+                        }
+                        else
+                        {
+                            startExecution_status = false;
+                            startExecution.Text = "начать отправку";
+                            startExecution.BackColor = System.Drawing.Color.White;
+                        }
 
                     }));
                 }
