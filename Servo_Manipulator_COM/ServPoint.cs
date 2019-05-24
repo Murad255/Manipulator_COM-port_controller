@@ -170,7 +170,7 @@ namespace PointSpase
                                     MessageBoxIcon.Error);
                 }
 
-}
+            }
 
             public void Save(string Path)
             {
@@ -191,7 +191,7 @@ namespace PointSpase
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Error);
                 }
-        }
+            }
         
         }
     public class num
@@ -232,7 +232,7 @@ namespace PointSpase
             }
             return toint;
         }
-        public void processing(string str)
+        public void processing(string str) //преобразует строку в значение и индекс координаты
         {
             foreach (char temp in str)
             {

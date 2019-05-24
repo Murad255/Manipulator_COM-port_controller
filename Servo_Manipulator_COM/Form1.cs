@@ -11,6 +11,7 @@ using Intersection;
 using PointSpase;
 using System.Threading;
 
+
 namespace Servo_Manipulator_COM
 {
     public partial class Form1 : Form
@@ -25,7 +26,7 @@ namespace Servo_Manipulator_COM
         Queue<char> RX_data;                        //буфер для принятых данных
                     
         Points points =new Points();      //коллекция с точками, задающими координаты
-       
+        Point pastPoint = new Point();
         bool gripFlag = true;
 
         public Form1()
@@ -77,6 +78,9 @@ namespace Servo_Manipulator_COM
                 {
                     serialPort.PortName = ((string)comboBox.SelectedItem);
                     serialPort.Open();
+                    Passing.pastPoint.setAllCanal(90,30,14,1,90,155,0);
+
+               
                     Home();
                     connectButton.Text = "вкл";
                     connectButton.BackColor = System.Drawing.Color.GreenYellow;
@@ -215,7 +219,7 @@ namespace Servo_Manipulator_COM
         {
             if ((string)comboHomeMode.SelectedItem == "work")
             {
-
+                
                 serialWrite("a90z");
                 serialWrite("b40z");
                 serialWrite("c47z");
@@ -487,8 +491,11 @@ namespace Servo_Manipulator_COM
                         do {
                             foreach (Point p in tempPoints)
                             {
-                                p.writeCanal();
-                                Thread.Sleep((int)p.getTime());
+                                //p.writeCanal();
+                                Passing.sinFunc(Passing.pastPoint, p, Point.sent,Convert.ToInt32(p.getTime()));
+                                Passing.pastPoint = p;
+                                
+
                             }
                             
                         } while (cycleStatus.Checked && startExecution_status);
@@ -544,6 +551,7 @@ namespace Servo_Manipulator_COM
             PointListView.Text = "";
             foreach (Point p in points) PointListView.Text += p.numString(); //выводит список точек
         }
-    
+
+       
     }
 }
