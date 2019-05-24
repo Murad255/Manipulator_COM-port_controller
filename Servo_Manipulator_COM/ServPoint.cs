@@ -17,9 +17,34 @@ namespace PointSpase
             public static Sent sent;
             private int canA, canB, canC, canD, canE, canF; //обобщенные координаты (углы поворота сервориводов)
             protected long time;                //задержка от начала выполнения (сначала устанавливается поворот, затем задержка)
+        public int CanA
+        {
+            get { return canA; }
+        }
+        public int CanB
+        {
+            get { return canB; }
+        }
+        public int CanC
+        {
+            get { return canC; }
+        }
+        public int CanD
+        {
+            get { return canD; }
+        }
+        public int CanE
+        {
+            get { return canE; }
+        }
+        public int CanF
+        {
+            get { return canF; }
+        }
 
 
-            public Point(int canA = 0, int canB = 0, int canC = 0, int canD = 0, int canE = 0, int canF = 0, long time = 0)
+
+        public Point(int canA = 0, int canB = 0, int canC = 0, int canD = 0, int canE = 0, int canF = 0, long time = 0)
             {
                 setAllCanal(canA, canB, canC, canD, canE, canF, time);
                 numPoint= ++numPoints;

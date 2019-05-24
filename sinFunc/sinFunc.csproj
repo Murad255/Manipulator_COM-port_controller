@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Servo_Manipulator_COM\Servo_Manipulator_COM.csproj">
+      <Project>{eefec4b6-5a6b-47bb-9a28-c12bbabdf0ea}</Project>
+      <Name>Servo_Manipulator_COM</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
