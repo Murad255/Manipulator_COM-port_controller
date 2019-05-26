@@ -48,21 +48,21 @@ namespace Servo_Manipulator_COM
                 for (int i = 0; i <= value; i++)
                 {
 
-                    oneSinFunc(pastCoint.CanA, nextCoint.CanA, func, i);//int coint = Convert.ToInt32(a * (-Math.Cos(3.14 / Convert.ToDouble(value) * Convert.ToDouble(i)) + 1) + pastCoint);
-                    oneSinFunc(pastCoint.CanB, nextCoint.CanB, func, i);
-                    oneSinFunc(pastCoint.CanC, nextCoint.CanC, func, i);
-                    oneSinFunc(pastCoint.CanD, nextCoint.CanD, func, i);
-                    oneSinFunc(pastCoint.CanE, nextCoint.CanE, func, i);
-                    oneSinFunc(pastCoint.CanF, nextCoint.CanF, func, i);
-                    Console.WriteLine();
+                    oneSinFunc(pastCoint.CanA, nextCoint.CanA, func,'a', i);//int coint = Convert.ToInt32(a * (-Math.Cos(3.14 / Convert.ToDouble(value) * Convert.ToDouble(i)) + 1) + pastCoint);
+                    oneSinFunc(pastCoint.CanB, nextCoint.CanB, func, 'b',i);
+                    oneSinFunc(pastCoint.CanC, nextCoint.CanC, func,'c', i);
+                    oneSinFunc(pastCoint.CanD, nextCoint.CanD, func,'d', i);
+                    oneSinFunc(pastCoint.CanE, nextCoint.CanE, func,'e', i);
+                    oneSinFunc(pastCoint.CanF, nextCoint.CanF, func,'f', i);
+                   // Console.WriteLine();
                     Thread.Sleep(time / value - 1); //-1 мс для компенсации
                 }
             }
-            static private void oneSinFunc(int pastCoint, int nextCoint, Sent func, int cycle)
+            static private void oneSinFunc(int pastCoint, int nextCoint, Sent func,char numCanal , int cycle)
             {
                 double a = (nextCoint - pastCoint) / 2;
                 int coint = Convert.ToInt32(a * (-Math.Cos(3.14 / Convert.ToDouble(value) * Convert.ToDouble(cycle)) + 1) + pastCoint);
-                func(coint.ToString());
+                func(numCanal+ coint.ToString()+'z');
             }
 
         

@@ -492,7 +492,8 @@ namespace Servo_Manipulator_COM
                             foreach (Point p in tempPoints)
                             {
                                 //p.writeCanal();
-                                Passing.sinFunc(Passing.pastPoint, p, Point.sent,Convert.ToInt32(p.getTime()));
+                                // Passing.sinFunc(Passing.pastPoint, p, Point.sent,Convert.ToInt32(p.getTime()));
+                                Passing.sinFunc(Passing.pastPoint, p, serialPort.Write, Convert.ToInt32(p.getTime()));
                                 Passing.pastPoint = p;
                                 
 
