@@ -22,6 +22,7 @@ namespace Intersection
 
         static public Dec write(Dec decIn)
         {
+            if(Math.Sqrt(decIn.decZ * decIn.decZ+decIn.pXY * decIn.pXY)<Convert.ToDouble(L2-L1)) throw  new Exception("невозможно переместиться в данные координаты");
             {
                 double val = Math.Sqrt(decIn.decX * decIn.decX + decIn.decY * decIn.decY + decIn.decZ * decIn.decZ);
                 if (((L1 + L2) < val) || ((L1 - L2) > val))
@@ -70,24 +71,34 @@ namespace Intersection
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("Введите значения координат.\nX= ");
-            //int x=Console.Read();
-            // Console.WriteLine("\nY=");
-            // int y = Console.Read();
-            // Console.WriteLine("\nZ=");
-            // int z = Console.Read();
-            int x = 100, y = 50, z = 50;
-            Dec dec = new Dec(x, y, z);
-            Dec outDec = shape.write(dec);
-            Console.WriteLine("Координаты верхней точки  пересечения шаров:");
-            Console.WriteLine("\nX=");
-            Console.Write(outDec.decX);
-            Console.WriteLine("\nY=");
-            Console.Write(outDec.decY);
-            Console.WriteLine("\nZ=");
-            Console.Write(outDec.decZ);
+            try
+            {
+                Console.WriteLine("Введите значения координат.\nX= ");
+                int x = int.Parse(Console.ReadLine());
+                Console.WriteLine("\nY=");
+                int y = int.Parse(Console.ReadLine());
+                Console.WriteLine("\nZ=");
+                int z = int.Parse(Console.ReadLine());
 
-            Console.Read();
+                Dec dec = new Dec(x, y, z);
+                Dec outDec = shape.write(dec);
+                Console.WriteLine("Координаты верхней точки  пересечения шаров:");
+                Console.WriteLine("\nX=");
+                Console.Write(outDec.decX);
+                Console.WriteLine("\nY=");
+                Console.Write(outDec.decY);
+                Console.WriteLine("\nZ=");
+                Console.Write(outDec.decZ);
+
+                
+            }
+            catch (Exception ex) {
+                Console.WriteLine("Ошибка!\n {0}",ex.ToString());
+            }
+            finally
+            {
+                Console.Read();
+            }
         }
     }
 }

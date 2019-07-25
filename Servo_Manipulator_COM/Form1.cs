@@ -18,35 +18,37 @@ namespace Servo_Manipulator_COM
     {
         private const int WAIT_ANSWER_TIMEOUT = 500;
         private const int speed = 1 ;            
-        private bool textBox2_status = false;       //флаг направленности фокуса на элемент textBox2
+        private bool textBox2_status = false;                //флаг направленности фокуса на элемент textBox2
         private volatile bool startExecution_status = false; //статус передачи комманд каналам
 
-        Task send;                                  //поток для приняти данных
-        Task execution;
-        Queue<char> RX_data;                        //буфер для принятых данных
+        Task send;              //поток для приняти данных
+        Task execution;         //поток для отправки коллекции точек
+        private Queue<char> RX_data;    //буфер для принятых данных
                     
         Points points =new Points();      //коллекция с точками, задающими координаты
-        Point pastPoint = new Point();
-        bool gripFlag = true;
+        //Point pastPoint = new Point();
+        bool gripFlag = true;             //флаг статуса сжатия/разжатия клешни
 
         public Form1()
         {
             InitializeComponent();
             Point.sent = serialPort.Write;// serialWrite;
             comboBox.Items.Clear();
+            int portCount = 0; 
             foreach (string portName in System.IO.Ports.SerialPort.GetPortNames())
             {
                 comboBox.Items.Add(portName);
+                portCount++;
             }
 
-            send = new Task(Stub);
+            send        = new Task(()=> { });
+            execution   = new Task(() => { });
             send.Start();
-            execution = new Task(Stub);
             execution.Start();
 
             try
             {
-                comboBox.SelectedIndex = 2;
+                if(portCount>=2)comboBox.SelectedIndex = 2;
                 comboHomeMode.SelectedIndex = 1;
             }
             catch (ArgumentOutOfRangeException aore)
@@ -78,10 +80,18 @@ namespace Servo_Manipulator_COM
                 {
                     serialPort.PortName = ((string)comboBox.SelectedItem);
                     serialPort.Open();
-                    Passing.pastPoint.setAllCanal(90,30,14,1,90,155,0);
+                    //Passing.pastPoint.setAllCanal(90,30,14,1,90,155,0);
 
                
                     Home();
+                    //points.Add(trackBar_A.Value,
+                    //     trackBar_B.Value,
+                    //     trackBar_C.Value,
+                    //     trackBar_D.Value,
+                    //     trackBar_E.Value,
+                    //     trackBar_F.Value,
+                    //     Convert.ToInt32(delay.Text)
+                    //         );
                     connectButton.Text = "вкл";
                     connectButton.BackColor = System.Drawing.Color.GreenYellow;
                 }
@@ -238,6 +248,7 @@ namespace Servo_Manipulator_COM
                 label_D.Text = trackBar_D.Value.ToString();
                 label_D.Text = trackBar_D.Value.ToString();
                 label_D.Text = trackBar_D.Value.ToString();
+
             }
             else if ((string)comboHomeMode.SelectedItem == "steady")
             {
@@ -301,10 +312,6 @@ namespace Servo_Manipulator_COM
                 }
             }
         }
-        private void Stub()   //программа-заглушка для старта потока
-        {
-            //TO-DO
-        }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
@@ -327,16 +334,20 @@ namespace Servo_Manipulator_COM
          *  A и D           для канала E
          *  Spase для упровления захватом
          *  H для возвращения на базу
-         *  Tab   сохраняет точку
+         *  Shift   сохраняет точку
+         *  ctrl запуск операции
+         *  G вернуться к прошлой операции
          */
         private void tabControl1_KeyDown(object sender, KeyEventArgs e)
         {
 
             if (textBox2_status == false)
             {
-                if (e.KeyCode == Keys.Space)    gripButton_Click(sender, e);
-                if (e.KeyCode == Keys.ShiftKey) SaveButton_Click(sender, e);
-                if (e.KeyCode == Keys.H)        Home();
+                if (e.KeyCode == Keys.Space)        gripButton_Click(sender, e);
+                if (e.KeyCode == Keys.ShiftKey)     SaveButton_Click(sender, e);
+                if (e.KeyCode == Keys.H)            Home();
+                if (e.KeyCode == Keys.G)            return_point_Click(sender, e);
+                if (e.KeyCode == Keys.ControlKey)  startExecution_Click(sender, e);
 
                 if (e.KeyCode == Keys.I)
                 {
@@ -429,19 +440,22 @@ namespace Servo_Manipulator_COM
         {
             try
             {
-                if (Convert.ToInt32(delay.Text) < 400) throw  new Exception("Задержка меньше 400 мс.\n");
-                points.Add(new Point(
-                                    trackBar_A.Value,
-                                    trackBar_B.Value,
-                                    trackBar_C.Value,
-                                    trackBar_D.Value,
-                                    trackBar_E.Value,
-                                    trackBar_F.Value,
-                                    Convert.ToInt32(delay.Text)
-                                      ));
-                PointListView.Text ="";
-                foreach (Point p in points) PointListView.Text += p.numString(); //выводит список точек
+                if (Convert.ToInt32(delay.Text) < 249) throw  new Exception("Задержка меньше 250 мс.\n");
 
+               // if (points.PointsCoint != 0) Passing.pastPoint = points[points.PointsCoint ];
+
+                    points.Add(trackBar_A.Value,
+                                trackBar_B.Value,
+                                trackBar_C.Value,
+                                trackBar_D.Value,
+                                trackBar_E.Value,
+                                trackBar_F.Value,
+                                Convert.ToInt32(delay.Text)
+                                    );
+
+                    PointListView.Text = "";
+                    foreach (Point p in points) PointListView.Text += p.numString(); //выводит список точек
+              
             }
             catch (FormatException)
             {
@@ -480,54 +494,60 @@ namespace Servo_Manipulator_COM
         {
             try
             {
+                if(!serialPort.IsOpen)  throw new InvalidOperationException();
                 if (!startExecution_status)
                 {
                     startExecution_status=true;
                     startExecution.Text = "Идёт отправка";
                     startExecution.BackColor = System.Drawing.Color.GreenYellow;
+                   
                     execution = Task.Run(new Action(() => {
                         Point[] tempPoints=new Point[points.Count];
                         points.CopyTo(tempPoints);
                         do {
                             foreach (Point p in tempPoints)
                             {
-                                //p.writeCanal();
-                                // Passing.sinFunc(Passing.pastPoint, p, Point.sent,Convert.ToInt32(p.getTime()));
                                 Passing.sinFunc(Passing.pastPoint, p, serialPort.Write, Convert.ToInt32(p.getTime()));
                                 Passing.pastPoint = p;
-                                
-
                             }
                             
                         } while (cycleStatus.Checked && startExecution_status);
-                       
-                        if (InvokeRequired)
-                        {
-                            this.Invoke(new Action(() =>
+
+                       //доступ к элементам формы не из главного потока
+                            if (InvokeRequired)
+                            {
+                                this.Invoke(new Action(() =>
+                                {
+                                    startExecution_status = false;
+                                    startExecution.Text = "начать отправку";
+                                    startExecution.BackColor = System.Drawing.Color.White;
+                                }));
+                            }
+                            else
                             {
                                 startExecution_status = false;
                                 startExecution.Text = "начать отправку";
                                 startExecution.BackColor = System.Drawing.Color.White;
-                            }));
-                        }
-                        else
-                        {
-                            startExecution_status = false;
-                            startExecution.Text = "начать отправку";
-                            startExecution.BackColor = System.Drawing.Color.White;
-                        }
+                            }
 
                     }));
                 }
                 else
                 {
                     startExecution_status = false;
+                    //execution.Abort();
                     startExecution.Text = "начать отправку";
                     startExecution.BackColor = System.Drawing.Color.White;
                     
                 }
             }
-            
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show("COM порт закрыт!",
+                                "Ошибка!",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
             catch (Exception ce)
             {
                 MessageBox.Show(ce.ToString(),
@@ -553,6 +573,15 @@ namespace Servo_Manipulator_COM
             foreach (Point p in points) PointListView.Text += p.numString(); //выводит список точек
         }
 
-       
+        private void return_point_Click(object sender, EventArgs e)
+        {
+            Point pastP = new Point();
+            pastP= Point.equivalent(points[points.Count-2]);
+
+            points.Add(pastP);
+            pastP.writeCanal();
+            PointListView.Text = "";
+            foreach (Point p in points) PointListView.Text += p.numString(); //выводит список точек
+        }
     }
 }

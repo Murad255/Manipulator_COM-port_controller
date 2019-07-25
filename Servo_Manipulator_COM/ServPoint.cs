@@ -15,6 +15,15 @@ namespace PointSpase
             protected static int numPoints = 0; //общее количество созданных точек 
             protected int numPoint;             //номер данного экземпляра
             public static Sent sent;
+        public int NumPoints
+        {
+            get { return numPoints; }
+        }
+        public int NumPoint
+        {
+            get { return numPoint; }
+        }
+
             private int canA, canB, canC, canD, canE, canF; //обобщенные координаты (углы поворота сервориводов)
             protected long time;                //задержка от начала выполнения (сначала устанавливается поворот, затем задержка)
         public int CanA
@@ -49,8 +58,15 @@ namespace PointSpase
                 setAllCanal(canA, canB, canC, canD, canE, canF, time);
                 numPoint= ++numPoints;
             }
+        public static Point operator ~(Point p) => equivalent(p);   //создаёт эквивалентный обьект
 
-            public void setAllCanal(int canA, int canB, int canC, int canD, int canE, int canF, long time)  //функция принимает значения для каждого канала обобщенных координат
+        public static Point equivalent(Point p)
+        {
+            return new Point(   p.CanA, p.CanB,
+                                p.CanC, p.CanD,
+                                p.CanE, p.CanF, p.getTime());
+        }
+        public void setAllCanal(int canA, int canB, int canC, int canD, int canE, int canF, long time)  //функция принимает значения для каждого канала обобщенных координат
             {
                 this.canA = canA;
                 this.canB = canB;
@@ -116,16 +132,32 @@ namespace PointSpase
             {
                 return "Point " + this.numPoint.ToString() + '\t' + this.time.ToString() + " ms." + '\r' + '\n';
             }
-
-            public int getNumPoint() { return this.numPoint; }
-            static public int getNumPoints() { return numPoints; }
+        
             public long getTime() { return this.time; }
         }
 
+
+
         public class Points: List<Point>
         {
-            public void Add(Point temp)=> base.Add(temp);
-            
+            //private Point pastPoint= new Point();
+            //public Point PastPoint
+            //{
+            //    get { return pastPoint; }
+            //}
+
+            private int pointsCoint = 0;
+            public  int PointsCoint
+            {
+                get { return pointsCoint; }
+            }
+
+            public void Add(Point temp)
+            {
+            //if (pointsCoint != 0) pastPoint = this[pointsCoint - 1]; //помещаем предыдущую точку в pastPoint
+                base.Add(temp);
+                this.pointsCoint++;
+            }
 
             public void Add(int canA, int canB, int canC,
                             int canD, int canE, int canF, long time)
@@ -169,7 +201,6 @@ namespace PointSpase
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Error);
                 }
-
             }
 
             public void Save(string Path)
@@ -192,62 +223,64 @@ namespace PointSpase
                                     MessageBoxIcon.Error);
                 }
             }
-        
         }
-    public class num
-    {
-        public char index;
-        public char[] num_c=new char[4];
-        public int coint;
-        public void invert()
-        {
-            char temp;
-            switch (coint)
-            {
-                case 2:
-                    temp = num_c[0];
-                    num_c[0] = num_c[1];
-                    num_c[1] = temp;
-                    break;
-                case 3:
-                    temp = num_c[0];
-                    num_c[0] = num_c[2];
-                    num_c[2] = temp;
-                    break;
-                default:
-                    break;
-            }
-            return;
-        }
-        public int toint()
-        {
-            invert();
-            int toint = 0;
-            for (int i = 0; i < coint; i++)
-            {
-                if (num_c[i] >= '0' && num_c[i] <= '9')
-                {
-                    toint += (num_c[i] - 48) * Convert.ToInt32(Math.Pow(10,Convert.ToDouble(i)));
-                }
-            }
-            return toint;
-        }
-        public void processing(string str) //преобразует строку в значение и индекс координаты
-        {
-            foreach (char temp in str)
-            {
-                if (temp >= 'A' && temp < 'z') index = temp; 
 
-                else if (temp >= '0' && temp <= '9')
+
+
+        public class num
+        {
+            public char index;
+            public char[] num_c=new char[4];
+            public int coint;
+            public void invert()
+            {
+                char temp;
+                switch (coint)
                 {
-                    num_c[coint] = temp;
-                    coint++;
+                    case 2:
+                        temp = num_c[0];
+                        num_c[0] = num_c[1];
+                        num_c[1] = temp;
+                        break;
+                    case 3:
+                        temp = num_c[0];
+                        num_c[0] = num_c[2];
+                        num_c[2] = temp;
+                        break;
+                    default:
+                        break;
                 }
-                
+                return;
             }
+            public int toint()
+            {
+                invert();
+                int toint = 0;
+                for (int i = 0; i < coint; i++)
+                {
+                    if (num_c[i] >= '0' && num_c[i] <= '9')
+                    {
+                        toint += (num_c[i] - 48) * Convert.ToInt32(Math.Pow(10,Convert.ToDouble(i)));
+                    }
+                }
+                return toint;
+            }
+            public void processing(string str) //преобразует строку в значение и индекс координаты
+            {
+                foreach (char temp in str)
+                {
+                    if (temp >= 'A' && temp < 'z') index = temp; 
+
+                    else if (temp >= '0' && temp <= '9')
+                    {
+                        num_c[coint] = temp;
+                        coint++;
+                    }
+                
+                }
+            }
+            public num(){}
+            public num(string str) => processing(str);
         }
-        public num(){}
-        public num(string str) => processing(str);
-    }
 
 }
