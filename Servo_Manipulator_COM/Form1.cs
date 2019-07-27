@@ -20,19 +20,21 @@ namespace Servo_Manipulator_COM
         private const int speed = 1 ;            
         private bool textBox2_status = false;                //флаг направленности фокуса на элемент textBox2
         private volatile bool startExecution_status = false; //статус передачи комманд каналам
+        private bool gripFlag = true;                        //флаг статуса сжатия/разжатия клешни
 
-        Task send;              //поток для приняти данных
-        Task execution;         //поток для отправки коллекции точек
+        Task send;                      //поток для приняти данных
+        Task execution;                 //поток для отправки коллекции точек
         private Queue<char> RX_data;    //буфер для принятых данных
                     
-        Points points =new Points();      //коллекция с точками, задающими координаты
+        Points points =new Points();    //коллекция с точками, задающими координаты
         //Point pastPoint = new Point();
-        bool gripFlag = true;             //флаг статуса сжатия/разжатия клешни
 
+
+        
         public Form1()
         {
             InitializeComponent();
-            Point.sent = serialPort.Write;// serialWrite;
+            Point.sent = serialPort.Write;  // serialWrite;
             comboBox.Items.Clear();
             int portCount = 0; 
             foreach (string portName in System.IO.Ports.SerialPort.GetPortNames())
@@ -225,53 +227,41 @@ namespace Servo_Manipulator_COM
             }
         }
 
-       private void Home()
+        private void Home()
         {
             if ((string)comboHomeMode.SelectedItem == "work")
             {
-                
-                serialWrite("a90z");
-                serialWrite("b40z");
-                serialWrite("c47z");
-                serialWrite("d160z");
-                serialWrite("e90z");
-                serialWrite("f140z");
-                trackBar_A.Value = Convert.ToInt32(90);
-                trackBar_B.Value = Convert.ToInt32(40);
-                trackBar_C.Value = Convert.ToInt32(47);
-                trackBar_D.Value = Convert.ToInt32(160);
-                trackBar_E.Value = Convert.ToInt32(90);
-                trackBar_F.Value = Convert.ToInt32(140);
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
+                Point homePoint = new Point(90,40,47,160,90,140);
+                homePoint.write();
+                trackBarSet(homePoint);
 
             }
             else if ((string)comboHomeMode.SelectedItem == "steady")
             {
-                serialWrite("a90z");
-                serialWrite("b30z");
-                serialWrite("c14z");
-                serialWrite("d1z");
-                serialWrite("e90z");
-                serialWrite("f155z");
-                trackBar_A.Value = Convert.ToInt32(90);
-                trackBar_B.Value = Convert.ToInt32(30);
-                trackBar_C.Value = Convert.ToInt32(14);
-                trackBar_D.Value = Convert.ToInt32(1);
-                trackBar_E.Value = Convert.ToInt32(90);
-                trackBar_F.Value = Convert.ToInt32(155);
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
-                label_D.Text = trackBar_D.Value.ToString();
+                Point homePoint = new Point(90, 30, 14, 1, 90, 155);
+                homePoint.write();
+                trackBarSet(homePoint);
             }
         }
+
+
+        private void trackBarSet(Point p)
+        {
+            trackBar_A.Value = p.CanA;
+            trackBar_B.Value = p.CanB;
+            trackBar_C.Value = p.CanC;
+            trackBar_D.Value = p.CanD;
+            trackBar_E.Value = p.CanE;
+            trackBar_F.Value = p.CanF;
+            
+            label_A.Text = p.CanA.ToString(); 
+            label_B.Text = p.CanB.ToString();
+            label_C.Text = p.CanC.ToString();
+            label_D.Text = p.CanD.ToString();
+            label_E.Text = p.CanE.ToString();
+            label_F.Text = p.CanF.ToString();
+        }
+
 
         private  void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
@@ -494,10 +484,15 @@ namespace Servo_Manipulator_COM
         {
             try
             {
+                //признак отмены и признак получения этого признака при отправке точек
+                CancellationTokenSource eexecutionTokenSource = new CancellationTokenSource();
+                CancellationToken eexecutionToken = eexecutionTokenSource.Token;
+
                 if(!serialPort.IsOpen)  throw new InvalidOperationException();
                 if (!startExecution_status)
                 {
-                    startExecution_status=true;
+                    
+                    startExecution_status =true;
                     startExecution.Text = "Идёт отправка";
                     startExecution.BackColor = System.Drawing.Color.GreenYellow;
                    
@@ -507,7 +502,10 @@ namespace Servo_Manipulator_COM
                         do {
                             foreach (Point p in tempPoints)
                             {
-                                Passing.sinFunc(Passing.pastPoint, p, serialPort.Write, Convert.ToInt32(p.getTime()));
+                                if (eexecutionToken.IsCancellationRequested) return; //принудительное закрытие задачи
+                                Passing.sinFunc(Passing.pastPoint, 
+                                                p, serialPort.Write, 
+                                                Convert.ToInt32(p.getTime()));
                                 Passing.pastPoint = p;
                             }
                             
@@ -535,7 +533,7 @@ namespace Servo_Manipulator_COM
                 else
                 {
                     startExecution_status = false;
-                    //execution.Abort();
+                    eexecutionTokenSource.Cancel();
                     startExecution.Text = "начать отправку";
                     startExecution.BackColor = System.Drawing.Color.White;
                     
@@ -577,6 +575,7 @@ namespace Servo_Manipulator_COM
         {
             Point pastP = new Point();
             pastP= Point.equivalent(points[points.Count-2]);
+            trackBarSet(pastP);
 
             points.Add(pastP);
             pastP.writeCanal();

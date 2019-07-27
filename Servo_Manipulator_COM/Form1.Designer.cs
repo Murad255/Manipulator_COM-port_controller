@@ -450,7 +450,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::Servo_Manipulator_COM.Properties.Resources.src_keyboard_316;
+            this.pictureBox1.Image = global::Servo_Manipulator_COM.Properties.Resources.src_keyboard_3161;
             this.pictureBox1.Location = new System.Drawing.Point(315, 7);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(316, 379);
@@ -884,4 +884,3 @@
         private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
-

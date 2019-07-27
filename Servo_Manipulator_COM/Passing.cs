@@ -12,7 +12,6 @@ namespace Servo_Manipulator_COM
     class Passing
     {
         private const int value = 15;
-        public delegate void SendFunc(int num);
         static Task sendTask;
         public static Point pastPoint = new Point();
 
@@ -66,4 +65,3 @@ namespace Servo_Manipulator_COM
         } 
     }
 }
-

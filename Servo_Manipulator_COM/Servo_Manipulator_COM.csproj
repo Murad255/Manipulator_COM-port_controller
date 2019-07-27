@@ -85,6 +85,7 @@
   <ItemGroup>
     <None Include="Resources\src_keyboard.png" />
     <None Include="Resources\src_keyboard_316.png" />
+    <None Include="Resources\src_keyboard_3161.png" />
     <Content Include="Servo_serial_handler.txt" />
   </ItemGroup>
   <ItemGroup>

@@ -226,7 +226,6 @@ namespace PointSpase
         }
 
 
-
         public class num
         {
             public char index;
@@ -276,11 +275,9 @@ namespace PointSpase
                         num_c[coint] = temp;
                         coint++;
                     }
-                
                 }
             }
             public num(){}
             public num(string str) => processing(str);
         }
-
 }

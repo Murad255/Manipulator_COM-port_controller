@@ -79,5 +79,15 @@ namespace Servo_Manipulator_COM.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap src_keyboard_3161 {
+            get {
+                object obj = ResourceManager.GetObject("src_keyboard_3161", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
