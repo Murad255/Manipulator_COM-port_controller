@@ -3,7 +3,7 @@
 namespace Intersection
 {
 
-    class Dec
+    public class Dec
     {
         public double decX, decY, decZ, pXY;
         public Dec(double decX = 0.0, double decY = 0.0, double decZ = 0.0)
@@ -15,12 +15,12 @@ namespace Intersection
         }
     }
 
-    static class shape
+    public static class Shape
     {
-        const double L2 = 147;
-        const double L1 = 105;
+        public const double L2 = 147;
+        public const double L1 = 105;
 
-        static public Dec write(Dec decIn)
+        static public Dec Algoritm(Dec decIn)
         {
             if(Math.Sqrt(decIn.decZ * decIn.decZ+decIn.pXY * decIn.pXY)<Convert.ToDouble(L2-L1)) throw  new Exception("невозможно переместиться в данные координаты");
             {
@@ -81,7 +81,7 @@ namespace Intersection
                 int z = int.Parse(Console.ReadLine());
 
                 Dec dec = new Dec(x, y, z);
-                Dec outDec = shape.write(dec);
+                Dec outDec = Shape.Algoritm(dec);
                 Console.WriteLine("Координаты верхней точки  пересечения шаров:");
                 Console.WriteLine("\nX=");
                 Console.Write(outDec.decX);
