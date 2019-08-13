@@ -75,23 +75,23 @@
             this.PointListView = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.startExecution = new System.Windows.Forms.Button();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkAlgoritm = new System.Windows.Forms.CheckBox();
             this.cycleStatus = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
             this.delay = new System.Windows.Forms.TextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkGrip = new System.Windows.Forms.CheckBox();
             this.SentButton = new System.Windows.Forms.Button();
             this.SaveButton = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.valueCoordA = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.valueCoordB = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.valueCoordZ = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.valueCoordY = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.valueCoordX = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_A)).BeginInit();
@@ -113,7 +113,8 @@
             // trackBar_A
             // 
             this.trackBar_A.Location = new System.Drawing.Point(72, 43);
-            this.trackBar_A.Maximum = 180;
+            this.trackBar_A.Maximum = 90;
+            this.trackBar_A.Minimum = -90;
             this.trackBar_A.Name = "trackBar_A";
             this.trackBar_A.Size = new System.Drawing.Size(228, 45);
             this.trackBar_A.TabIndex = 0;
@@ -308,7 +309,8 @@
             // trackBar_E
             // 
             this.trackBar_E.Location = new System.Drawing.Point(72, 247);
-            this.trackBar_E.Maximum = 180;
+            this.trackBar_E.Maximum = 90;
+            this.trackBar_E.Minimum = -90;
             this.trackBar_E.Name = "trackBar_E";
             this.trackBar_E.Size = new System.Drawing.Size(228, 45);
             this.trackBar_E.TabIndex = 4;
@@ -318,17 +320,19 @@
             // trackBar_D
             // 
             this.trackBar_D.Location = new System.Drawing.Point(72, 196);
-            this.trackBar_D.Maximum = 180;
+            this.trackBar_D.Maximum = 280;
+            this.trackBar_D.Minimum = 100;
             this.trackBar_D.Name = "trackBar_D";
             this.trackBar_D.Size = new System.Drawing.Size(228, 45);
             this.trackBar_D.TabIndex = 3;
-            this.trackBar_D.Value = 90;
+            this.trackBar_D.Value = 100;
             this.trackBar_D.Scroll += new System.EventHandler(this.trackBar_D_Scroll);
             // 
             // trackBar_C
             // 
             this.trackBar_C.Location = new System.Drawing.Point(72, 145);
-            this.trackBar_C.Maximum = 180;
+            this.trackBar_C.Maximum = 220;
+            this.trackBar_C.Minimum = 40;
             this.trackBar_C.Name = "trackBar_C";
             this.trackBar_C.Size = new System.Drawing.Size(228, 45);
             this.trackBar_C.TabIndex = 2;
@@ -557,23 +561,23 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.startExecution);
-            this.groupBox2.Controls.Add(this.checkBox3);
+            this.groupBox2.Controls.Add(this.checkAlgoritm);
             this.groupBox2.Controls.Add(this.cycleStatus);
             this.groupBox2.Controls.Add(this.label14);
             this.groupBox2.Controls.Add(this.delay);
-            this.groupBox2.Controls.Add(this.checkBox1);
+            this.groupBox2.Controls.Add(this.checkGrip);
             this.groupBox2.Controls.Add(this.SentButton);
             this.groupBox2.Controls.Add(this.SaveButton);
             this.groupBox2.Controls.Add(this.label13);
-            this.groupBox2.Controls.Add(this.textBox7);
+            this.groupBox2.Controls.Add(this.valueCoordA);
             this.groupBox2.Controls.Add(this.label12);
-            this.groupBox2.Controls.Add(this.textBox6);
+            this.groupBox2.Controls.Add(this.valueCoordB);
             this.groupBox2.Controls.Add(this.label11);
-            this.groupBox2.Controls.Add(this.textBox5);
+            this.groupBox2.Controls.Add(this.valueCoordZ);
             this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Controls.Add(this.textBox4);
+            this.groupBox2.Controls.Add(this.valueCoordY);
             this.groupBox2.Controls.Add(this.label9);
-            this.groupBox2.Controls.Add(this.textBox3);
+            this.groupBox2.Controls.Add(this.valueCoordX);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox2.Location = new System.Drawing.Point(13, 22);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
@@ -595,19 +599,20 @@
             this.startExecution.UseVisualStyleBackColor = true;
             this.startExecution.Click += new System.EventHandler(this.startExecution_Click);
             // 
-            // checkBox3
+            // checkAlgoritm
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Checked = true;
-            this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox3.Cursor = System.Windows.Forms.Cursors.No;
-            this.checkBox3.Location = new System.Drawing.Point(151, 99);
-            this.checkBox3.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(110, 19);
-            this.checkBox3.TabIndex = 16;
-            this.checkBox3.Text = "из управления";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.checkAlgoritm.AutoSize = true;
+            this.checkAlgoritm.Checked = true;
+            this.checkAlgoritm.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkAlgoritm.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.checkAlgoritm.Location = new System.Drawing.Point(151, 99);
+            this.checkAlgoritm.Margin = new System.Windows.Forms.Padding(2);
+            this.checkAlgoritm.Name = "checkAlgoritm";
+            this.checkAlgoritm.Size = new System.Drawing.Size(122, 19);
+            this.checkAlgoritm.TabIndex = 16;
+            this.checkAlgoritm.Text = "установить углы";
+            this.checkAlgoritm.UseVisualStyleBackColor = true;
+            this.checkAlgoritm.CheckedChanged += new System.EventHandler(this.checkAlgoritm_CheckedChanged);
             // 
             // cycleStatus
             // 
@@ -639,17 +644,17 @@
             this.delay.TabIndex = 14;
             this.delay.Text = "500";
             // 
-            // checkBox1
+            // checkGrip
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Enabled = false;
-            this.checkBox1.Location = new System.Drawing.Point(81, 99);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(66, 19);
-            this.checkBox1.TabIndex = 12;
-            this.checkBox1.Text = "захват";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkGrip.AutoSize = true;
+            this.checkGrip.Location = new System.Drawing.Point(81, 99);
+            this.checkGrip.Margin = new System.Windows.Forms.Padding(2);
+            this.checkGrip.Name = "checkGrip";
+            this.checkGrip.Size = new System.Drawing.Size(66, 19);
+            this.checkGrip.TabIndex = 12;
+            this.checkGrip.Text = "захват";
+            this.checkGrip.UseVisualStyleBackColor = true;
+            this.checkGrip.CheckedChanged += new System.EventHandler(this.checkGrip_CheckedChanged);
             // 
             // SentButton
             // 
@@ -684,14 +689,14 @@
             this.label13.TabIndex = 10;
             this.label13.Text = "Горизонт:";
             // 
-            // textBox7
+            // valueCoordA
             // 
-            this.textBox7.Enabled = false;
-            this.textBox7.Location = new System.Drawing.Point(203, 49);
-            this.textBox7.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(45, 21);
-            this.textBox7.TabIndex = 11;
+            this.valueCoordA.Enabled = false;
+            this.valueCoordA.Location = new System.Drawing.Point(203, 49);
+            this.valueCoordA.Margin = new System.Windows.Forms.Padding(2);
+            this.valueCoordA.Name = "valueCoordA";
+            this.valueCoordA.Size = new System.Drawing.Size(45, 21);
+            this.valueCoordA.TabIndex = 11;
             // 
             // label12
             // 
@@ -703,14 +708,14 @@
             this.label12.TabIndex = 8;
             this.label12.Text = "Наклон:";
             // 
-            // textBox6
+            // valueCoordB
             // 
-            this.textBox6.Enabled = false;
-            this.textBox6.Location = new System.Drawing.Point(203, 22);
-            this.textBox6.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(45, 21);
-            this.textBox6.TabIndex = 9;
+            this.valueCoordB.Enabled = false;
+            this.valueCoordB.Location = new System.Drawing.Point(203, 22);
+            this.valueCoordB.Margin = new System.Windows.Forms.Padding(2);
+            this.valueCoordB.Name = "valueCoordB";
+            this.valueCoordB.Size = new System.Drawing.Size(45, 21);
+            this.valueCoordB.TabIndex = 9;
             // 
             // label11
             // 
@@ -722,14 +727,14 @@
             this.label11.TabIndex = 6;
             this.label11.Text = "ось Z:";
             // 
-            // textBox5
+            // valueCoordZ
             // 
-            this.textBox5.Enabled = false;
-            this.textBox5.Location = new System.Drawing.Point(58, 72);
-            this.textBox5.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(45, 21);
-            this.textBox5.TabIndex = 7;
+            this.valueCoordZ.Enabled = false;
+            this.valueCoordZ.Location = new System.Drawing.Point(58, 72);
+            this.valueCoordZ.Margin = new System.Windows.Forms.Padding(2);
+            this.valueCoordZ.Name = "valueCoordZ";
+            this.valueCoordZ.Size = new System.Drawing.Size(45, 21);
+            this.valueCoordZ.TabIndex = 7;
             // 
             // label10
             // 
@@ -741,14 +746,14 @@
             this.label10.TabIndex = 4;
             this.label10.Text = "ось Y:";
             // 
-            // textBox4
+            // valueCoordY
             // 
-            this.textBox4.Enabled = false;
-            this.textBox4.Location = new System.Drawing.Point(58, 46);
-            this.textBox4.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(45, 21);
-            this.textBox4.TabIndex = 5;
+            this.valueCoordY.Enabled = false;
+            this.valueCoordY.Location = new System.Drawing.Point(58, 46);
+            this.valueCoordY.Margin = new System.Windows.Forms.Padding(2);
+            this.valueCoordY.Name = "valueCoordY";
+            this.valueCoordY.Size = new System.Drawing.Size(45, 21);
+            this.valueCoordY.TabIndex = 5;
             // 
             // label9
             // 
@@ -760,14 +765,14 @@
             this.label9.TabIndex = 0;
             this.label9.Text = "ось X:";
             // 
-            // textBox3
+            // valueCoordX
             // 
-            this.textBox3.Enabled = false;
-            this.textBox3.Location = new System.Drawing.Point(58, 22);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(45, 21);
-            this.textBox3.TabIndex = 3;
+            this.valueCoordX.Enabled = false;
+            this.valueCoordX.Location = new System.Drawing.Point(58, 22);
+            this.valueCoordX.Margin = new System.Windows.Forms.Padding(2);
+            this.valueCoordX.Name = "valueCoordX";
+            this.valueCoordX.Size = new System.Drawing.Size(45, 21);
+            this.valueCoordX.TabIndex = 3;
             // 
             // label8
             // 
@@ -852,26 +857,26 @@
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TextBox PointListView;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkGrip;
         private System.Windows.Forms.Button SentButton;
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.TextBox valueCoordA;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox valueCoordB;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox valueCoordZ;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox valueCoordY;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox valueCoordX;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox delay;
         private System.Windows.Forms.CheckBox cycleStatus;
 
         private System.Windows.Forms.Button button4;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox checkAlgoritm;
         private System.Windows.Forms.ComboBox comboHomeMode;
         private System.Windows.Forms.Button startExecution;
         private System.Windows.Forms.Button clearPoints;

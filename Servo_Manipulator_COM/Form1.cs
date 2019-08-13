@@ -27,10 +27,12 @@ namespace Servo_Manipulator_COM
         private Queue<char> RX_data;    //буфер для принятых данных
                     
         Points points =new Points();    //коллекция с точками, задающими координаты
-        //Point pastPoint = new Point();
+                                        //Point pastPoint = new Point();
 
+        //признак отмены и признак получения этого признака при отправке точек
+        static CancellationTokenSource eexecutionTokenSource = new CancellationTokenSource();
+        static CancellationToken eexecutionToken = eexecutionTokenSource.Token;
 
-        
         public Form1()
         {
             InitializeComponent();
@@ -51,7 +53,7 @@ namespace Servo_Manipulator_COM
             try
             {
                 if(portCount>=2)comboBox.SelectedIndex = 2;
-                comboHomeMode.SelectedIndex = 1;
+                comboHomeMode.SelectedIndex = 1; 
             }
             catch (ArgumentOutOfRangeException aore)
             {
@@ -65,6 +67,10 @@ namespace Servo_Manipulator_COM
             
         }
         
+        public void Form1_ToString(string message)
+        {
+            this.Text = message;
+        }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -74,28 +80,35 @@ namespace Servo_Manipulator_COM
             }
         }
 
-        private void connectButton_Click_1(object sender, EventArgs e)
+        private async void connectButton_Click_1(object sender, EventArgs e)
         {
             try
             {
                 if (!serialPort.IsOpen)
                 {
                     serialPort.PortName = ((string)comboBox.SelectedItem);
-                    serialPort.Open();
-                    //Passing.pastPoint.setAllCanal(90,30,14,1,90,155,0);
 
-               
-                    Home();
-                    //points.Add(trackBar_A.Value,
-                    //     trackBar_B.Value,
-                    //     trackBar_C.Value,
-                    //     trackBar_D.Value,
-                    //     trackBar_E.Value,
-                    //     trackBar_F.Value,
-                    //     Convert.ToInt32(delay.Text)
-                    //         );
-                    connectButton.Text = "вкл";
-                    connectButton.BackColor = System.Drawing.Color.GreenYellow;
+                    await Task.Run(() =>
+                    {
+                        try
+                        {
+                            serialPort.Open();
+                            Home();
+                            this.Invoke(new Action(()=> {
+                                connectButton.Text = "вкл";
+                                connectButton.BackColor = System.Drawing.Color.GreenYellow;
+                            }));
+                        }
+                        catch (UnauthorizedAccessException)
+                        {
+                            MessageBox.Show("COM порт занят.", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        catch (Exception soe)
+                        {
+                            MessageBox.Show(soe.ToString(), "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    });
+                    
                 }
                 else
                 {
@@ -104,13 +117,7 @@ namespace Servo_Manipulator_COM
                     connectButton.BackColor = System.Drawing.Color.Tomato;
                 }
             }
-            catch (UnauthorizedAccessException )
-            {
-                MessageBox.Show("COM порт занят.",
-                                "Ошибка!",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-            }
+          
             catch (Exception ce)
             {
                 MessageBox.Show(ce.ToString(),
@@ -120,48 +127,50 @@ namespace Servo_Manipulator_COM
             }
         }
 
+        /*обработка действия слайдеров*/
 
-        private void trackBar_A_Scroll(object sender, EventArgs e)
+        private void ScrollFunction(char ch,TrackBar trackBar, Label label,TextBox textBox)
         {
-
-            serialWrite('a' + trackBar_A.Value.ToString() + 'z');
-            textBox1.Text = trackBar_A.Value.ToString();
-            label_A.Text = trackBar_A.Value.ToString();
+            try
+            {
+                if (checkAlgoritm.Checked)
+                {
+                    //serialWrite(ch + trackBar.Value.ToString() + 'z');
+                    Point.tempPoint[ch] = trackBar.Value;
+                    Point.tempPoint.write();
+                    textBox1.Text = trackBar.Value.ToString();
+                    label.Text = trackBar.Value.ToString();
+                }
+                else
+                {
+                    textBox.Text = trackBar.Value.ToString();
+                    label.Text = trackBar.Value.ToString();
+                    Point point = DecPointTransform.Algoritm(getDec(),
+                                                                trackBar_F.Value,
+                                                                Convert.ToInt32(delay.Text)
+                                                                );
+                    point.writeCanal();
+                }
+                this.Text = "COM-консоль";
+            }
+            catch (Exception)
+            {
+                this.Text = "Ошибка!";
+            }
         }
 
-        private void trackBar_B_Scroll(object sender, EventArgs e)
-        {
-            serialWrite('b'+trackBar_B.Value.ToString()+'z');
-            textBox1.Text = trackBar_B.Value.ToString();
-            label_B.Text = trackBar_B.Value.ToString();
-        }
+        private void trackBar_A_Scroll(object sender, EventArgs e)=> ScrollFunction('a', trackBar_A, label_A, valueCoordX);
+        
+        private void trackBar_B_Scroll(object sender, EventArgs e)=> ScrollFunction('b', trackBar_B, label_B, valueCoordY);
+        
+        private void trackBar_C_Scroll(object sender, EventArgs e)=> ScrollFunction('c', trackBar_C, label_C, valueCoordZ);
 
+        private void trackBar_D_Scroll(object sender, EventArgs e)=> ScrollFunction('d', trackBar_D, label_D, valueCoordA);
 
-        private void trackBar_C_Scroll(object sender, EventArgs e)
-        {
-            serialWrite('c' + trackBar_C.Value.ToString() + 'z');
-            textBox1.Text = trackBar_C.Value.ToString();
-            label_C.Text = trackBar_C.Value.ToString();
-        }
-
-        private void trackBar_D_Scroll(object sender, EventArgs e)
-        {
-            serialWrite('d' + trackBar_D.Value.ToString() + 'z');
-            textBox1.Text = trackBar_D.Value.ToString();
-            label_D.Text = trackBar_D.Value.ToString();
-        }
-
-        private void trackBar_E_Scroll(object sender, EventArgs e)
-        {
-
-            serialWrite('e' + trackBar_E.Value.ToString() + 'z');
-            textBox1.Text = trackBar_E.Value.ToString();
-            label_E.Text = trackBar_E.Value.ToString();
-        }
+        private void trackBar_E_Scroll(object sender, EventArgs e)=> ScrollFunction('e', trackBar_E, label_E, valueCoordB);
 
         private void trackBar_F_Scroll(object sender, EventArgs e)
         {
-
             serialWrite('f' + trackBar_F.Value.ToString() + 'z');
             textBox1.Text = trackBar_F.Value.ToString();
             label_F.Text = trackBar_F.Value.ToString();
@@ -184,17 +193,23 @@ namespace Servo_Manipulator_COM
         {
             if (gripFlag == true)
             {
+                checkGrip.Checked = false;
                 gripFlag = false;
                 serialWrite("f90z");
                 trackBar_F.Value = Convert.ToInt32(100);
             }
             else if (gripFlag == false)
             {
+                checkGrip.Checked = true;
                 gripFlag = true;
                 serialWrite("f1z");
                 trackBar_F.Value = Convert.ToInt32(180);
             }
         }
+        private void checkGrip_CheckedChanged(object sender, EventArgs e) => gripButton_Click(sender,e);
+
+
+
         private void serialWrite(string message)
         {
             try
@@ -232,6 +247,7 @@ namespace Servo_Manipulator_COM
             if ((string)comboHomeMode.SelectedItem == "work")
             {
                 Point homePoint = new Point(90,40,47,160,90,140);
+                Point.tempPoint = homePoint;
                 homePoint.write();
                 trackBarSet(homePoint);
 
@@ -239,6 +255,7 @@ namespace Servo_Manipulator_COM
             else if ((string)comboHomeMode.SelectedItem == "steady")
             {
                 Point homePoint = new Point(90, 30, 14, 1, 90, 155);
+                Point.tempPoint = homePoint;
                 homePoint.write();
                 trackBarSet(homePoint);
             }
@@ -432,18 +449,26 @@ namespace Servo_Manipulator_COM
             {
                 if (Convert.ToInt32(delay.Text) < 249) throw  new Exception("Задержка меньше 250 мс.\n");
 
-               // if (points.PointsCoint != 0) Passing.pastPoint = points[points.PointsCoint ];
-
+                // if (points.PointsCoint != 0) Passing.pastPoint = points[points.PointsCoint ];
+                if(checkAlgoritm.Checked)
                     points.Add(trackBar_A.Value,
-                                trackBar_B.Value,
-                                trackBar_C.Value,
-                                trackBar_D.Value,
-                                trackBar_E.Value,
-                                trackBar_F.Value,
-                                Convert.ToInt32(delay.Text)
-                                    );
+                               trackBar_B.Value,
+                               trackBar_C.Value,
+                               trackBar_D.Value,
+                               trackBar_E.Value,
+                               trackBar_F.Value,
+                               Convert.ToInt32(delay.Text)
+                                   );
+                else
+                {
+                     Point point = DecPointTransform.Algoritm(  getDec(),
+                                                                trackBar_F.Value,
+                                                                Convert.ToInt32(delay.Text)
+                                                                    );
+                    points.Add(point);
+                } 
 
-                    PointListView.Text = "";
+                PointListView.Text = "";
                     foreach (Point p in points) PointListView.Text += p.numString(); //выводит список точек
               
             }
@@ -484,11 +509,10 @@ namespace Servo_Manipulator_COM
         {
             try
             {
-                //признак отмены и признак получения этого признака при отправке точек
-                CancellationTokenSource eexecutionTokenSource = new CancellationTokenSource();
-                CancellationToken eexecutionToken = eexecutionTokenSource.Token;
+                eexecutionTokenSource = new CancellationTokenSource();
+                eexecutionToken = eexecutionTokenSource.Token;
 
-                if(!serialPort.IsOpen)  throw new InvalidOperationException();
+                if (!serialPort.IsOpen)  throw new InvalidOperationException();
                 if (!startExecution_status)
                 {
                     
@@ -582,5 +606,77 @@ namespace Servo_Manipulator_COM
             PointListView.Text = "";
             foreach (Point p in points) PointListView.Text += p.numString(); //выводит список точек
         }
+
+        private void checkAlgoritm_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkAlgoritm.Checked)
+            {
+                valueCoordX.Enabled = false;
+                valueCoordY.Enabled = false;
+                valueCoordZ.Enabled = false;
+                valueCoordA.Enabled = false;
+                valueCoordB.Enabled = false;
+
+                label1.Text = "канал А";
+                label2.Text = "канал B";
+                label3.Text = "канал C";
+                label4.Text = "канал D";
+                label5.Text = "канал E";
+
+                trackBar_A.Maximum = 90;
+                trackBar_A.Minimum = -90;
+                trackBar_B.Maximum = 180;
+                trackBar_B.Minimum = 0;
+                trackBar_C.Maximum = 220;
+                trackBar_C.Minimum = 40;
+                trackBar_D.Maximum = 280;
+                trackBar_D.Minimum = 100;
+                trackBar_E.Maximum = 90;
+                trackBar_E.Minimum = -90;
+
+            }
+            else
+            {
+                valueCoordX.Enabled = true;
+                valueCoordY.Enabled = true;
+                valueCoordZ.Enabled = true;
+                valueCoordA.Enabled = true;
+                valueCoordB.Enabled = true;
+
+                label1.Text = "Ось X";
+                label2.Text = "Ось Y";
+                label3.Text = "Ось Z";
+                label4.Text = "Горизонт";
+                label5.Text = "Наклон";
+
+                valueCoordX.Text = trackBar_A.Value.ToString();
+                valueCoordY.Text = trackBar_B.Value.ToString();
+                valueCoordZ.Text = trackBar_C.Value.ToString();
+                valueCoordA.Text = trackBar_D.Value.ToString();
+                valueCoordB.Text = trackBar_E.Value.ToString();
+
+                trackBar_A.Maximum = DecPointTransform.Lmax;
+                trackBar_A.Minimum = -DecPointTransform.Lmax;
+                trackBar_B.Maximum = DecPointTransform.Lmax;
+                trackBar_B.Minimum = -DecPointTransform.Lmax;
+                trackBar_C.Maximum = DecPointTransform.Lmax;
+                trackBar_C.Minimum = -DecPointTransform.Lmax;
+                trackBar_D.Maximum = 90;
+                trackBar_D.Minimum = -90;
+                trackBar_E.Maximum = 180;
+                trackBar_E.Minimum = 0;
+            }
+        }
+
+        private Dec getDec()
+        {
+            return new Dec( Convert.ToDouble(valueCoordX.Text),
+                            Convert.ToDouble(valueCoordY.Text),
+                            Convert.ToDouble(valueCoordZ.Text),
+                            Convert.ToDouble(valueCoordA.Text),
+                            Convert.ToDouble(valueCoordB.Text)
+                            );
+        }
+       
     }
 }

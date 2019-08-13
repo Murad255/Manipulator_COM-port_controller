@@ -15,6 +15,7 @@ namespace PointSpase
             protected static int numPoints = 0; //общее количество созданных точек 
             protected int numPoint;             //номер данного экземпляра
             public static Sent sent;
+        public static Point tempPoint = new Point();
         public int NumPoints
         {
             get { return numPoints; }
@@ -24,7 +25,14 @@ namespace PointSpase
             get { return numPoint; }
         }
 
-            private int canA, canB, canC, canD, canE, canF; //обобщенные координаты (углы поворота сервориводов)
+        //Константы, учитывающие изначальный поворот осей сервоприводов
+        private const int qA = 90;
+        private const int qB = 180;
+        private const int qC = -40;
+        private const int qD = -100;
+        private const int qE = 90;
+
+        private int canA, canB, canC, canD, canE, canF; //обобщенные координаты (углы поворота сервориводов)
             protected long time;                //задержка от начала выполнения (сначала устанавливается поворот, затем задержка)
         public int CanA
         {
@@ -51,13 +59,43 @@ namespace PointSpase
             get { return canF; }
         }
 
-
-
-        public Point(int canA = 0, int canB = 0, int canC = 0, int canD = 0, int canE = 0, int canF = 0, long time = 0)
+        public int this[char ch]
+        {
+            set
             {
-                setAllCanal(canA, canB, canC, canD, canE, canF, time);
-                numPoint= ++numPoints;
+                switch (ch)
+                {
+                    case 'a':
+                        canA = value+qA;
+                        return;
+                    case 'b':
+                        canB = value*(-1)+qB;
+                        return;
+                    case 'c':
+                        canC = value+qC;
+                        return;
+                    case 'd':
+                        canD = value+qD;
+                        return;
+                    case 'e':
+                        canE = value+qE;
+                        return;
+                    case 'f':
+                        canF = value;
+                        return;
+                    default:
+                        return;
+                }
             }
+        }
+
+        public Point(int canA = 0, int canB = 0, int canC = 0, int canD = 0, int canE = 0, int canF = 0, long time = 0, bool config = false)
+            {
+            if (!config) setAllCanal(canA, canB, canC, canD, canE, canF, time);
+            else setAllDegree(canA, canB, canC, canD, canE, canF, time);
+            numPoint = ++numPoints;
+            }
+
         public static Point operator ~(Point p) => equivalent(p);   //создаёт эквивалентный обьект
 
         public static Point equivalent(Point p)
@@ -76,30 +114,47 @@ namespace PointSpase
                 this.canF = canF;
                 this.time = time;
             }
+        public void setAllDegree(int canA, int canB, int canC, int canD, int canE, int canF, long time) => //функция принимает значения для каждого канала обобщенных координат
+        
+             setAllCanal(   canA+qA,        //-90/90
+                            (canB*-1)+qB,   // 0/180
+                            canC+qC,        //40/220
+                            canD+qD,        //100/280
+                            canE+qE,        //-90/90 
+                            canF, 
+                            time);
+        
 
-            public void write(  int canA, int canB, int canC, 
-                                int canD, int canE, int canF, long time)    //функция для ввода и отправки значений обобщенных координат
+        public void write(  int canA, int canB, int canC, 
+                            int canD, int canE, int canF, 
+                            long time, bool config = false)    //функция для ввода и отправки значений обобщенных координат
             {
-                setAllCanal(canA, canB, canC, canD, canE, canF, time);
-            //отправляет координаты и заключает их в символs: $- начало точки #- конец точки, 
+                try
+                {
+                    if(!config) setAllCanal(canA, canB, canC, canD, canE, canF, time);
+                    else setAllDegree(canA, canB, canC, canD, canE, canF, time);
+                //отправляет координаты и заключает их в символs: $- начало точки #- конец точки, 
                 sent("$");
-                    sent('a' + this.canA.ToString() + 'z');
-                    sent('b' + this.canB.ToString() + 'z');
-                    sent('c' + this.canC.ToString() + 'z');
-                    sent('d' + this.canD.ToString() + 'z');
-                    sent('e' + this.canE.ToString() + 'z');
-                    sent('f' + this.canF.ToString() + 'z');
-                    sent('t' + this.time.ToString() + 'z');
-                sent("#");
+                    writeCanal();
+                    sent("#");
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.ToString(),
+                                    "Ошибка!",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                }
             }
 
-            public void write() => write(   this.canA, 
-                                            this.canB, 
-                                            this.canC, 
-                                            this.canD, 
-                                            this.canE, 
-                                            this.canF,
-                                            this.time   );
+            public void write(bool config = false) => write(    this.canA, 
+                                                                this.canB, 
+                                                                this.canC, 
+                                                                this.canD, 
+                                                                this.canE, 
+                                                                this.canF,
+                                                                this.time,
+                                                                config);
 
             public void writeCanal()    //функция для отправки значений обобщенных координат не в виде пакета
             {
