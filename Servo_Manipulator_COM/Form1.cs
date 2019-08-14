@@ -264,11 +264,11 @@ namespace Servo_Manipulator_COM
 
         private void trackBarSet(Point p)
         {
-            trackBar_A.Value = p.CanA;
-            trackBar_B.Value = p.CanB;
-            trackBar_C.Value = p.CanC;
-            trackBar_D.Value = p.CanD;
-            trackBar_E.Value = p.CanE;
+            trackBar_A.Value = p.CanA-90;
+            trackBar_B.Value = (p.CanB-180)*(-1);
+            trackBar_C.Value = p.CanC+40;
+            trackBar_D.Value = p.CanD+100;
+            trackBar_E.Value = p.CanE-90;
             trackBar_F.Value = p.CanF;
             
             label_A.Text = p.CanA.ToString(); 
@@ -649,22 +649,22 @@ namespace Servo_Manipulator_COM
                 label4.Text = "Горизонт";
                 label5.Text = "Наклон";
 
+                trackBar_A.Maximum = DecPointTransform.Lmax;
+                trackBar_A.Minimum = -DecPointTransform.Lmax;
+                trackBar_B.Maximum = DecPointTransform.Lmax;
+                trackBar_B.Minimum = 0;
+                trackBar_C.Maximum = DecPointTransform.Lmax;
+                trackBar_C.Minimum = -DecPointTransform.Lmax;
+                trackBar_D.Maximum = 280;
+                trackBar_D.Minimum = 100;
+                trackBar_E.Maximum = 180;
+                trackBar_E.Minimum = 0;
+
                 valueCoordX.Text = trackBar_A.Value.ToString();
                 valueCoordY.Text = trackBar_B.Value.ToString();
                 valueCoordZ.Text = trackBar_C.Value.ToString();
                 valueCoordA.Text = trackBar_D.Value.ToString();
                 valueCoordB.Text = trackBar_E.Value.ToString();
-
-                trackBar_A.Maximum = DecPointTransform.Lmax;
-                trackBar_A.Minimum = -DecPointTransform.Lmax;
-                trackBar_B.Maximum = DecPointTransform.Lmax;
-                trackBar_B.Minimum = -DecPointTransform.Lmax;
-                trackBar_C.Maximum = DecPointTransform.Lmax;
-                trackBar_C.Minimum = -DecPointTransform.Lmax;
-                trackBar_D.Maximum = 90;
-                trackBar_D.Minimum = -90;
-                trackBar_E.Maximum = 180;
-                trackBar_E.Minimum = 0;
             }
         }
 

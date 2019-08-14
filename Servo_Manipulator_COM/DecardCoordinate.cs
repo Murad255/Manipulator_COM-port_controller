@@ -12,11 +12,6 @@ namespace Servo_Manipulator_COM
         private static int l_max = Convert.ToInt32(Shape.L1 + Shape.L2) + L3;
         public static int  Lmax { get { return l_max; } }
 
-        private const int qA = 0;
-        private const int qB = 180;
-        private const int qC = -40;
-        private const int qD = 0;//-7;
-        private const int qE = 90;
 
         public static Point Algoritm(double coordX, double coordY, double coordZ, double degreeA, double degreeB, int grab, int time)
         {
@@ -43,13 +38,15 @@ namespace Servo_Manipulator_COM
                 axisB = Shape.Algoritm(dec);
 
                 var AC = Math.Sqrt(dec.pXY * dec.pXY + dec.decZ * dec.decZ);
-                int CanA = Convert.ToInt32(Math.Acos(dec.decX / dec.pXY) * 180 / Math.PI);
-                int CanB =180- Convert.ToInt32(Math.Acos(axisB.decZ / axisB.pXY) * 180 / Math.PI);// * -1;
-                int CanC = Convert.ToInt32(Math.Acos((AC * AC - Shape.L1 * Shape.L1 - Shape.L2 * Shape.L2) / (2 * Shape.L1 * Shape.L2)) * 180 / Math.PI) + qC;
-                int CanD = Convert.ToInt32(degreeB) + qD;
-                int CanE = Convert.ToInt32(degreeA) + qE;
+                int CanA = Convert.ToInt32(Math.Acos(dec.decX / dec.pXY) * 180 / Math.PI)-90;
+                // int CanB = Convert.ToInt32(Math.Acos(axisB.decY / Shape.L1) * 180 / Math.PI);//Convert.ToInt32(Math.Acos(axisB.decZ / axisB.pXY) * 180 / Math.PI);
+                // int CanC = 180 - CanB + Convert.ToInt32(Math.Acos((axisC.pXY - axisB.pXY) /Shape.L2));//Convert.ToInt32(Math.Acos((AC * AC - Shape.L1 * Shape.L1 - Shape.L2 * Shape.L2) / (2 * Shape.L1 * Shape.L2)) * 180 / Math.PI);
+                int CanB = Convert.ToInt32(Math.Acos(axisB.pXY / Shape.L1) * 180 / Math.PI);
+                int CanC = 180 - Convert.ToInt32(Math.Acos((AC * AC - Shape.L1 * Shape.L1 - Shape.L2 * Shape.L2) / (2 * Shape.L1 * Shape.L2)) * 180 / Math.PI);
+                int CanD = Convert.ToInt32(degreeB);
+                int CanE = Convert.ToInt32(degreeA);
 
-                return new Point(CanA, CanB, CanC, CanD, CanE, grab, time);
+                return new Point(CanA, CanB, CanC, CanD, CanE, grab, time,true);
             }
             catch (Exception e) { throw new Exception(e.Message); }
         }
