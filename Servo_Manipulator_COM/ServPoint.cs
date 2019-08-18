@@ -214,10 +214,10 @@ namespace PointSpase
                 this.pointsCoint++;
             }
 
-            public void Add(int canA, int canB, int canC,
-                            int canD, int canE, int canF, long time)
+            public void Add(int canA, int canB, int canC,int canD,
+                            int canE, int canF, long time, bool config = false)
             {
-                Point temp = new Point(canA, canB, canC, canD, canE, canF, time);
+                Point temp = new Point(canA, canB, canC, canD, canE, canF, time, config);
                 base.Add(temp);
             }
 

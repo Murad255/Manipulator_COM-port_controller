@@ -6,6 +6,11 @@ namespace Intersection
     public class Dec
     {
         public double decX, decY, decZ, pXY, decA,decB;
+        public double update_pXY()
+        {
+            this.pXY = Math.Sqrt(decX * decX + decY * decY);
+            return pXY;
+        }
 
         public Dec(double decX = 0.0, double decY = 0.0, double decZ = 0.0, double decA = 0.0, double decB = 0.0)
         {

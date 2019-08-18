@@ -165,9 +165,9 @@ namespace Servo_Manipulator_COM
         
         private void trackBar_C_Scroll(object sender, EventArgs e)=> ScrollFunction('c', trackBar_C, label_C, valueCoordZ);
 
-        private void trackBar_D_Scroll(object sender, EventArgs e)=> ScrollFunction('d', trackBar_D, label_D, valueCoordA);
+        private void trackBar_D_Scroll(object sender, EventArgs e)=> ScrollFunction('d', trackBar_D, label_D, valueCoordB);
 
-        private void trackBar_E_Scroll(object sender, EventArgs e)=> ScrollFunction('e', trackBar_E, label_E, valueCoordB);
+        private void trackBar_E_Scroll(object sender, EventArgs e)=> ScrollFunction('e', trackBar_E, label_E, valueCoordA);
 
         private void trackBar_F_Scroll(object sender, EventArgs e)
         {
@@ -345,6 +345,7 @@ namespace Servo_Manipulator_COM
          *  ctrl запуск операции
          *  G вернуться к прошлой операции
          */
+        
         private void tabControl1_KeyDown(object sender, KeyEventArgs e)
         {
 
@@ -356,89 +357,31 @@ namespace Servo_Manipulator_COM
                 if (e.KeyCode == Keys.G)            return_point_Click(sender, e);
                 if (e.KeyCode == Keys.ControlKey)  startExecution_Click(sender, e);
 
-                if (e.KeyCode == Keys.I)
-                {
-                    if (trackBar_B.Value != trackBar_B.Maximum)
-                    {
-                        trackBar_B.Value+= speed;
-                        trackBar_B_Scroll(sender, e);
-                    }
-                }
-                if (e.KeyCode == Keys.K)
-                {
-                    if (trackBar_B.Value != trackBar_B.Minimum)
-                    {
-                        trackBar_B.Value-=speed;
-                        trackBar_B_Scroll(sender, e);
-                    }
-                }
+                KeyDownChangeValue(e, Keys.I, Keys.K, trackBar_B, () => trackBar_B_Scroll(sender, e));
+                KeyDownChangeValue(e, Keys.J, Keys.L, trackBar_A, () => trackBar_A_Scroll(sender, e));
+                KeyDownChangeValue(e, Keys.W, Keys.S, trackBar_C, () => trackBar_C_Scroll(sender, e));
+                KeyDownChangeValue(e, Keys.F, Keys.R, trackBar_D, () => trackBar_D_Scroll(sender, e));
+                KeyDownChangeValue(e, Keys.D, Keys.A, trackBar_E, () => trackBar_E_Scroll(sender, e));
+                
+            }
+        }
 
-                if (e.KeyCode == Keys.J)
+        private void KeyDownChangeValue(KeyEventArgs e, Keys upKeys, Keys downKeys, TrackBar trackBar, Action action)
+        {
+            if (e.KeyCode == upKeys)
+            {
+                if (trackBar.Value != trackBar.Maximum)
                 {
-                    if (trackBar_A.Value != trackBar_A.Maximum)
-                    {
-                        trackBar_A.Value += speed;
-                        trackBar_A_Scroll(sender, e);
-                    }
+                    trackBar.Value += speed;
+                    action();
                 }
-                if (e.KeyCode == Keys.L)
+            }
+            if (e.KeyCode == downKeys)
+            {
+                if (trackBar.Value != trackBar.Minimum)
                 {
-                    if (trackBar_A.Value != trackBar_B.Minimum)
-                    {
-                        trackBar_A.Value -= speed;
-                        trackBar_A_Scroll(sender, e);
-                    }
-                }
-
-                if (e.KeyCode == Keys.W)
-                {
-                    if (trackBar_C.Value != trackBar_C.Maximum)
-                    {
-                        trackBar_C.Value += speed;
-                        trackBar_C_Scroll(sender, e);
-                    }
-                }
-                if (e.KeyCode == Keys.S)
-                {
-                    if (trackBar_C.Value != trackBar_C.Minimum)
-                    {
-                        trackBar_C.Value -= speed;
-                        trackBar_C_Scroll(sender, e);
-                    }
-                }
-
-                if (e.KeyCode == Keys.D)
-                {
-                    if ((trackBar_E.Value != trackBar_E.Maximum) && (trackBar_E.Value + speed * 2 != trackBar_E.Maximum))
-                    {
-                        trackBar_E.Value += speed*2;
-                        trackBar_E_Scroll(sender, e);
-                    }
-                }
-                if (e.KeyCode == Keys.A)
-                {
-                    if ((trackBar_E.Value != trackBar_E.Minimum)&&(trackBar_E.Value- speed * 2 != trackBar_E.Minimum))
-                    {
-                        trackBar_E.Value -= speed*2;
-                        trackBar_E_Scroll(sender, e);
-                    }
-                }
-
-                if (e.KeyCode == Keys.F)
-                {
-                    if (trackBar_D.Value != trackBar_D.Maximum)
-                    {
-                        trackBar_D.Value += speed;
-                        trackBar_D_Scroll(sender, e);
-                    }
-                }
-                if (e.KeyCode == Keys.R)
-                {
-                    if (trackBar_D.Value != trackBar_D.Minimum)
-                    {
-                        trackBar_D.Value -= speed;
-                        trackBar_D_Scroll(sender, e);
-                    }
+                    trackBar.Value -= speed;
+                    action();
                 }
             }
         }
@@ -457,7 +400,8 @@ namespace Servo_Manipulator_COM
                                trackBar_D.Value,
                                trackBar_E.Value,
                                trackBar_F.Value,
-                               Convert.ToInt32(delay.Text)
+                               Convert.ToInt32(delay.Text),
+                               true
                                    );
                 else
                 {
@@ -494,6 +438,7 @@ namespace Servo_Manipulator_COM
             foreach (Point p in points)  p.write();
             serialWrite("k");
         }
+
         private void textBox2_Enter(object sender, EventArgs e)
         {
             textBox2_status = true;
@@ -504,6 +449,7 @@ namespace Servo_Manipulator_COM
         {
             textBox2_status = false;
         }
+
 
         private void startExecution_Click(object sender, EventArgs e)
         {
@@ -646,8 +592,9 @@ namespace Servo_Manipulator_COM
                 label1.Text = "Ось X";
                 label2.Text = "Ось Y";
                 label3.Text = "Ось Z";
-                label4.Text = "Горизонт";
-                label5.Text = "Наклон";
+                label4.Text = "Наклон";
+                label5.Text = "Горизонт";
+                
 
                 trackBar_A.Maximum = DecPointTransform.Lmax;
                 trackBar_A.Minimum = -DecPointTransform.Lmax;
@@ -655,16 +602,16 @@ namespace Servo_Manipulator_COM
                 trackBar_B.Minimum = 0;
                 trackBar_C.Maximum = DecPointTransform.Lmax;
                 trackBar_C.Minimum = -DecPointTransform.Lmax;
-                trackBar_D.Maximum = 280;
-                trackBar_D.Minimum = 100;
-                trackBar_E.Maximum = 180;
-                trackBar_E.Minimum = 0;
+                trackBar_D.Maximum = 180;
+                trackBar_D.Minimum = 0;
+                trackBar_E.Maximum = 90;
+                trackBar_E.Minimum = -90;
 
                 valueCoordX.Text = trackBar_A.Value.ToString();
                 valueCoordY.Text = trackBar_B.Value.ToString();
                 valueCoordZ.Text = trackBar_C.Value.ToString();
-                valueCoordA.Text = trackBar_D.Value.ToString();
-                valueCoordB.Text = trackBar_E.Value.ToString();
+                valueCoordA.Text = trackBar_E.Value.ToString();
+                valueCoordB.Text = trackBar_D.Value.ToString();
             }
         }
 
