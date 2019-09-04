@@ -60,13 +60,16 @@
             this.comboBox = new System.Windows.Forms.ComboBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.button1 = new System.Windows.Forms.Button();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.return_point = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.buttonOpenFile = new System.Windows.Forms.Button();
             this.filePozition = new System.Windows.Forms.TextBox();
             this.LoadListButton = new System.Windows.Forms.Button();
             this.SaveListButton = new System.Windows.Forms.Button();
@@ -94,6 +97,9 @@
             this.valueCoordX = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.openPointFile = new System.Windows.Forms.OpenFileDialog();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_A)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_F)).BeginInit();
@@ -103,11 +109,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_B)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // trackBar_A
@@ -145,9 +155,10 @@
             this.groupBox1.Controls.Add(this.trackBar_C);
             this.groupBox1.Controls.Add(this.trackBar_B);
             this.groupBox1.Controls.Add(this.trackBar_A);
-            this.groupBox1.Location = new System.Drawing.Point(2, 3);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(306, 390);
+            this.groupBox1.Size = new System.Drawing.Size(306, 381);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Углы серв";
@@ -352,11 +363,11 @@
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox1.Location = new System.Drawing.Point(3, 47);
+            this.textBox1.Location = new System.Drawing.Point(3, 30);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(300, 310);
+            this.textBox1.Size = new System.Drawing.Size(630, 318);
             this.textBox1.TabIndex = 2;
             this.textBox1.Text = "text";
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
@@ -364,7 +375,7 @@
             // connectButton
             // 
             this.connectButton.BackColor = System.Drawing.SystemColors.Control;
-            this.connectButton.Location = new System.Drawing.Point(244, 20);
+            this.connectButton.Location = new System.Drawing.Point(232, 7);
             this.connectButton.Name = "connectButton";
             this.connectButton.Size = new System.Drawing.Size(75, 23);
             this.connectButton.TabIndex = 3;
@@ -375,7 +386,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 18);
+            this.label7.Location = new System.Drawing.Point(3, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(67, 13);
             this.label7.TabIndex = 11;
@@ -389,7 +400,7 @@
             // comboBox
             // 
             this.comboBox.FormattingEnabled = true;
-            this.comboBox.Location = new System.Drawing.Point(164, 20);
+            this.comboBox.Location = new System.Drawing.Point(152, 6);
             this.comboBox.Name = "comboBox";
             this.comboBox.Size = new System.Drawing.Size(74, 21);
             this.comboBox.TabIndex = 12;
@@ -399,46 +410,65 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(-1, 47);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(3, 42);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(646, 415);
+            this.tabControl1.Size = new System.Drawing.Size(644, 413);
             this.tabControl1.TabIndex = 13;
             this.tabControl1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tabControl1_KeyDown);
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.button1);
-            this.tabPage2.Controls.Add(this.textBox2);
-            this.tabPage2.Controls.Add(this.label7);
+            this.tabPage2.Controls.Add(this.flowLayoutPanel2);
+            this.tabPage2.Controls.Add(this.flowLayoutPanel1);
             this.tabPage2.Controls.Add(this.textBox1);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(638, 389);
+            this.tabPage2.Size = new System.Drawing.Size(636, 387);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Консоль";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.label7);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(630, 21);
+            this.flowLayoutPanel2.TabIndex = 16;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.textBox2);
+            this.flowLayoutPanel1.Controls.Add(this.button1);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 349);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(630, 35);
+            this.flowLayoutPanel1.TabIndex = 15;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(3, 3);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(540, 20);
+            this.textBox2.TabIndex = 13;
+            this.textBox2.Enter += new System.EventHandler(this.textBox2_Enter);
+            this.textBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox2_KeyDown);
+            this.textBox2.Leave += new System.EventHandler(this.textBox2_Leave);
+            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(228, 363);
+            this.button1.Location = new System.Drawing.Point(549, 3);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 19);
             this.button1.TabIndex = 14;
             this.button1.Text = "Отправить";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(3, 363);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(219, 20);
-            this.textBox2.TabIndex = 13;
-            this.textBox2.Enter += new System.EventHandler(this.textBox2_Enter);
-            this.textBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox2_KeyDown);
-            this.textBox2.Leave += new System.EventHandler(this.textBox2_Leave);
             // 
             // tabPage1
             // 
@@ -447,17 +477,18 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(638, 389);
+            this.tabPage1.Size = new System.Drawing.Size(636, 387);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "управление";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Right;
             this.pictureBox1.Image = global::Servo_Manipulator_COM.Properties.Resources.src_keyboard_3161;
-            this.pictureBox1.Location = new System.Drawing.Point(315, 7);
+            this.pictureBox1.Location = new System.Drawing.Point(317, 3);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(316, 379);
+            this.pictureBox1.Size = new System.Drawing.Size(316, 381);
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
@@ -472,7 +503,7 @@
             this.tabPage3.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage3.Size = new System.Drawing.Size(638, 389);
+            this.tabPage3.Size = new System.Drawing.Size(636, 387);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "перемещения по точкам";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -489,6 +520,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.buttonOpenFile);
             this.groupBox3.Controls.Add(this.filePozition);
             this.groupBox3.Controls.Add(this.LoadListButton);
             this.groupBox3.Controls.Add(this.SaveListButton);
@@ -500,13 +532,25 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Записи";
             // 
+            // buttonOpenFile
+            // 
+            this.buttonOpenFile.Location = new System.Drawing.Point(245, 28);
+            this.buttonOpenFile.Name = "buttonOpenFile";
+            this.buttonOpenFile.Size = new System.Drawing.Size(25, 20);
+            this.buttonOpenFile.TabIndex = 4;
+            this.buttonOpenFile.Text = "...";
+            this.buttonOpenFile.UseVisualStyleBackColor = true;
+            this.buttonOpenFile.Click += new System.EventHandler(this.button2_Click);
+            // 
             // filePozition
             // 
             this.filePozition.Location = new System.Drawing.Point(115, 28);
             this.filePozition.Name = "filePozition";
-            this.filePozition.Size = new System.Drawing.Size(155, 20);
+            this.filePozition.Size = new System.Drawing.Size(133, 20);
             this.filePozition.TabIndex = 3;
-            this.filePozition.Text = "log.txt";
+            this.filePozition.TextChanged += new System.EventHandler(this.filePozition_TextChanged);
+            this.filePozition.Enter += new System.EventHandler(this.filePozition_Enter);
+            this.filePozition.Leave += new System.EventHandler(this.filePozition_Leave);
             // 
             // LoadListButton
             // 
@@ -778,24 +822,54 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label8.Location = new System.Drawing.Point(92, 23);
+            this.label8.Location = new System.Drawing.Point(80, 10);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(66, 15);
             this.label8.TabIndex = 14;
             this.label8.Text = "COM порт";
             // 
+            // openPointFile
+            // 
+            this.openPointFile.FileName = "openPointFile";
+            this.openPointFile.Filter = "(*.json)|*.json";
+            this.openPointFile.InitialDirectory = "C:\\Users\\murad\\source\\repos\\Servo_Manipulator_COM\\Servo_Manipulator_COM\\bin\\Debug" +
+    "";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.label8);
+            this.panel1.Controls.Add(this.comboBox);
+            this.panel1.Controls.Add(this.connectButton);
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(644, 33);
+            this.panel1.TabIndex = 15;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tabControl1, 0, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(650, 458);
+            this.tableLayoutPanel1.TabIndex = 16;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(646, 461);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.comboBox);
-            this.Controls.Add(this.connectButton);
+            this.ClientSize = new System.Drawing.Size(650, 458);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "COM-консоль";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_A)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -807,6 +881,10 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage3.ResumeLayout(false);
@@ -815,8 +893,10 @@
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -881,11 +961,17 @@
         private System.Windows.Forms.Button startExecution;
         private System.Windows.Forms.Button clearPoints;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.TextBox filePozition;
         private System.Windows.Forms.Button LoadListButton;
         private System.Windows.Forms.Button SaveListButton;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button return_point;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button buttonOpenFile;
+        private System.Windows.Forms.OpenFileDialog openPointFile;
+        private System.Windows.Forms.TextBox filePozition;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
     }
 }

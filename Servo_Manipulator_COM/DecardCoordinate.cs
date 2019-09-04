@@ -63,6 +63,8 @@ namespace Servo_Manipulator_COM
                 axisC.decX = dec.decX * axisC.pXY / dec.pXY;
                 axisC.decY = dec.decY * axisC.pXY / dec.pXY;
 
+                if (axisC.decY < 0 || axisC.pXY < 0) throw new Exception("К данной координате нельзя переместиться.");
+
                 axisB = Shape.Algoritm(axisC);
 
                 var AC = Math.Sqrt(axisC.pXY * axisC.pXY + axisC.decZ * axisC.decZ);

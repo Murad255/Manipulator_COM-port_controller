@@ -11,37 +11,44 @@ namespace Servo_Manipulator_COM
 {
     class Passing
     {
-        private const int value = 15;
+        private const long passingConstValue = 15;
+        private const int passingTimeLimit = 750;
         static Task sendTask;
         public static Point pastPoint = new Point();
-
+        static private long passingValue =0;
 
         public static void write(string mes)
         {
             Console.Write(mes + '\t');
 
         }
+        //для чисел
         static public void sinFunc(int pastCoint, int nextCoint, Sent func, int time = 0)
         {
 
             double a = (nextCoint - pastCoint) / 2;
-            int delay = (time / value);
-            for (int i = 0; i < value; i++)
+            int delay = (int)(time / passingValue);
+            for (int i = 0; i < passingValue; i++)
             {
 
-                int coint = Convert.ToInt32(a * (-Math.Cos(3.14 / Convert.ToDouble(value) * Convert.ToDouble(i)) + 1) + pastCoint);
+                int coint = Convert.ToInt32(a * (-Math.Cos(3.14 / Convert.ToDouble(passingValue) * Convert.ToDouble(i)) + 1) + pastCoint);
                 func(coint.ToString());
                 if (time != 0) Thread.Sleep(delay);
             }
         }
-
-        static public void sinFunc(Point pastCoint, Point nextCoint, Sent func, int time)
+        //для точек
+            //для отправки точек 
+        static public void sinFunc(Point pastCoint, Point nextCoint, Sent func)
         {
+            long time = nextCoint.Time;
             Point.sent = func;
             sendTask = new Task(() => { });
             sendTask.Start();
-            int delay = (time / value) * 6 / 10;
-            for (int i = 0; i <= value; i++)
+            if (time < passingTimeLimit) passingValue = passingConstValue;
+            else passingValue = time / 50;
+
+            int delay = (int)(time / passingValue) ;// * 6 / 10);
+            for (int i = 0; i <= passingValue; i++)
             {
                 oneSinFunc(pastCoint.CanA, nextCoint.CanA, func,'a', i);
                 oneSinFunc(pastCoint.CanB, nextCoint.CanB, func,'b', i);
@@ -53,15 +60,47 @@ namespace Servo_Manipulator_COM
             }
             
         }
+                //для записи точек
+        static public void sinFunc(Point pastCoint, Point nextCoint, Sent funcData, Sent funcTime)
+        {
+            long time = nextCoint.Time;
+            //Point.sent = funcData;
+            sendTask = new Task(() => { });
+            sendTask.Start();
+            if (time < passingTimeLimit) passingValue = passingConstValue;
+            else passingValue = time / 50;
+
+            int delay = (int)((time / passingValue) * 6 / 10);
+            for (int i = 0; i <= passingValue; i++)
+            {
+                Point point = new Point(
+                oneSinFuncData(pastCoint.CanA, nextCoint.CanA, i),
+                oneSinFuncData(pastCoint.CanB, nextCoint.CanB, i),
+                oneSinFuncData(pastCoint.CanC, nextCoint.CanC, i),
+                oneSinFuncData(pastCoint.CanD, nextCoint.CanD, i),
+                oneSinFuncData(pastCoint.CanE, nextCoint.CanE, i),
+                oneSinFuncData(pastCoint.CanF, nextCoint.CanF, i),
+                0);
+
+                funcData(point.ToString());
+                funcTime(delay.ToString());
+            }
+
+        }
 
         static private void oneSinFunc(int pastCoint, int nextCoint, Sent func,char numCanal , int cycle)
         {
             double a = (nextCoint - pastCoint) / 2;
-            int coint = Convert.ToInt32(a * (-Math.Cos(3.14 / Convert.ToDouble(value) * Convert.ToDouble(cycle)) + 1) + pastCoint);
+            int coint = Convert.ToInt32(a * (-Math.Cos(3.14 / Convert.ToDouble(passingValue) * Convert.ToDouble(cycle)) + 1) + pastCoint);
             sendTask.Wait();
             sendTask = Task.Run(() => func(numCanal + coint.ToString() + 'z'));
-            //sendTask.ContinueWith((Task t) =>func(numCanal + coint.ToString() + 'z') , TaskContinuationOptions.NotOnFaulted);
-           
-        } 
+        }
+
+        static private int oneSinFuncData(int pastCoint, int nextCoint, int cycle)
+        {
+            double a = (nextCoint - pastCoint) / 2;
+            return Convert.ToInt32(a * (-Math.Cos(3.14 / Convert.ToDouble(passingValue) * Convert.ToDouble(cycle)) + 1) + pastCoint);
+             
+        }
     }
 }
