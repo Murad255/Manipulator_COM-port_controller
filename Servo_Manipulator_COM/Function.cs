@@ -77,15 +77,22 @@ namespace Servo_Manipulator_COM
                 {
                     if ((string)comboHomeMode.SelectedItem == "work")
                     {
-                        Dec homeDec = new Dec(0, 85, 135, 120, 0);
+                        //Dec homeDec = new Dec(0, 85, 135, 120, 0);
+                        //trackBarSet(homeDec);
+                        //trackBar_A_Scroll(new object(), new EventArgs());
+                        Point homePoint = new Point(90, 40, 47, 160, 90, 140);
+                        Dec homeDec = DecPointTransform.PointToDec(homePoint);
                         trackBarSet(homeDec);
-                        trackBar_A_Scroll(new object(), new EventArgs());
+
                     }
                     else if ((string)comboHomeMode.SelectedItem == "steady")
                     {
-                        Dec homeDec = new Dec(0, 80, 170, 1, 0);
+                        //Dec homeDec = new Dec(0, 80, 170, 1, 0);
+                        //trackBarSet(homeDec);
+                        //trackBar_A_Scroll(new object(), new EventArgs());
+                        Point homePoint = new Point(90, 30, 14, 1, 90, 155);
+                        Dec homeDec = DecPointTransform.PointToDec(homePoint);
                         trackBarSet(homeDec);
-                        trackBar_A_Scroll(new object(), new EventArgs());
                     }
                 }
             }

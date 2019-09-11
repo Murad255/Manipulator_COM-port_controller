@@ -31,23 +31,23 @@ namespace PointSpase
 
         public int CanA
         {
-            get { return canA; }
+            get { return canA-qA; }
         }
         public int CanB
         {
-            get { return canB; }
+            get { return 180-canB; }
         }
         public int CanC
         {
-            get { return canC; }
+            get { return canC-qC; }
         }
         public int CanD
         {
-            get { return canD; }
+            get { return canD-qD; }
         }
         public int CanE
         {
-            get { return canE; }
+            get { return canE-qE; }
         }
         public int CanF
         {

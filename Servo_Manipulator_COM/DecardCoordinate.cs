@@ -72,15 +72,15 @@ namespace Servo_Manipulator_COM
             Dec dec = new Dec();
             var pXY1 = Math.Cos(point.CanB * Math.PI / 180) * Shape.L1;
             var pXY2 = Math.Cos((point.CanB + point.CanC - 180) * Math.PI / 180) * Shape.L2;
-            var pXY3 = Math.Sin(((point.CanD + 90 - point.CanB - point.CanC) % 360) * Math.PI / 180) * Shape.L3;
+            var pXY3 = Math.Sin(((point.CanD + 90 - point.CanB - point.CanC) % 360) * Math.PI / 180) * L3;
 
             var decZ1 = Math.Sin(point.CanB * Math.PI / 180) * Shape.L1;
             var decZ2 = Math.Sin((point.CanB + point.CanC - 180) * Math.PI / 180) * Shape.L2;
-            var decZ3 = Math.Cos(((point.CanD + 90 - point.CanB - point.CanC) % 360) * Math.PI / 180) * Shape.L3;
+            var decZ3 = Math.Cos(((point.CanD + 90 - point.CanB - point.CanC) % 360) * Math.PI / 180) * L3;
 
             dec.pXY = pXY1 + pXY2 + pXY3;
-            dec.decX = Math.Sin(point.CanA * Math.PI / 180) * dec.pXY;
-            dec.decY = Math.Cos(point.CanA * Math.PI / 180) * dec.pXY;
+            dec.decX = Math.Sin((point.CanA) * Math.PI / 180) * dec.pXY;
+            dec.decY = Math.Cos((point.CanA) * Math.PI / 180) * dec.pXY;
             dec.decZ = decZ1 + decZ2 + decZ3;
             dec.decB = (point.CanD + 90 - point.CanB - point.CanC) % 360;
 
