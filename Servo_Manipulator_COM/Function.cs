@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Servo_Manipulator_COM
 {
-    public partial class Form1 : Form
+    public partial class Form1
     {
         /// <summary>
         /// обработка действия слайдеров
@@ -34,7 +34,7 @@ namespace Servo_Manipulator_COM
                 {
                     textBox.Text = trackBar.Value.ToString();
                     label.Text = trackBar.Value.ToString();
-                    Point point = DecPointTransform.Algoritm(getDec(),
+                    Point point = DecPointTransform.DecToPoint(getDec(),
                                                                 trackBar_F.Value,
                                                                 Convert.ToInt32(delay.Text)
                                                                 );
@@ -55,7 +55,7 @@ namespace Servo_Manipulator_COM
         {
             try
             {
-                if(checkAlgoritm.Checked)
+                if (checkAlgoritm.Checked)
                 {
                     if ((string)comboHomeMode.SelectedItem == "work")
                     {
@@ -133,7 +133,7 @@ namespace Servo_Manipulator_COM
             label_F.Text = p.CanF.ToString();
         }
 
-        private void trackBarSet(Dec d,int grab=155)
+        private void trackBarSet(Dec d, int grab = 155)
         {
             trackBar_A.Value = (int)d.decX;
             trackBar_B.Value = (int)d.decY;

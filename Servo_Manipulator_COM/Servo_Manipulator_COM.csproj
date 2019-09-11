@@ -8,10 +8,11 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Servo_Manipulator_COM</RootNamespace>
     <AssemblyName>Servo_Manipulator_COM</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClassLibrary1">
+      <HintPath>..\ClassLibrary1.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -62,7 +66,6 @@
     <Compile Include="Passing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServPoint.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -97,9 +100,9 @@
     <Content Include="Servo_serial_handler.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sphere_test\Sphere_test\координата_пересечения_шаров\Intersection.csproj">
-      <Project>{b23dc9ea-c4fc-4549-b145-024aeedc8542}</Project>
-      <Name>Intersection</Name>
+    <ProjectReference Include="..\Point_lib\Point_lib.csproj">
+      <Project>{06cbc0b2-e0ed-4450-9818-b6bdf1b9a5d2}</Project>
+      <Name>Point_lib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

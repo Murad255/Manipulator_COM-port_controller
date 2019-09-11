@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Windows.Forms;
 using Newtonsoft.Json;
 
 namespace PointSpase
 {
-        public delegate void Sent(string message); //делегат для отправки сообщения в COM-порт
+    public delegate void Sent(string message); //делегат для отправки сообщения в COM-порт
 
     public class Point
     {
@@ -17,10 +13,7 @@ namespace PointSpase
         protected int numPoint;             //номер данного экземпляра
         public static Sent sent;
         public static Point tempPoint = new Point();
-        //public int NumPoints
-        //{
-        //    get { return numPoints; }
-        //}
+      
         public int NumPoint
         {
             get { return numPoint; }
@@ -180,10 +173,7 @@ namespace PointSpase
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString(),
-                                "Ошибка!",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                throw new Exception(e.Message);
             }
         }
 
@@ -211,10 +201,7 @@ namespace PointSpase
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString(),
-                                "Ошибка!",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                throw new Exception(e.Message);
             }
         }
             
@@ -300,9 +287,7 @@ namespace PointSpase
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString(), "Ошибка",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                throw new Exception(e.Message);
             }
         }
 
@@ -310,15 +295,6 @@ namespace PointSpase
         {
             try
             {
-            //using (StreamWriter sr = new StreamWriter(Path, false))
-            //{
-            //    foreach (var item in this)
-            //    {
-            //        sr.WriteLine(item.ToString());
-            //    }
-            //    sr.Close();
-            //}
-            //var data = File.ReadAllText($"{Environment.CurrentDirectory}\\{Path}");
             using (StreamWriter sr = new StreamWriter(Path+".json", false))
             {
                 sr.WriteLine(JsonConvert.SerializeObject(this));
@@ -327,9 +303,7 @@ namespace PointSpase
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString(), "Ошибка",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                throw new Exception(e.Message);
             }
         }
     }

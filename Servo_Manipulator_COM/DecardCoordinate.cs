@@ -13,15 +13,9 @@ namespace Servo_Manipulator_COM
         public static int  Lmax { get { return l_max; } }
 
 
-        public static Point Algoritm(double coordX, double coordY, double coordZ, double degreeA, double degreeB, int grab, int time)
+        public static Point DecToPoint(Dec dec, int grab, int time)
         {
-            var dec = new Dec(coordX,coordY,coordZ);
-            return Algoritm(dec, degreeA, degreeB, grab,time);
-        }
-
-        public static Point Algoritm(Dec dec, int grab, int time)
-        {
-            return Algoritm(dec, dec.decA, dec.decB, grab, time);
+            return DecToPoint(dec, dec.decA, dec.decB, grab, time);
         }
 
         public static Point Algoritm2(Dec dec, double degreeA, double degreeB, int grab,int time)
@@ -30,17 +24,11 @@ namespace Servo_Manipulator_COM
             {
                 axisB = new Dec();
                 axisC = new Dec();
-                //axisC.decZ = dec.decZ + Math.Sin(180 / Math.PI * degreeB) * L3;
-                //axisC.pXY = dec.pXY + Math.Cos(180 / Math.PI * degreeB) * L3;
-                //axisC.decX = dec.decX * axisC.pXY / dec.pXY;
-                //axisC.decY = dec.decY * axisC.pXY / dec.pXY;
 
                 axisB = Shape.Algoritm(dec);
 
                 var AC = Math.Sqrt(dec.pXY * dec.pXY + dec.decZ * dec.decZ);
                 int CanA = Convert.ToInt32(Math.Acos(dec.decX / dec.pXY) * 180 / Math.PI)-90;
-                // int CanB = Convert.ToInt32(Math.Acos(axisB.decY / Shape.L1) * 180 / Math.PI);//Convert.ToInt32(Math.Acos(axisB.decZ / axisB.pXY) * 180 / Math.PI);
-                // int CanC = 180 - CanB + Convert.ToInt32(Math.Acos((axisC.pXY - axisB.pXY) /Shape.L2));//Convert.ToInt32(Math.Acos((AC * AC - Shape.L1 * Shape.L1 - Shape.L2 * Shape.L2) / (2 * Shape.L1 * Shape.L2)) * 180 / Math.PI);
                 int CanB = Convert.ToInt32(Math.Acos(axisB.pXY / Shape.L1) * 180 / Math.PI);
                 int CanC = 180 - Convert.ToInt32(Math.Acos((AC * AC - Shape.L1 * Shape.L1 - Shape.L2 * Shape.L2) / (2 * Shape.L1 * Shape.L2)) * 180 / Math.PI);
                 int CanD = Convert.ToInt32(degreeB);
@@ -50,7 +38,7 @@ namespace Servo_Manipulator_COM
             }
             catch (Exception e) { throw new Exception(e.Message); }
         }
-        public static Point Algoritm(Dec dec, double degreeA, double degreeB, int grab, int time)
+        public static Point DecToPoint(Dec dec, double degreeA, double degreeB, int grab, int time)
         {
             try
             {
@@ -77,6 +65,26 @@ namespace Servo_Manipulator_COM
                 return new Point(CanA, CanB, CanC, CanD, CanE, grab, time,true);
             }
             catch (Exception e) { throw new Exception(e.Message); }
+        }
+
+        public static Dec PointToDec(Point point)
+        {
+            Dec dec = new Dec();
+            var pXY1 = Math.Cos(point.CanB * Math.PI / 180) * Shape.L1;
+            var pXY2 = Math.Cos((point.CanB + point.CanC - 180) * Math.PI / 180) * Shape.L2;
+            var pXY3 = Math.Sin(((point.CanD + 90 - point.CanB - point.CanC) % 360) * Math.PI / 180) * Shape.L3;
+
+            var decZ1 = Math.Sin(point.CanB * Math.PI / 180) * Shape.L1;
+            var decZ2 = Math.Sin((point.CanB + point.CanC - 180) * Math.PI / 180) * Shape.L2;
+            var decZ3 = Math.Cos(((point.CanD + 90 - point.CanB - point.CanC) % 360) * Math.PI / 180) * Shape.L3;
+
+            dec.pXY = pXY1 + pXY2 + pXY3;
+            dec.decX = Math.Sin(point.CanA * Math.PI / 180) * dec.pXY;
+            dec.decY = Math.Cos(point.CanA * Math.PI / 180) * dec.pXY;
+            dec.decZ = decZ1 + decZ2 + decZ3;
+            dec.decB = (point.CanD + 90 - point.CanB - point.CanC) % 360;
+
+            return dec;
         }
     }
 }

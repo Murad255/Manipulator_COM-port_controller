@@ -323,7 +323,7 @@ namespace Servo_Manipulator_COM
                                    );
                 else
                 {
-                     Point point = DecPointTransform.Algoritm(  getDec(),
+                     Point point = DecPointTransform.DecToPoint(  getDec(),
                                                                 trackBar_F.Value,
                                                                 Convert.ToInt32(delay.Text)
                                                                     );
