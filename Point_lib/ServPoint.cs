@@ -281,7 +281,7 @@ namespace PointSpase
                 sr.Close();
             }
             */
-            var data = File.ReadAllText($"{Environment.CurrentDirectory}\\{Path}");
+            var data = File.ReadAllText(Path);//File.ReadAllText($"{Environment.CurrentDirectory}\\{Path}");
             Points temp = JsonConvert.DeserializeObject<Points>(data);
             this.AddRange(temp);
             }
@@ -295,7 +295,7 @@ namespace PointSpase
         {
             try
             {
-            using (StreamWriter sr = new StreamWriter(Path+".json", false))
+            using (StreamWriter sr = new StreamWriter(Path+".man", false))
             {
                 sr.WriteLine(JsonConvert.SerializeObject(this));
             }

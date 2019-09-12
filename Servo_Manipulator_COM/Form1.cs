@@ -378,7 +378,7 @@ namespace Servo_Manipulator_COM
 
         private void LoadListButton_Click(object sender, EventArgs e)
         {
-            points.Load(filePozition.Text+".json");
+            points.Load(filePozition.Text);
             PointListView.Text = "";
             foreach (Point p in points) PointListView.Text += p.numString(); //выводит список точек
         }
@@ -410,6 +410,15 @@ namespace Servo_Manipulator_COM
                 label3.Text = "канал C";
                 label4.Text = "канал D";
                 label5.Text = "канал E";
+
+                Dec dec = getDec();
+                Point point = DecPointTransform.DecToPoint(dec,trackBar_F.Value,0);
+
+                trackBar_A.Value = point.CanA;
+                trackBar_B.Value = point.CanB;
+                trackBar_C.Value = point.CanC;
+                trackBar_D.Value = point.CanD;
+                trackBar_E.Value = point.CanE;
 
                 trackBar_A.Maximum = 90;
                 trackBar_A.Minimum = -90;
@@ -452,11 +461,10 @@ namespace Servo_Manipulator_COM
                 trackBar_E.Minimum = -90;
 
                 trackBar_A.Value = (int)dec.decX;
-                trackBar_A.Value = (int)dec.decX;
-                trackBar_A.Value = (int)dec.decX;
-                trackBar_A.Value = (int)dec.decX;
-                trackBar_A.Value = (int)dec.decX;
-
+                trackBar_B.Value = (int)dec.decY;
+                trackBar_C.Value = (int)dec.decZ;
+                trackBar_D.Value = (int)dec.decB;
+                trackBar_E.Value = (int)dec.decA;
 
                 valueCoordX.Text = trackBar_A.Value.ToString();
                 valueCoordY.Text = trackBar_B.Value.ToString();
@@ -470,9 +478,10 @@ namespace Servo_Manipulator_COM
         {
             if (openPointFile.ShowDialog() == DialogResult.Cancel)return;
             // получаем выбранный файл
-            string filename = Path.GetFileNameWithoutExtension(openPointFile.FileName); //openPointFile.SafeFileName;--если нужно расширение
-            // читаем файл в строку
-            filePozition.Text = filename;
+            //string filename = openPointFile.FileName=Path.GetFileNameWithoutExtension(openPointFile.FileName);
+                //openPointFile.SafeFileName;--если нужно расширение
+                // читаем файл в строку
+            filePozition.Text = openPointFile.FileName;
             LoadListButton_Click(sender,e);
             LoadListButton.Enabled = false;
         }
@@ -490,7 +499,7 @@ namespace Servo_Manipulator_COM
                 string filename = Path.GetFileNameWithoutExtension(loadArgument[0]); //openPointFile.SafeFileName;--если нужно расширение
                                                                                      // читаем файл в строку
                 filePozition.Text = filename;
-                LoadListButton_Click(sender, e);
+                //LoadListButton_Click(sender, e);
                 LoadListButton.Enabled = false;
             }
         }
