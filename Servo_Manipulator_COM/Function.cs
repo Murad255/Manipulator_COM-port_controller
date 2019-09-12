@@ -83,16 +83,15 @@ namespace Servo_Manipulator_COM
                         Point homePoint = new Point(90, 40, 47, 160, 90, 140);
                         Dec homeDec = DecPointTransform.PointToDec(homePoint);
                         trackBarSet(homeDec);
+                        trackBar_D_Scroll(new object(), new EventArgs());
 
                     }
                     else if ((string)comboHomeMode.SelectedItem == "steady")
                     {
-                        //Dec homeDec = new Dec(0, 80, 170, 1, 0);
-                        //trackBarSet(homeDec);
-                        //trackBar_A_Scroll(new object(), new EventArgs());
                         Point homePoint = new Point(90, 30, 14, 1, 90, 155);
                         Dec homeDec = DecPointTransform.PointToDec(homePoint);
                         trackBarSet(homeDec);
+                        trackBar_D_Scroll(new object(), new EventArgs());
                     }
                 }
             }
@@ -124,12 +123,11 @@ namespace Servo_Manipulator_COM
 
         private void trackBarSet(Point p)
         {
-
-            trackBar_A.Value = p.CanA - 90;
-            trackBar_B.Value = (p.CanB - 180) * (-1);
-            trackBar_C.Value = p.CanC + 40;
-            trackBar_D.Value = p.CanD + 100;
-            trackBar_E.Value = p.CanE - 90;
+            trackBar_A.Value = p.CanA;
+            trackBar_B.Value = p.CanB;
+            trackBar_C.Value = p.CanC;
+            trackBar_D.Value = p.CanD;
+            trackBar_E.Value = p.CanE;
             trackBar_F.Value = p.CanF;
 
             label_A.Text = p.CanA.ToString();
@@ -145,15 +143,15 @@ namespace Servo_Manipulator_COM
             trackBar_A.Value = (int)d.decX;
             trackBar_B.Value = (int)d.decY;
             trackBar_C.Value = (int)d.decZ;
-            trackBar_D.Value = (int)d.decA;
-            trackBar_E.Value = (int)d.decB;
+            trackBar_D.Value = (int)d.decB;
+            trackBar_E.Value = (int)d.decA; 
             trackBar_F.Value = grab;
 
             label_A.Text = d.decX.ToString();
             label_B.Text = d.decY.ToString();
             label_C.Text = d.decZ.ToString();
-            label_D.Text = d.decA.ToString();
-            label_E.Text = d.decB.ToString();
+            label_D.Text = d.decB.ToString();
+            label_E.Text = d.decA.ToString();
             label_F.Text = grab.ToString();
 
             valueCoordX.Text = d.decX.ToString();
@@ -344,6 +342,18 @@ namespace Servo_Manipulator_COM
                             Convert.ToDouble(valueCoordA.Text),
                             Convert.ToDouble(valueCoordB.Text)
                             );
+        }
+
+        private Point getPoint()
+        {
+            return new Point(   trackBar_A.Value,
+                                trackBar_B.Value,
+                                trackBar_C.Value,
+                                trackBar_D.Value,
+                                trackBar_E.Value,
+                                trackBar_F.Value,
+                                0
+                             );
         }
 
     }

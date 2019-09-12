@@ -6,6 +6,7 @@ using System.IO.Ports;
 using PointSpase;
 using System.Threading;
 using System.IO;
+using Intersection;
 
 namespace Servo_Manipulator_COM
 {
@@ -435,7 +436,10 @@ namespace Servo_Manipulator_COM
                 label3.Text = "Ось Z";
                 label4.Text = "Наклон";
                 label5.Text = "Горизонт";
-                
+
+                Point point = getPoint();
+                Dec dec = DecPointTransform.PointToDec(point);
+
                 trackBar_A.Maximum = DecPointTransform.Lmax;
                 trackBar_A.Minimum = -DecPointTransform.Lmax;
                 trackBar_B.Maximum = DecPointTransform.Lmax;
@@ -446,6 +450,13 @@ namespace Servo_Manipulator_COM
                 trackBar_D.Minimum = 0;
                 trackBar_E.Maximum = 90;
                 trackBar_E.Minimum = -90;
+
+                trackBar_A.Value = (int)dec.decX;
+                trackBar_A.Value = (int)dec.decX;
+                trackBar_A.Value = (int)dec.decX;
+                trackBar_A.Value = (int)dec.decX;
+                trackBar_A.Value = (int)dec.decX;
+
 
                 valueCoordX.Text = trackBar_A.Value.ToString();
                 valueCoordY.Text = trackBar_B.Value.ToString();
