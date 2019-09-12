@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Servo_Manipulator_COM
 {
-    public partial class Form1
+    public partial class Form1: Form
     {
         /// <summary>
         /// обработка действия слайдеров
@@ -26,9 +26,10 @@ namespace Servo_Manipulator_COM
                 {
                     //serialWrite(ch + trackBar.Value.ToString() + 'z');
                     Point.tempPoint[ch] = trackBar.Value;
-                    Point.tempPoint.write();
-                    textBox1.Text = trackBar.Value.ToString();
-                    label.Text = trackBar.Value.ToString();
+                    Point.tempPoint.writeCanal();
+                    Console.Text = trackBar.Value.ToString();
+                    //label.Text = trackBar.Value.ToString();
+                    labelUpdate();
                 }
                 else
                 {
@@ -47,6 +48,20 @@ namespace Servo_Manipulator_COM
                 this.Text = "Ошибка!";
             }
         }
+         
+        private void labelUpdate()
+        {
+            if (checkAlgoritm.Checked)
+            {
+                Point p = Point.tempPoint;
+                label_A.Text = p.CanA.ToString();
+                label_B.Text = p.CanB.ToString();
+                label_C.Text = p.CanC.ToString();
+                label_D.Text = p.CanD.ToString();
+                label_E.Text = p.CanE.ToString();
+                label_F.Text = p.CanF.ToString();
+            }
+        }
 
         /// <summary>
         /// Устанавливает положение манипулятора в исходное состояние
@@ -59,7 +74,8 @@ namespace Servo_Manipulator_COM
                 {
                     if ((string)comboHomeMode.SelectedItem == "work")
                     {
-                        Point homePoint = new Point(90, 40, 47, 160, 90, 140);
+                        Point homePoint = new Point(0, 140, 87, 260, 0, 140);
+                     
                         Point.tempPoint = homePoint;
                         homePoint.write();
                         trackBarSet(homePoint);
@@ -67,7 +83,7 @@ namespace Servo_Manipulator_COM
                     }
                     else if ((string)comboHomeMode.SelectedItem == "steady")
                     {
-                        Point homePoint = new Point(90, 30, 14, 1, 90, 155);
+                        Point homePoint = new Point(0, 150, 54, 101, 0, 155);
                         Point.tempPoint = homePoint;
                         homePoint.write();
                         trackBarSet(homePoint);
@@ -80,7 +96,7 @@ namespace Servo_Manipulator_COM
                         //Dec homeDec = new Dec(0, 85, 135, 120, 0);
                         //trackBarSet(homeDec);
                         //trackBar_A_Scroll(new object(), new EventArgs());
-                        Point homePoint = new Point(90, 40, 47, 160, 90, 140);
+                        Point homePoint = new Point(0, 140, 87, 260, 0, 140);
                         Dec homeDec = DecPointTransform.PointToDec(homePoint);
                         trackBarSet(homeDec);
                         trackBar_D_Scroll(new object(), new EventArgs());
@@ -88,7 +104,7 @@ namespace Servo_Manipulator_COM
                     }
                     else if ((string)comboHomeMode.SelectedItem == "steady")
                     {
-                        Point homePoint = new Point(90, 30, 14, 1, 90, 155);
+                        Point homePoint = new Point(0, 150, 54, 120, 0, 155);
                         Dec homeDec = DecPointTransform.PointToDec(homePoint);
                         trackBarSet(homeDec);
                         trackBar_D_Scroll(new object(), new EventArgs());
@@ -113,10 +129,10 @@ namespace Servo_Manipulator_COM
 
             this.Invoke(new Action(() =>
             {
-                textBox1.Text += "\r\n";
+                Console.Text += "\r\n";
                 foreach (char c in data)
                 {
-                    textBox1.Text += c;
+                    Console.Text += c;
                 }
             }));
         }
@@ -147,11 +163,11 @@ namespace Servo_Manipulator_COM
             trackBar_E.Value = (int)d.decA; 
             trackBar_F.Value = grab;
 
-            label_A.Text = d.decX.ToString();
-            label_B.Text = d.decY.ToString();
-            label_C.Text = d.decZ.ToString();
-            label_D.Text = d.decB.ToString();
-            label_E.Text = d.decA.ToString();
+            label_A.Text = ((int)d.decX).ToString();
+            label_B.Text = ((int)d.decY).ToString();
+            label_C.Text = ((int)d.decZ).ToString();
+            label_D.Text = ((int)d.decB).ToString();
+            label_E.Text = ((int)d.decA).ToString();
             label_F.Text = grab.ToString();
 
             valueCoordX.Text = d.decX.ToString();

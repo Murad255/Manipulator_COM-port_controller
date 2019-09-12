@@ -34,7 +34,7 @@ namespace Servo_Manipulator_COM
                 int CanD = Convert.ToInt32(degreeB);
                 int CanE = Convert.ToInt32(degreeA);
 
-                return new Point(CanA, CanB, CanC, CanD, CanE, grab, time,true);
+                return new Point(CanA, CanB, CanC, CanD, CanE, grab, time);
             }
             catch (Exception e) { throw new Exception(e.Message); }
         }
@@ -62,7 +62,7 @@ namespace Servo_Manipulator_COM
                 int CanD = -90 + CanB + CanC + Convert.ToInt32(degreeB);
                 int CanE = Convert.ToInt32(degreeA);
 
-                return new Point(CanA, CanB, CanC, CanD, CanE, grab, time,true);
+                return new Point(CanA, CanB, CanC, CanD, CanE, grab, time);
             }
             catch (Exception e) { throw new Exception(e.Message); }
         }

@@ -35,8 +35,6 @@ namespace Servo_Manipulator_COM
         public Form1(string[] args)
         {
             InitializeComponent();
-            if(args.Length>0)MessageBox.Show(args[0]);
-            if (args.Length > 0) MessageBox.Show(Path.GetFileNameWithoutExtension(args[0]));
             loadArgument = args;
             Point.sent = serialPort.Write;  
 
@@ -120,6 +118,11 @@ namespace Servo_Manipulator_COM
                     connectButton.BackColor = System.Drawing.Color.Tomato;
                 }
             }
+            catch (IOException)
+            {
+                Console.Text += "\nПовторное подключение\n";
+                connectButton_Click_1(new object(),new EventArgs() );
+            }
             catch (ArgumentNullException )
             {
                 DialogResult dialogResult= MessageBox.Show("Не выбран COM-порт.\nПовторить поиск?",
@@ -140,11 +143,6 @@ namespace Servo_Manipulator_COM
 
                     connectButton_Click_1(sender, e);
                 }
-            }
-            catch ( IOException)
-            {
-                textBox1.Text += "\nПовторное подключение\n"; 
-                connectButton_Click_1(sender,e);
             }
             catch (Exception ce)
             {
@@ -168,7 +166,7 @@ namespace Servo_Manipulator_COM
         private void trackBar_F_Scroll(object sender, EventArgs e)
         {
             serialWrite('f' + trackBar_F.Value.ToString() + 'z');
-            textBox1.Text = trackBar_F.Value.ToString();
+            Console.Text = trackBar_F.Value.ToString();
             label_F.Text = trackBar_F.Value.ToString();
         }
 
@@ -207,8 +205,8 @@ namespace Servo_Manipulator_COM
             try
             {
                 serialPort.Write(message);
-                textBox1.Text += "\r\n";
-                textBox1.Text += message;
+                Console.Text += "\r\n";
+                Console.Text += message;
              
             }
 
@@ -256,8 +254,8 @@ namespace Servo_Manipulator_COM
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            textBox1.SelectionStart = textBox1.Text.Length;
-            textBox1.ScrollToCaret();
+            Console.SelectionStart = Console.Text.Length;
+            Console.ScrollToCaret();
         }
 
         private void textBox2_KeyDown(object sender, KeyEventArgs e)   // Отправка текста при нажатии на Enter 
@@ -319,8 +317,7 @@ namespace Servo_Manipulator_COM
                                trackBar_D.Value,
                                trackBar_E.Value,
                                trackBar_F.Value,
-                               Convert.ToInt32(delay.Text),
-                               true
+                               Convert.ToInt32(delay.Text)
                                    );
                 else
                 {
@@ -349,7 +346,7 @@ namespace Servo_Manipulator_COM
             }
 
         }
-
+       
         private void SentButton_Click(object sender, EventArgs e)
         {
             //отправляет координаты и заключает их в символs: n- начало пакета, k- конец пакета
@@ -372,6 +369,19 @@ namespace Servo_Manipulator_COM
         {
             points = new Points();
             PointListView.Clear();
+        }
+        private void HowSaveButton_Click(object sender, EventArgs e)
+        {
+            if (savePointFile.ShowDialog() == DialogResult.Cancel) return;
+            // получаем выбранный файл
+            //string filename = openPointFile.FileName=Path.GetFileNameWithoutExtension(openPointFile.FileName);
+            //openPointFile.SafeFileName;--если нужно расширение
+            // читаем файл в строку
+            filePozition.Text = savePointFile.FileName;
+            points.Save(savePointFile.FileName);
+           
+           // LoadListButton.Enabled = false;
+           
         }
 
         private void SaveListButton_Click(object sender, EventArgs e) => points.Save(filePozition.Text);
@@ -414,12 +424,6 @@ namespace Servo_Manipulator_COM
                 Dec dec = getDec();
                 Point point = DecPointTransform.DecToPoint(dec,trackBar_F.Value,0);
 
-                trackBar_A.Value = point.CanA;
-                trackBar_B.Value = point.CanB;
-                trackBar_C.Value = point.CanC;
-                trackBar_D.Value = point.CanD;
-                trackBar_E.Value = point.CanE;
-
                 trackBar_A.Maximum = 90;
                 trackBar_A.Minimum = -90;
                 trackBar_B.Maximum = 180;
@@ -430,6 +434,14 @@ namespace Servo_Manipulator_COM
                 trackBar_D.Minimum = 100;
                 trackBar_E.Maximum = 90;
                 trackBar_E.Minimum = -90;
+
+                trackBar_A.Value = point.CanA;
+                trackBar_B.Value = point.CanB;
+                trackBar_C.Value = point.CanC;
+                trackBar_D.Value = point.CanD;
+                trackBar_E.Value = point.CanE;
+
+              
 
             }
             else
@@ -474,7 +486,7 @@ namespace Servo_Manipulator_COM
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void ButtonOpenFile_Click(object sender, EventArgs e)
         {
             if (openPointFile.ShowDialog() == DialogResult.Cancel)return;
             // получаем выбранный файл
@@ -496,13 +508,14 @@ namespace Servo_Manipulator_COM
             if (loadArgument.Length>0)
             {
                 
-                string filename = Path.GetFileNameWithoutExtension(loadArgument[0]); //openPointFile.SafeFileName;--если нужно расширение
+                string filename = loadArgument[0]; //openPointFile.SafeFileName;--если нужно расширение
                                                                                      // читаем файл в строку
                 filePozition.Text = filename;
-                //LoadListButton_Click(sender, e);
+                LoadListButton_Click(sender, e);
                 LoadListButton.Enabled = false;
             }
         }
 
+        
     }
 }

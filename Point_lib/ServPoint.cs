@@ -85,10 +85,9 @@ namespace PointSpase
             }
         }
 
-        public Point(int canA = 0, int canB = 0, int canC = 0, int canD = 0, int canE = 0, int canF = 0, long time = 0, bool config = false)
+        public Point(int canA = 0, int canB = 0, int canC = 0, int canD = 0, int canE = 0, int canF = 0, long time = 0)
         {
-            if (!config) setAllCanal(canA, canB, canC, canD, canE, canF, time);
-            else setAllDegree(canA, canB, canC, canD, canE, canF, time);
+            setAllDegree(canA, canB, canC, canD, canE, canF, time);
             numPoint = ++numPoints;
         }
 
@@ -245,9 +244,9 @@ namespace PointSpase
         }
 
         public void Add(int canA, int canB, int canC,int canD,
-                        int canE, int canF, long time, bool config = false)
+                        int canE, int canF, long time)
         {
-            Point temp = new Point(canA, canB, canC, canD, canE, canF, time, config);
+            Point temp = new Point(canA, canB, canC, canD, canE, canF, time);
             base.Add(temp);
         }
 
@@ -295,7 +294,7 @@ namespace PointSpase
         {
             try
             {
-            using (StreamWriter sr = new StreamWriter(Path+".man", false))
+            using (StreamWriter sr = new StreamWriter(Path, false))
             {
                 sr.WriteLine(JsonConvert.SerializeObject(this));
             }

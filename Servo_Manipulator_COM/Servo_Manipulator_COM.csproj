@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>27.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClassLibrary1">
       <HintPath>..\ClassLibrary1.dll</HintPath>
@@ -53,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProgramConfig.cs" />
     <Compile Include="DecardCoordinate.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -97,6 +101,7 @@
     <None Include="Resources\src_keyboard.png" />
     <None Include="Resources\src_keyboard_316.png" />
     <None Include="Resources\src_keyboard_3161.png" />
+    <Content Include="27.ico" />
     <Content Include="Servo_serial_handler.txt" />
   </ItemGroup>
   <ItemGroup>
