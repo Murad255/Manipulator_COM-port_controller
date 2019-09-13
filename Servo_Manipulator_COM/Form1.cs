@@ -30,13 +30,14 @@ namespace Servo_Manipulator_COM
         static CancellationTokenSource eexecutionTokenSource = new CancellationTokenSource();
         static CancellationToken eexecutionToken = eexecutionTokenSource.Token;
 
+        ProgramConfig programConfig;
         string[] loadArgument;
 
         public Form1(string[] args)
         {
             InitializeComponent();
             loadArgument = args;
-            Point.sent = serialPort.Write;  
+            Point.sent = serialPort.Write;
 
             comboBox.Items.Clear();
             int portCount = 0; 
@@ -46,14 +47,15 @@ namespace Servo_Manipulator_COM
                 portCount++;
             }
 
-            send        = new Task(()=> { });
+            send        = new Task(() => { });
             execution   = new Task(() => { });
             send.Start();
             execution.Start();
 
             try
             {
-                if(portCount>=2)comboBox.SelectedIndex = 2;
+                if(portCount>=programConfig.PortNum)
+                    comboBox.SelectedIndex = programConfig.PortNum;
                 comboHomeMode.SelectedIndex = 1; 
             }
             catch (ArgumentOutOfRangeException aore)
@@ -513,6 +515,10 @@ namespace Servo_Manipulator_COM
                 filePozition.Text = filename;
                 LoadListButton_Click(sender, e);
                 LoadListButton.Enabled = false;
+
+                programConfig = ProgramConfig.Instance;
+                ProgramConfig.Load();
+
             }
         }
 
