@@ -47,7 +47,7 @@ namespace Servo_Manipulator_COM
             if (time < passingTimeLimit) passingValue = passingConstValue;
             else passingValue = time / 50;
 
-            int delay = (int)(time / passingValue) ;// * 6 / 10);
+            int delay = (int)(time / passingValue * 9 / 10);
             for (int i = 0; i <= passingValue; i++)
             {
                 oneSinFunc(pastCoint.CanA, nextCoint.CanA, func,'a', i);
@@ -70,7 +70,8 @@ namespace Servo_Manipulator_COM
             if (time < passingTimeLimit) passingValue = passingConstValue;
             else passingValue = time / 50;
 
-            int delay = (int)((time / passingValue) * 6 / 10);
+
+            int delay = (int)((time / passingValue) *  92/ 100);
             for (int i = 0; i <= passingValue; i++)
             {
                 Point point = new Point(

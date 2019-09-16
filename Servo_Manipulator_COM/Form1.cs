@@ -38,6 +38,7 @@ namespace Servo_Manipulator_COM
             InitializeComponent();
             loadArgument = args;
             Point.sent = serialPort.Write;
+            programConfig = ProgramConfig.Instance;
 
             comboBox.Items.Clear();
             int portCount = 0; 
@@ -74,6 +75,11 @@ namespace Servo_Manipulator_COM
         {
             this.Text = message;
         }
+        public void Form1_printPointList(string message)
+        {
+            PointListView.Text += "\r\n" + message;
+        }
+
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -95,6 +101,7 @@ namespace Servo_Manipulator_COM
                     {   
                         try
                         {
+                            serialPort.BaudRate = programConfig.Speed;
                             serialPort.Open();
                             Home();
                             this.Invoke(new Action(()=> {

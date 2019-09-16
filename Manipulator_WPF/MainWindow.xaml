@@ -7,6 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Menu HorizontalAlignment="Left" Height="399" Margin="10,10,0,0" VerticalAlignment="Top" Width="100">
+            <Button Background="#FF7AB2D8"/>
+        </Menu>
+        <Label Content="Label" HorizontalAlignment="Left" Margin="310,213,0,0" VerticalAlignment="Top"/>
+        <DockPanel HorizontalAlignment="Left" Height="100" LastChildFill="False" Margin="615,10,0,0" VerticalAlignment="Top" Width="100"/>
+
     </Grid>
 </Window>

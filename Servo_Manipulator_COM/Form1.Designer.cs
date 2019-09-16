@@ -396,6 +396,7 @@
             // 
             // serialPort
             // 
+            this.serialPort.BaudRate = 115200;
             this.serialPort.WriteTimeout = 50;
             this.serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
             // 

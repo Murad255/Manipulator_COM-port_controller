@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Diagnostics;
 
 namespace Servo_Manipulator_COM
 {
@@ -271,6 +271,7 @@ namespace Servo_Manipulator_COM
                     startExecution_status = true;
                     startExecution.Text = "Идёт отправка";
                     startExecution.BackColor = System.Drawing.Color.GreenYellow;
+                    //создание пакета команд
                     await Task.Run(() =>
                     {
                         sentData = new List<string>();
@@ -296,21 +297,23 @@ namespace Servo_Manipulator_COM
                         }
 
                     });
-
+                    
+                    //отправка покета комманд
                     execution = Task.Run(new Action(() =>
                     {
+                        var diag = new Stopwatch();
                         Point[] tempPoints = new Point[points.Count];
                         points.CopyTo(tempPoints);
                         do
                         {
-
                             for (int i = 0; i < sentData.Count; i++)
                             {
+                                
                                 if (eexecutionToken.IsCancellationRequested) return; //принудительное закрытие задачи
                                 serialPort.Write(sentData[i]);
+                               
                                 Thread.Sleep(sentTime[i]);
                             }
-
                         } while (cycleStatus.Checked && startExecution_status);
 
                         this.Invoke(new Action(() =>

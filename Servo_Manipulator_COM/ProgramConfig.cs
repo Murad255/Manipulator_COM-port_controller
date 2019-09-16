@@ -16,7 +16,13 @@ namespace Servo_Manipulator_COM
 
         private ProgramConfig()
         {
-            speed = new int();
+            PortNum = new int();
+            Speed = new int();
+
+
+            PortNum = 1;
+            Speed = 115200;
+            FilePozition = null;
         }
 
         public static ProgramConfig Instance
