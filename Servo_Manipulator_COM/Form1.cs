@@ -13,7 +13,7 @@ namespace Servo_Manipulator_COM
     public partial class Form1 : Form
     {
         private const int WAIT_ANSWER_TIMEOUT = 500;
-        private const int speed = 1 ;            
+        private const int speed = 1;
         private bool textBox_status = false;                //флаг направленности фокуса на элемент textBox2
         private volatile bool startExecution_status = false; //статус передачи комманд каналам
         private bool gripFlag = true;                        //флаг статуса сжатия/разжатия клешни
@@ -21,16 +21,29 @@ namespace Servo_Manipulator_COM
         Task send;                      //поток для приняти данных
         Task execution;                 //поток для отправки коллекции точек
         private Queue<char> RX_data;    //буфер для принятых данных
-                    
-        Points        points    =new Points();      //коллекция с точками, задающими координаты
-        List<string>  sentData  =new List<string>();//коллекция со всеми данными координат точек для отправки
-        List<int>     sentTime  =new List<int>();   //коллекция с задержками между координатами
+
+        Points points = new Points();      //коллекция с точками, задающими координаты
+        List<string> sentData = new List<string>();//коллекция со всеми данными координат точек для отправки
+        List<int> sentTime = new List<int>();   //коллекция с задержками между координатами
 
         //признак отмены и признак получения этого признака при отправке точек
         static CancellationTokenSource eexecutionTokenSource = new CancellationTokenSource();
         static CancellationToken eexecutionToken = eexecutionTokenSource.Token;
 
-        ProgramConfig programConfig;
+        private ProgramConfig programConfig;
+        public ProgramConfig Config
+        {
+            get
+            {
+                return programConfig;
+            }
+            set
+            {
+                programConfig = value;
+            }
+        }
+
+
         string[] loadArgument;
 
         public Form1(string[] args)
@@ -39,7 +52,7 @@ namespace Servo_Manipulator_COM
             loadArgument = args;
             Point.sent = serialPort.Write;
             programConfig = ProgramConfig.Instance;
-
+            if(programConfig.FilePozition!=null) filePozition.Text= programConfig.FilePozition;
             comboBox.Items.Clear();
             int portCount = 0; 
             foreach (string portName in System.IO.Ports.SerialPort.GetPortNames())
@@ -53,19 +66,8 @@ namespace Servo_Manipulator_COM
             send.Start();
             execution.Start();
 
-            try
-            {
-                if(portCount>=programConfig.PortNum)
-                    comboBox.SelectedIndex = programConfig.PortNum;
-                comboHomeMode.SelectedIndex = 1; 
-            }
-            catch (ArgumentOutOfRangeException aore)
-            {
-                MessageBox.Show(aore.ToString(),
-                               "Ошибка",
-                               MessageBoxButtons.OK,
-                               MessageBoxIcon.Error);
-            }
+            if(portCount>=programConfig.PortNum)
+               comboBox.SelectedIndex = programConfig.PortNum;
             connectButton.Text = "отк";
             connectButton.BackColor = System.Drawing.Color.Tomato;
             
@@ -108,6 +110,7 @@ namespace Servo_Manipulator_COM
                                 connectButton.Text = "вкл";
                                 connectButton.BackColor = System.Drawing.Color.GreenYellow;
                             }));
+                            programConfig.PortNum = comboBox.SelectedIndex;
                         }
                         catch (UnauthorizedAccessException)
                         {
@@ -393,7 +396,12 @@ namespace Servo_Manipulator_COM
            
         }
 
-        private void SaveListButton_Click(object sender, EventArgs e) => points.Save(filePozition.Text);
+        private void SaveListButton_Click(object sender, EventArgs e)
+        {
+            points.Save(filePozition.Text);
+            programConfig.FilePozition = filePozition.Text;
+
+        }
 
         private void LoadListButton_Click(object sender, EventArgs e)
         {
@@ -505,6 +513,7 @@ namespace Servo_Manipulator_COM
             filePozition.Text = openPointFile.FileName;
             LoadListButton_Click(sender,e);
             LoadListButton.Enabled = false;
+            programConfig.FilePozition = filePozition.Text;
         }
 
         private void filePozition_TextChanged(object sender, EventArgs e)
@@ -524,11 +533,20 @@ namespace Servo_Manipulator_COM
                 LoadListButton.Enabled = false;
 
                 programConfig = ProgramConfig.Instance;
-                ProgramConfig.Load();
 
             }
         }
 
-        
+        private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            programConfig.PortNum = comboBox.SelectedIndex;
+        }
+
+        private void ConfigButton_Click(object sender, EventArgs e)
+        {
+            ConfigForm configForm = new ConfigForm();
+            configForm.Show();
+
+        }
     }
 }

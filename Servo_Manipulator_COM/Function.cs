@@ -66,7 +66,7 @@ namespace Servo_Manipulator_COM
         /// <summary>
         /// Устанавливает положение манипулятора в исходное состояние
         /// </summary>
-        private void Home()
+        public void Home()
         {
             try
             {

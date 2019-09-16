@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Servo_Manipulator_COM
 {
@@ -16,13 +14,9 @@ namespace Servo_Manipulator_COM
 
         private ProgramConfig()
         {
-            PortNum = new int();
-            Speed = new int();
-
-
-            PortNum = 1;
-            Speed = 115200;
-            FilePozition = null;
+            portNum = new int();
+            speed = new int();
+            filePozition = null;
         }
 
         public static ProgramConfig Instance
@@ -34,6 +28,9 @@ namespace Servo_Manipulator_COM
                 ProgramConfig temp = new ProgramConfig();
                 Interlocked.Exchange(ref instance, temp);
                 Monitor.Exit(s_lock);
+
+                Load();
+
                 return instance;
             }
         }
@@ -44,33 +41,45 @@ namespace Servo_Manipulator_COM
 
         public int Speed
         {
-            get { return speed; }
-            set { speed = value; }
+            get { return Instance.speed; }
+            set
+            {
+                Instance.speed = value;
+                Save();
+            }
         }
         public int PortNum
         {
-            get { return portNum; }
-            set { portNum = value; }
+            get { return Instance.portNum; }
+            set
+            {
+                Instance.portNum = value;
+                Save();
+            }
         }
         public string FilePozition
         {
-            get { return filePozition; }
-            set { filePozition = value; }
+            get { return Instance.filePozition; }
+            set
+            {
+                Instance.filePozition = value;
+                Save();
+            }
         }
 
-        public static void Load()
+        private static void Load()
         {
             try
             {
                 string Path = $"{Environment.CurrentDirectory}\\programConfig.progc";
                 var data = File.ReadAllText(Path);//File.ReadAllText($"{Environment.CurrentDirectory}\\{Path}");
-                ProgramConfig.instance = JsonConvert.DeserializeObject<ProgramConfig>(data);
+                ProgramConfig p = JsonConvert.DeserializeObject<ProgramConfig>(data);
             }
             catch(FileNotFoundException fnfe)
             {
-                ProgramConfig.instance.PortNum = 1;
-                ProgramConfig.instance.Speed = 9600;
-                ProgramConfig.instance.FilePozition = null;
+                ProgramConfig p = ProgramConfig.Instance;
+                p.Speed = 9600;
+                p.PortNum = 0;
             }
             catch (Exception e)
             {
@@ -78,7 +87,7 @@ namespace Servo_Manipulator_COM
             }
         }
 
-        public static void Save()
+        private static void Save()
         {
             try
             {

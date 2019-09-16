@@ -102,6 +102,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.savePointFile = new System.Windows.Forms.SaveFileDialog();
+            this.configButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_A)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_F)).BeginInit();
@@ -396,7 +397,7 @@
             // 
             // serialPort
             // 
-            this.serialPort.BaudRate = 115200;
+            this.serialPort.BaudRate = 38400;
             this.serialPort.WriteTimeout = 50;
             this.serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
             // 
@@ -407,6 +408,7 @@
             this.comboBox.Name = "comboBox";
             this.comboBox.Size = new System.Drawing.Size(74, 21);
             this.comboBox.TabIndex = 12;
+            this.comboBox.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
             // 
             // tabControl1
             // 
@@ -851,6 +853,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.configButton);
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.comboBox);
             this.panel1.Controls.Add(this.connectButton);
@@ -878,6 +881,16 @@
             // 
             this.savePointFile.DefaultExt = "man";
             this.savePointFile.Filter = "(*.man)|*.man";
+            // 
+            // configButton
+            // 
+            this.configButton.Location = new System.Drawing.Point(560, 6);
+            this.configButton.Name = "configButton";
+            this.configButton.Size = new System.Drawing.Size(75, 23);
+            this.configButton.TabIndex = 15;
+            this.configButton.Text = "настройки";
+            this.configButton.UseVisualStyleBackColor = true;
+            this.configButton.Click += new System.EventHandler(this.ConfigButton_Click);
             // 
             // Form1
             // 
@@ -993,5 +1006,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.SaveFileDialog savePointFile;
         private System.Windows.Forms.Button HowSaveButton;
+        private System.Windows.Forms.Button configButton;
     }
 }
