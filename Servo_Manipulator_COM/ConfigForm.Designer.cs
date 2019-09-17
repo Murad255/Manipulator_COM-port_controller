@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.SerialRate = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -42,10 +42,10 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Скорость:";
             // 
-            // comboBox1
+            // SerialRate
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.SerialRate.FormattingEnabled = true;
+            this.SerialRate.Items.AddRange(new object[] {
             "4800",
             "9600",
             "19200",
@@ -55,18 +55,17 @@
             "115200",
             "230400",
             "250000"});
-            this.comboBox1.Location = new System.Drawing.Point(108, 40);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(92, 21);
-            this.comboBox1.TabIndex = 1;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.ComboBox1_SelectedIndexChanged);
+            this.SerialRate.Location = new System.Drawing.Point(108, 40);
+            this.SerialRate.Name = "SerialRate";
+            this.SerialRate.Size = new System.Drawing.Size(92, 21);
+            this.SerialRate.TabIndex = 1;
             // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(450, 309);
-            this.Controls.Add(this.comboBox1);
+            this.ClientSize = new System.Drawing.Size(292, 205);
+            this.Controls.Add(this.SerialRate);
             this.Controls.Add(this.label1);
             this.Name = "ConfigForm";
             this.Text = "ConfigForm";
@@ -78,6 +77,6 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox SerialRate;
     }
 }

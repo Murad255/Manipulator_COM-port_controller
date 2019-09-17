@@ -31,21 +31,13 @@ namespace Servo_Manipulator_COM
         static CancellationToken eexecutionToken = eexecutionTokenSource.Token;
 
         private ProgramConfig programConfig;
-        public ProgramConfig Config
-        {
-            get
-            {
-                return programConfig;
-            }
-            set
-            {
-                programConfig = value;
-            }
-        }
-
 
         string[] loadArgument;
 
+        public SerialPort SerialPort
+        {
+            get { return serialPort; }
+        }
         public Form1(string[] args)
         {
             InitializeComponent();
@@ -53,6 +45,7 @@ namespace Servo_Manipulator_COM
             Point.sent = serialPort.Write;
             programConfig = ProgramConfig.Instance;
             if(programConfig.FilePozition!=null) filePozition.Text= programConfig.FilePozition;
+
             comboBox.Items.Clear();
             int portCount = 0; 
             foreach (string portName in System.IO.Ports.SerialPort.GetPortNames())
@@ -60,14 +53,15 @@ namespace Servo_Manipulator_COM
                 comboBox.Items.Add(portName);
                 portCount++;
             }
+            if (portCount >= programConfig.PortNum)
+                comboBox.SelectedIndex = programConfig.PortNum;
+            comboHomeMode.SelectedIndex = 0;
 
             send        = new Task(() => { });
             execution   = new Task(() => { });
             send.Start();
             execution.Start();
 
-            if(portCount>=programConfig.PortNum)
-               comboBox.SelectedIndex = programConfig.PortNum;
             connectButton.Text = "отк";
             connectButton.BackColor = System.Drawing.Color.Tomato;
             
@@ -109,8 +103,9 @@ namespace Servo_Manipulator_COM
                             this.Invoke(new Action(()=> {
                                 connectButton.Text = "вкл";
                                 connectButton.BackColor = System.Drawing.Color.GreenYellow;
+                                programConfig.PortNum = comboBox.SelectedIndex;
                             }));
-                            programConfig.PortNum = comboBox.SelectedIndex;
+                            
                         }
                         catch (UnauthorizedAccessException)
                         {
@@ -545,8 +540,10 @@ namespace Servo_Manipulator_COM
         private void ConfigButton_Click(object sender, EventArgs e)
         {
             ConfigForm configForm = new ConfigForm();
+            configForm.Owner = this;
             configForm.Show();
-
         }
+
+    
     }
 }

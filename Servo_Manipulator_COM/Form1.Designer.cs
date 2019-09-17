@@ -100,9 +100,9 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.openPointFile = new System.Windows.Forms.OpenFileDialog();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.configButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.savePointFile = new System.Windows.Forms.SaveFileDialog();
-            this.configButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_A)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_F)).BeginInit();
@@ -862,6 +862,16 @@
             this.panel1.Size = new System.Drawing.Size(644, 33);
             this.panel1.TabIndex = 15;
             // 
+            // configButton
+            // 
+            this.configButton.Location = new System.Drawing.Point(560, 6);
+            this.configButton.Name = "configButton";
+            this.configButton.Size = new System.Drawing.Size(75, 23);
+            this.configButton.TabIndex = 15;
+            this.configButton.Text = "настройки";
+            this.configButton.UseVisualStyleBackColor = true;
+            this.configButton.Click += new System.EventHandler(this.ConfigButton_Click);
+            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
@@ -881,16 +891,6 @@
             // 
             this.savePointFile.DefaultExt = "man";
             this.savePointFile.Filter = "(*.man)|*.man";
-            // 
-            // configButton
-            // 
-            this.configButton.Location = new System.Drawing.Point(560, 6);
-            this.configButton.Name = "configButton";
-            this.configButton.Size = new System.Drawing.Size(75, 23);
-            this.configButton.TabIndex = 15;
-            this.configButton.Text = "настройки";
-            this.configButton.UseVisualStyleBackColor = true;
-            this.configButton.Click += new System.EventHandler(this.ConfigButton_Click);
             // 
             // Form1
             // 

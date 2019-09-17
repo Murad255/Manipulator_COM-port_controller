@@ -12,15 +12,24 @@ namespace Servo_Manipulator_COM
 {
     public partial class ConfigForm : Form
     {
+        private ProgramConfig programConfig = ProgramConfig.Instance;
         public ConfigForm()
         {
             InitializeComponent();
+            SerialRate.Text = programConfig.Speed.ToString();
+            this.SerialRate.SelectedIndexChanged += new System.EventHandler(this.SerialRate_SelectedIndexChanged);
         }
 
-        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void SerialRate_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Form ifrm = Application.OpenForms[0];
-         //   Application.OpenForms[0].
+            Form1 frm = (Form1)this.Owner;
+            if (frm.SerialPort.IsOpen)
+            {
+               // frm.SerialPort.Close();
+                frm.SerialPort.BaudRate = Convert.ToInt32(SerialRate.Text);
+               // frm.SerialPort.Open();
+            }
+            programConfig.Speed= Convert.ToInt32(SerialRate.Text);
         }
     }
 }
