@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="Интерполяция">
+    <Position X="3.542" Y="0.5" Height="0.333" Width="1.096" />
+  </Comment>
+  <Class Name="Servo_Manipulator_COM.SinPassingStrategy" BaseTypeListCollapsed="true">
+    <Position X="4" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQBAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Passing.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Servo_Manipulator_COM.LinearPassingStrategy" BaseTypeListCollapsed="true">
+    <Position X="6" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQBAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Passing.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Servo_Manipulator_COM.Passing">
+    <Position X="1.5" Y="1.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AABABAAACgAAIIgQBAAAAAAAAAAAAAAAAAABQQCAAAA=</HashCode>
+      <FileName>Passing.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="contextStrategy" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="Servo_Manipulator_COM.PassingStrategy">
+    <Position X="5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Passing.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

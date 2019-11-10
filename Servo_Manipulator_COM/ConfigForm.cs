@@ -31,5 +31,19 @@ namespace Servo_Manipulator_COM
             }
             programConfig.Speed= Convert.ToInt32(SerialRate.Text);
         }
+
+        private void TrackBarStrategy_Scroll(object sender, EventArgs e)
+        {
+            if (trackBarStrategy.Value == 0)
+            {
+                programConfig.Strategy = new SinPassingStrategy();
+                Passing.ContextStrategy = new SinPassingStrategy();
+            }
+            else if (trackBarStrategy.Value == 1)
+            {
+                programConfig.Strategy = new SinPassingStrategy();
+                Passing.ContextStrategy = new SinPassingStrategy();
+            }
+        }
     }
 }

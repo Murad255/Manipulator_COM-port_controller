@@ -11,6 +11,7 @@ namespace Servo_Manipulator_COM
 {
     public partial class Form1: Form
     {
+        private int errorCount = 0;
         /// <summary>
         /// обработка действия слайдеров
         /// </summary>
@@ -26,8 +27,8 @@ namespace Servo_Manipulator_COM
                 {
                     //serialWrite(ch + trackBar.Value.ToString() + 'z');
                     Point.tempPoint[ch] = trackBar.Value;
-                    Point.tempPoint.writeCanal();
-                    Console.Text = trackBar.Value.ToString();
+                    Console.Text = serialPort.Write(Point.tempPoint);
+                    //trackBar.Value.ToString();
                     //label.Text = trackBar.Value.ToString();
                     labelUpdate();
                 }
@@ -35,17 +36,19 @@ namespace Servo_Manipulator_COM
                 {
                     textBox.Text = trackBar.Value.ToString();
                     label.Text = trackBar.Value.ToString();
-                    Point point = DecPointTransform.DecToPoint(getDec(),
+                    Point point = DecPointTransform.DecToPoint( getDec(),
                                                                 trackBar_F.Value,
                                                                 Convert.ToInt32(delay.Text)
                                                                 );
-                    point.writeCanal();
+                    serialPort.Write(Point.tempPoint);
                 }
                 this.Text = "COM-консоль";
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                
                 this.Text = "Ошибка!";
+                Console.Text += "Ошибка!"+ errorCount .ToString()+ e.Message+'\n';
             }
         }
          
@@ -74,18 +77,18 @@ namespace Servo_Manipulator_COM
                 {
                     if ((string)comboHomeMode.SelectedItem == "work")
                     {
-                        Point homePoint = new Point(0, 140, 87, 260, 0, 140);
-                     
+                        Point homePoint = new Point(0, 0, 8, 0, 245, 0);
+
                         Point.tempPoint = homePoint;
-                        homePoint.write();
+                        serialPort.Write(homePoint);
                         trackBarSet(homePoint);
 
                     }
                     else if ((string)comboHomeMode.SelectedItem == "steady")
                     {
-                        Point homePoint = new Point(0, 150, 54, 101, 0, 155);
+                        Point homePoint = new Point(0, 140, 87, 260, 0, 140);
                         Point.tempPoint = homePoint;
-                        homePoint.write();
+                        serialPort.Write(homePoint);
                         trackBarSet(homePoint);
                     }
                 }
@@ -96,7 +99,7 @@ namespace Servo_Manipulator_COM
                         //Dec homeDec = new Dec(0, 85, 135, 120, 0);
                         //trackBarSet(homeDec);
                         //trackBar_A_Scroll(new object(), new EventArgs());
-                        Point homePoint = new Point(0, 140, 87, 260, 0, 140);
+                        Point homePoint = new Point(0, 53, 95, 0, 245, 0);
                         Dec homeDec = DecPointTransform.PointToDec(homePoint);
                         trackBarSet(homeDec);
                         trackBar_D_Scroll(new object(), new EventArgs());
@@ -124,27 +127,16 @@ namespace Servo_Manipulator_COM
         /// функция для отправки сообщения в textBox1
         /// </summary>
         /// <param name="data"></param>
-        private void SendData(Queue<char> data)
-        {
-
-            this.Invoke(new Action(() =>
-            {
-                Console.Text += "\r\n";
-                foreach (char c in data)
-                {
-                    Console.Text += c;
-                }
-            }));
-        }
+      
 
         private void trackBarSet(Point p)
         {
-            trackBar_A.Value = p.CanA;
-            trackBar_B.Value = p.CanB;
-            trackBar_C.Value = p.CanC;
-            trackBar_D.Value = p.CanD;
-            trackBar_E.Value = p.CanE;
-            trackBar_F.Value = p.CanF;
+            trackBar_A.Value = (int)p.CanA;
+            trackBar_B.Value = (int)p.CanB;
+            trackBar_C.Value = (int)p.CanC;
+            trackBar_D.Value = (int)p.CanD;
+            trackBar_E.Value = (int)p.CanE;
+            trackBar_F.Value = (int)p.CanF;
 
             label_A.Text = p.CanA.ToString();
             label_B.Text = p.CanB.ToString();
@@ -203,7 +195,7 @@ namespace Servo_Manipulator_COM
                 eexecutionTokenSource = new CancellationTokenSource();
                 eexecutionToken = eexecutionTokenSource.Token;
 
-                if (!serialPort.IsOpen) throw new InvalidOperationException();
+                if (!serialPort.Port.IsOpen) throw new InvalidOperationException();
                 if (!startExecution_status)
                 {
                     startExecution_status = true;
@@ -262,10 +254,11 @@ namespace Servo_Manipulator_COM
         {
             try
             {
+                if (points.Count == 0) return;
                 eexecutionTokenSource = new CancellationTokenSource();
                 eexecutionToken = eexecutionTokenSource.Token;
 
-                if (!serialPort.IsOpen) throw new InvalidOperationException();
+                if (!serialPortBase.IsOpen) throw new InvalidOperationException();
                 if (!startExecution_status)
                 {
                     startExecution_status = true;
@@ -308,10 +301,9 @@ namespace Servo_Manipulator_COM
                         {
                             for (int i = 0; i < sentData.Count; i++)
                             {
-                                
-                                if (eexecutionToken.IsCancellationRequested) return; //принудительное закрытие задачи
-                                serialPort.Write(sentData[i]);
-                               
+                                //принудительное закрытие задачи
+                                if (eexecutionToken.IsCancellationRequested) return; 
+                                serialPortBase.Write(sentData[i]);
                                 Thread.Sleep(sentTime[i]);
                             }
                         } while (cycleStatus.Checked && startExecution_status);
@@ -376,5 +368,4 @@ namespace Servo_Manipulator_COM
         }
 
     }
-
 }

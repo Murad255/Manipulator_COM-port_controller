@@ -14,6 +14,7 @@ namespace Servo_Manipulator_COM
 
         private ProgramConfig()
         {
+            strategy = new SinPassingStrategy();
             portNum = new int();
             speed = new int();
             filePozition = null;
@@ -38,7 +39,7 @@ namespace Servo_Manipulator_COM
         private int speed;
         private int portNum;
         private string filePozition;
-
+        public PassingStrategy strategy;
         public int Speed
         {
             get { return Instance.speed; }
@@ -63,6 +64,16 @@ namespace Servo_Manipulator_COM
             set
             {
                 Instance.filePozition = value;
+                Save();
+            }
+        }
+
+        public PassingStrategy Strategy
+        {
+            get { return Instance.strategy; }
+            set
+            {
+                Instance.strategy = value;
                 Save();
             }
         }

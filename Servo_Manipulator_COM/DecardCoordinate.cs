@@ -4,6 +4,9 @@ using PointSpase;
 
 namespace Servo_Manipulator_COM 
 {
+    /// <summary>
+    /// Алгоритмы решения ПЗК и ОЗК
+    /// </summary>
     public static class DecPointTransform
     {
         private static Dec axisB, axisC;
@@ -12,32 +15,19 @@ namespace Servo_Manipulator_COM
         private static int l_max = Convert.ToInt32(Shape.L1 + Shape.L2) + L3;
         public static int  Lmax { get { return l_max; } }
 
-
+        /// <summary>
+        /// Решение ОЗК
+        /// </summary>
+        /// <param name="dec"></param>
+        /// <param name="grab"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         public static Point DecToPoint(Dec dec, int grab, int time)
         {
             return DecToPoint(dec, dec.decA, dec.decB, grab, time);
         }
 
-        public static Point Algoritm2(Dec dec, double degreeA, double degreeB, int grab,int time)
-        {
-            try
-            {
-                axisB = new Dec();
-                axisC = new Dec();
 
-                axisB = Shape.Algoritm(dec);
-
-                var AC = Math.Sqrt(dec.pXY * dec.pXY + dec.decZ * dec.decZ);
-                int CanA = Convert.ToInt32(Math.Acos(dec.decX / dec.pXY) * 180 / Math.PI)-90;
-                int CanB = Convert.ToInt32(Math.Acos(axisB.pXY / Shape.L1) * 180 / Math.PI);
-                int CanC = 180 - Convert.ToInt32(Math.Acos((AC * AC - Shape.L1 * Shape.L1 - Shape.L2 * Shape.L2) / (2 * Shape.L1 * Shape.L2)) * 180 / Math.PI);
-                int CanD = Convert.ToInt32(degreeB);
-                int CanE = Convert.ToInt32(degreeA);
-
-                return new Point(CanA, CanB, CanC, CanD, CanE, grab, time);
-            }
-            catch (Exception e) { throw new Exception(e.Message); }
-        }
         public static Point DecToPoint(Dec dec, double degreeA, double degreeB, int grab, int time)
         {
             try
@@ -66,7 +56,11 @@ namespace Servo_Manipulator_COM
             }
             catch (Exception e) { throw new Exception(e.Message); }
         }
-
+        /// <summary>
+        /// решение ПЗК
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
         public static Dec PointToDec(Point point)
         {
             Dec dec = new Dec();

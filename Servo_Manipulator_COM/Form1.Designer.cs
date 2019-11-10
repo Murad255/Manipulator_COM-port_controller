@@ -56,7 +56,7 @@
             this.Console = new System.Windows.Forms.TextBox();
             this.connectButton = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
-            this.serialPort = new System.IO.Ports.SerialPort(this.components);
+            this.serialPortBase = new System.IO.Ports.SerialPort(this.components);
             this.comboBox = new System.Windows.Forms.ComboBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -71,6 +71,8 @@
             this.clearPoints = new System.Windows.Forms.Button();
             this.PointListView = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.valueCoordF = new System.Windows.Forms.TextBox();
             this.startExecution = new System.Windows.Forms.Button();
             this.checkAlgoritm = new System.Windows.Forms.CheckBox();
             this.cycleStatus = new System.Windows.Forms.CheckBox();
@@ -131,7 +133,7 @@
             this.trackBar_A.Name = "trackBar_A";
             this.trackBar_A.Size = new System.Drawing.Size(228, 45);
             this.trackBar_A.TabIndex = 0;
-            this.trackBar_A.Value = 90;
+            this.trackBar_A.Value = -90;
             this.trackBar_A.Scroll += new System.EventHandler(this.trackBar_A_Scroll);
             // 
             // groupBox1
@@ -161,7 +163,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(306, 381);
+            this.groupBox1.Size = new System.Drawing.Size(306, 421);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Углы серв";
@@ -312,34 +314,34 @@
             // trackBar_F
             // 
             this.trackBar_F.Location = new System.Drawing.Point(72, 298);
-            this.trackBar_F.Maximum = 180;
-            this.trackBar_F.Minimum = 100;
+            this.trackBar_F.Maximum = 90;
+            this.trackBar_F.Minimum = -90;
             this.trackBar_F.Name = "trackBar_F";
             this.trackBar_F.Size = new System.Drawing.Size(228, 45);
             this.trackBar_F.TabIndex = 5;
-            this.trackBar_F.Value = 115;
+            this.trackBar_F.Value = 90;
             this.trackBar_F.Scroll += new System.EventHandler(this.trackBar_F_Scroll);
             // 
             // trackBar_E
             // 
             this.trackBar_E.Location = new System.Drawing.Point(72, 247);
-            this.trackBar_E.Maximum = 90;
-            this.trackBar_E.Minimum = -90;
+            this.trackBar_E.Maximum = 280;
+            this.trackBar_E.Minimum = 100;
             this.trackBar_E.Name = "trackBar_E";
             this.trackBar_E.Size = new System.Drawing.Size(228, 45);
             this.trackBar_E.TabIndex = 4;
-            this.trackBar_E.Value = 90;
+            this.trackBar_E.Value = 100;
             this.trackBar_E.Scroll += new System.EventHandler(this.trackBar_E_Scroll);
             // 
             // trackBar_D
             // 
             this.trackBar_D.Location = new System.Drawing.Point(72, 196);
-            this.trackBar_D.Maximum = 280;
-            this.trackBar_D.Minimum = 100;
+            this.trackBar_D.Maximum = 90;
+            this.trackBar_D.Minimum = -90;
             this.trackBar_D.Name = "trackBar_D";
             this.trackBar_D.Size = new System.Drawing.Size(228, 45);
             this.trackBar_D.TabIndex = 3;
-            this.trackBar_D.Value = 100;
+            this.trackBar_D.Value = 90;
             this.trackBar_D.Scroll += new System.EventHandler(this.trackBar_D_Scroll);
             // 
             // trackBar_C
@@ -356,7 +358,8 @@
             // trackBar_B
             // 
             this.trackBar_B.Location = new System.Drawing.Point(72, 94);
-            this.trackBar_B.Maximum = 180;
+            this.trackBar_B.Maximum = 225;
+            this.trackBar_B.Minimum = -45;
             this.trackBar_B.Name = "trackBar_B";
             this.trackBar_B.Size = new System.Drawing.Size(228, 45);
             this.trackBar_B.TabIndex = 1;
@@ -372,7 +375,6 @@
             this.Console.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.Console.Size = new System.Drawing.Size(630, 318);
             this.Console.TabIndex = 2;
-            this.Console.Text = "text";
             this.Console.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // connectButton
@@ -395,11 +397,11 @@
             this.label7.TabIndex = 11;
             this.label7.Text = "Ввод вывод";
             // 
-            // serialPort
+            // serialPortBase
             // 
-            this.serialPort.BaudRate = 38400;
-            this.serialPort.WriteTimeout = 50;
-            this.serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
+            this.serialPortBase.BaudRate = 38400;
+            this.serialPortBase.WriteTimeout = 50;
+            this.serialPortBase.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
             // 
             // comboBox
             // 
@@ -419,7 +421,7 @@
             this.tabControl1.Location = new System.Drawing.Point(3, 42);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(644, 413);
+            this.tabControl1.Size = new System.Drawing.Size(644, 453);
             this.tabControl1.TabIndex = 13;
             this.tabControl1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tabControl1_KeyDown);
             // 
@@ -434,7 +436,7 @@
             this.tabPage3.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage3.Size = new System.Drawing.Size(636, 387);
+            this.tabPage3.Size = new System.Drawing.Size(636, 427);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "перемещения по точкам";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -457,7 +459,7 @@
             this.groupBox3.Controls.Add(this.LoadListButton);
             this.groupBox3.Controls.Add(this.SaveListButton);
             this.groupBox3.Controls.Add(this.label15);
-            this.groupBox3.Location = new System.Drawing.Point(13, 250);
+            this.groupBox3.Location = new System.Drawing.Point(13, 292);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(290, 130);
             this.groupBox3.TabIndex = 7;
@@ -541,11 +543,13 @@
             this.PointListView.Multiline = true;
             this.PointListView.Name = "PointListView";
             this.PointListView.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.PointListView.Size = new System.Drawing.Size(326, 337);
+            this.PointListView.Size = new System.Drawing.Size(326, 378);
             this.PointListView.TabIndex = 5;
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label16);
+            this.groupBox2.Controls.Add(this.valueCoordF);
             this.groupBox2.Controls.Add(this.startExecution);
             this.groupBox2.Controls.Add(this.checkAlgoritm);
             this.groupBox2.Controls.Add(this.cycleStatus);
@@ -569,15 +573,34 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox2.Size = new System.Drawing.Size(291, 222);
+            this.groupBox2.Size = new System.Drawing.Size(291, 265);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Координыты и значения";
             // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(134, 75);
+            this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(60, 15);
+            this.label16.TabIndex = 19;
+            this.label16.Text = "Ротация:";
+            // 
+            // valueCoordF
+            // 
+            this.valueCoordF.Enabled = false;
+            this.valueCoordF.Location = new System.Drawing.Point(203, 74);
+            this.valueCoordF.Margin = new System.Windows.Forms.Padding(2);
+            this.valueCoordF.Name = "valueCoordF";
+            this.valueCoordF.Size = new System.Drawing.Size(45, 21);
+            this.valueCoordF.TabIndex = 18;
+            // 
             // startExecution
             // 
             this.startExecution.BackColor = System.Drawing.Color.White;
-            this.startExecution.Location = new System.Drawing.Point(17, 176);
+            this.startExecution.Location = new System.Drawing.Point(17, 230);
             this.startExecution.Name = "startExecution";
             this.startExecution.Size = new System.Drawing.Size(253, 30);
             this.startExecution.TabIndex = 17;
@@ -591,7 +614,7 @@
             this.checkAlgoritm.Checked = true;
             this.checkAlgoritm.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkAlgoritm.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.checkAlgoritm.Location = new System.Drawing.Point(151, 99);
+            this.checkAlgoritm.Location = new System.Drawing.Point(148, 168);
             this.checkAlgoritm.Margin = new System.Windows.Forms.Padding(2);
             this.checkAlgoritm.Name = "checkAlgoritm";
             this.checkAlgoritm.Size = new System.Drawing.Size(122, 19);
@@ -603,7 +626,7 @@
             // cycleStatus
             // 
             this.cycleStatus.AutoSize = true;
-            this.cycleStatus.Location = new System.Drawing.Point(7, 99);
+            this.cycleStatus.Location = new System.Drawing.Point(4, 168);
             this.cycleStatus.Margin = new System.Windows.Forms.Padding(2);
             this.cycleStatus.Name = "cycleStatus";
             this.cycleStatus.Size = new System.Drawing.Size(70, 19);
@@ -614,7 +637,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(131, 77);
+            this.label14.Location = new System.Drawing.Point(6, 113);
             this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(68, 15);
@@ -623,7 +646,7 @@
             // 
             // delay
             // 
-            this.delay.Location = new System.Drawing.Point(203, 74);
+            this.delay.Location = new System.Drawing.Point(84, 110);
             this.delay.Margin = new System.Windows.Forms.Padding(2);
             this.delay.Name = "delay";
             this.delay.Size = new System.Drawing.Size(45, 21);
@@ -633,7 +656,7 @@
             // checkGrip
             // 
             this.checkGrip.AutoSize = true;
-            this.checkGrip.Location = new System.Drawing.Point(81, 99);
+            this.checkGrip.Location = new System.Drawing.Point(78, 168);
             this.checkGrip.Margin = new System.Windows.Forms.Padding(2);
             this.checkGrip.Name = "checkGrip";
             this.checkGrip.Size = new System.Drawing.Size(66, 19);
@@ -645,7 +668,7 @@
             // SentButton
             // 
             this.SentButton.Enabled = false;
-            this.SentButton.Location = new System.Drawing.Point(163, 136);
+            this.SentButton.Location = new System.Drawing.Point(163, 191);
             this.SentButton.Margin = new System.Windows.Forms.Padding(2);
             this.SentButton.Name = "SentButton";
             this.SentButton.Size = new System.Drawing.Size(107, 34);
@@ -656,7 +679,7 @@
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(17, 136);
+            this.SaveButton.Location = new System.Drawing.Point(17, 191);
             this.SaveButton.Margin = new System.Windows.Forms.Padding(2);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(107, 34);
@@ -767,7 +790,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(636, 387);
+            this.tabPage1.Size = new System.Drawing.Size(636, 427);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "управление";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -778,7 +801,7 @@
             this.pictureBox1.Image = global::Servo_Manipulator_COM.Properties.Resources.src_keyboard_3161;
             this.pictureBox1.Location = new System.Drawing.Point(317, 3);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(316, 381);
+            this.pictureBox1.Size = new System.Drawing.Size(316, 421);
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
@@ -790,7 +813,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(636, 387);
+            this.tabPage2.Size = new System.Drawing.Size(636, 427);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Консоль";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -809,7 +832,7 @@
             this.flowLayoutPanel1.Controls.Add(this.textBox2);
             this.flowLayoutPanel1.Controls.Add(this.button1);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 349);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 389);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(630, 35);
             this.flowLayoutPanel1.TabIndex = 15;
@@ -884,7 +907,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(650, 458);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(650, 498);
             this.tableLayoutPanel1.TabIndex = 16;
             // 
             // savePointFile
@@ -896,7 +919,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(650, 458);
+            this.ClientSize = new System.Drawing.Size(650, 498);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
@@ -950,7 +973,7 @@
         private System.Windows.Forms.TextBox Console;
         private System.Windows.Forms.Button connectButton;
         private System.Windows.Forms.Label label7;
-        private System.IO.Ports.SerialPort serialPort;
+        private System.IO.Ports.SerialPort serialPortBase;
         private System.Windows.Forms.ComboBox comboBox;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
@@ -1007,5 +1030,7 @@
         private System.Windows.Forms.SaveFileDialog savePointFile;
         private System.Windows.Forms.Button HowSaveButton;
         private System.Windows.Forms.Button configButton;
+        private System.Windows.Forms.TextBox valueCoordF;
+        private System.Windows.Forms.Label label16;
     }
 }

@@ -14,7 +14,7 @@ namespace Servo_Manipulator_COM
     {
         private const int WAIT_ANSWER_TIMEOUT = 500;
         private const int speed = 1;
-        private bool textBox_status = false;                //флаг направленности фокуса на элемент textBox2
+        private bool textBox_status = false;                 //флаг направленности фокуса на элемент textBox2
         private volatile bool startExecution_status = false; //статус передачи комманд каналам
         private bool gripFlag = true;                        //флаг статуса сжатия/разжатия клешни
 
@@ -22,10 +22,11 @@ namespace Servo_Manipulator_COM
         Task execution;                 //поток для отправки коллекции точек
         private Queue<char> RX_data;    //буфер для принятых данных
 
-        Points points = new Points();      //коллекция с точками, задающими координаты
-        List<string> sentData = new List<string>();//коллекция со всеми данными координат точек для отправки
-        List<int> sentTime = new List<int>();   //коллекция с задержками между координатами
-
+        Points points = new Points();               //коллекция с точками, задающими координаты
+        List<string> sentData = new List<string>(); //коллекция со всеми данными координат точек для отправки
+        List<int> sentTime = new List<int>();       //коллекция с задержками между координатами
+        Serial serialPort;
+        
         //признак отмены и признак получения этого признака при отправке точек
         static CancellationTokenSource eexecutionTokenSource = new CancellationTokenSource();
         static CancellationToken eexecutionToken = eexecutionTokenSource.Token;
@@ -36,38 +37,61 @@ namespace Servo_Manipulator_COM
 
         public SerialPort SerialPort
         {
-            get { return serialPort; }
+            get { return serialPortBase; }
         }
+
         public Form1(string[] args)
         {
             InitializeComponent();
             loadArgument = args;
-            Point.sent = serialPort.Write;
+            Point.sent = serialPortBase.Write;
             programConfig = ProgramConfig.Instance;
-            if(programConfig.FilePozition!=null) filePozition.Text= programConfig.FilePozition;
+            if (programConfig.FilePozition != null) filePozition.Text = programConfig.FilePozition;
 
+            //comboBox
             comboBox.Items.Clear();
-            int portCount = 0; 
+            int portCount = 0;
             foreach (string portName in System.IO.Ports.SerialPort.GetPortNames())
             {
                 comboBox.Items.Add(portName);
                 portCount++;
             }
-            if (portCount >= programConfig.PortNum)
+            if (portCount > programConfig.PortNum)
                 comboBox.SelectedIndex = programConfig.PortNum;
             comboHomeMode.SelectedIndex = 0;
+            serialPort = new Serial(serialPortBase);
 
-            send        = new Task(() => { });
-            execution   = new Task(() => { });
+            //trackBar
+            trackBar_A.Maximum = Convert.ToInt32( Serial.qAmin);
+            trackBar_A.Maximum = Convert.ToInt32( Serial.qAmax);
+
+            trackBar_B.Maximum = Convert.ToInt32(Serial.qBmin);
+            trackBar_B.Maximum = Convert.ToInt32(Serial.qBmax);
+
+            trackBar_C.Maximum = Convert.ToInt32(Serial.qCmin);
+            trackBar_C.Maximum = Convert.ToInt32(Serial.qCmax);
+
+            trackBar_D.Maximum = Convert.ToInt32(Serial.qDmin);
+            trackBar_D.Maximum = Convert.ToInt32(Serial.qDmax);
+
+            trackBar_E.Maximum = Convert.ToInt32(Serial.qEmin);
+            trackBar_E.Maximum = Convert.ToInt32(Serial.qEmax);
+
+            trackBar_F.Maximum = Convert.ToInt32(Serial.qFmin);
+            trackBar_F.Maximum = Convert.ToInt32(Serial.qFmax);
+
+            RX_data = new Queue<char>();
+            send = new Task(() => { });
+            execution = new Task(() => { });
             send.Start();
             execution.Start();
 
             connectButton.Text = "отк";
             connectButton.BackColor = System.Drawing.Color.Tomato;
-            
+
         }
-        
-        public void Form1_ToString(string message)
+
+        public  void Form1_ToString(string message)
         {
             this.Text = message;
         }
@@ -79,9 +103,9 @@ namespace Servo_Manipulator_COM
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (serialPort.IsOpen)
+            if (serialPortBase.IsOpen)
             {
-                serialPort.Close();
+                serialPortBase.Close();
             }
         }
 
@@ -89,23 +113,23 @@ namespace Servo_Manipulator_COM
         {
             try
             {
-                if (!serialPort.IsOpen)
+                if (!serialPortBase.IsOpen)
                 {
-                    serialPort.PortName = ((string)comboBox.SelectedItem);
+                    serialPortBase.PortName = ((string)comboBox.SelectedItem);
 
                     await Task.Run(() =>
-                    {   
+                    {
                         try
                         {
-                            serialPort.BaudRate = programConfig.Speed;
-                            serialPort.Open();
+                            serialPortBase.BaudRate = programConfig.Speed;
+                            serialPortBase.Open();
                             Home();
-                            this.Invoke(new Action(()=> {
+                            this.Invoke(new Action(() => {
                                 connectButton.Text = "вкл";
                                 connectButton.BackColor = System.Drawing.Color.GreenYellow;
                                 programConfig.PortNum = comboBox.SelectedIndex;
                             }));
-                            
+                           
                         }
                         catch (UnauthorizedAccessException)
                         {
@@ -116,11 +140,10 @@ namespace Servo_Manipulator_COM
                             MessageBox.Show(soe.ToString(), "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     });
-                    
                 }
                 else
                 {
-                    serialPort.Close();
+                    serialPortBase.Close();
                     connectButton.Text = "откл";
                     connectButton.BackColor = System.Drawing.Color.Tomato;
                 }
@@ -128,15 +151,15 @@ namespace Servo_Manipulator_COM
             catch (IOException)
             {
                 Console.Text += "\nПовторное подключение\n";
-                connectButton_Click_1(new object(),new EventArgs() );
+                connectButton_Click_1(new object(), new EventArgs());
             }
-            catch (ArgumentNullException )
+            catch (ArgumentNullException)
             {
-                DialogResult dialogResult= MessageBox.Show("Не выбран COM-порт.\nПовторить поиск?",
+                DialogResult dialogResult = MessageBox.Show("Не выбран COM-порт.\nПовторить поиск?",
                                                             "Ошибка!",
                                                             MessageBoxButtons.OKCancel,
                                                             MessageBoxIcon.Error);
-                if(dialogResult == DialogResult.OK)
+                if (dialogResult == DialogResult.OK)
                 {
                     comboBox.Items.Clear();
                     int portCount = 0;
@@ -160,33 +183,33 @@ namespace Servo_Manipulator_COM
             }
         }
 
-        private void trackBar_A_Scroll(object sender, EventArgs e)=> ScrollFunction('a', trackBar_A, label_A, valueCoordX);
-        
-        private void trackBar_B_Scroll(object sender, EventArgs e)=> ScrollFunction('b', trackBar_B, label_B, valueCoordY);
-        
-        private void trackBar_C_Scroll(object sender, EventArgs e)=> ScrollFunction('c', trackBar_C, label_C, valueCoordZ);
+        private void trackBar_A_Scroll(object sender, EventArgs e) => ScrollFunction('a', trackBar_A, label_A, valueCoordX);
 
-        private void trackBar_D_Scroll(object sender, EventArgs e)=> ScrollFunction('d', trackBar_D, label_D, valueCoordB);
+        private void trackBar_B_Scroll(object sender, EventArgs e) => ScrollFunction('b', trackBar_B, label_B, valueCoordY);
 
-        private void trackBar_E_Scroll(object sender, EventArgs e)=> ScrollFunction('e', trackBar_E, label_E, valueCoordA);
+        private void trackBar_C_Scroll(object sender, EventArgs e) => ScrollFunction('c', trackBar_C, label_C, valueCoordZ);
 
-        private void trackBar_F_Scroll(object sender, EventArgs e)
-        {
-            serialWrite('f' + trackBar_F.Value.ToString() + 'z');
-            Console.Text = trackBar_F.Value.ToString();
-            label_F.Text = trackBar_F.Value.ToString();
-        }
+        private void trackBar_D_Scroll(object sender, EventArgs e) => ScrollFunction('d', trackBar_D, label_D, valueCoordB);
+
+        private void trackBar_E_Scroll(object sender, EventArgs e) => ScrollFunction('e', trackBar_E, label_E, valueCoordA);
+
+        private void trackBar_F_Scroll(object sender, EventArgs e) => ScrollFunction('f', trackBar_F, label_F, valueCoordF);
+        //{
+        //    serialWrite('f' + trackBar_F.Value.ToString() + 'z');
+        //    Console.Text = trackBar_F.Value.ToString();
+        //    label_F.Text = trackBar_F.Value.ToString();
+        //}
 
 
 
         private void button1_Click(object sender, EventArgs e)
         {
             serialWrite(textBox2.Text);
-            textBox2.Text = " ";
+            textBox2.Clear();
         }
-             
-        private void HomeButton_Click(object sender, EventArgs e)=>Home();
-        
+
+        private void HomeButton_Click(object sender, EventArgs e) => Home();
+
         private void gripButton_Click(object sender, EventArgs e)
         {
             if (gripFlag == true)
@@ -204,22 +227,22 @@ namespace Servo_Manipulator_COM
                 trackBar_F.Value = Convert.ToInt32(180);
             }
         }
-        private void checkGrip_CheckedChanged(object sender, EventArgs e) => gripButton_Click(sender,e);
+        private void checkGrip_CheckedChanged(object sender, EventArgs e) => gripButton_Click(sender, e);
 
 
         private void serialWrite(string message)
         {
             try
             {
-                serialPort.Write(message);
-                Console.Text += "\r\n";
+                serialPortBase.Write(message);
                 Console.Text += message;
-             
+                Console.Text += "\r\n";
+
             }
 
             catch (TimeoutException)
             {
-                MessageBox.Show("Время ожидания операции истекло. попробуйте перезаустить подключение", 
+                MessageBox.Show("Время ожидания операции истекло. попробуйте перезаустить подключение",
                                 "Ошибка",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
@@ -238,17 +261,42 @@ namespace Servo_Manipulator_COM
                                 MessageBoxIcon.Error);
             }
         }
+        //private void SendData(Queue<char> data)
+        //{
 
+        //    this.Invoke(new Action(() =>
+        //    {
+        //        //Console.Text += "\r\n";
+        //        foreach (char c in data)
+        //        {
+        //            Console.Text += c;
+        //        }
+        //    }));
+        //}
 
-        private  void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        private async void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             try
             {
                 SerialPort sp = (SerialPort)sender;
-                RX_data = new Queue<char>();
                 while (0 != sp.BytesToRead) RX_data.Enqueue((char)sp.ReadByte());
-                if(send.IsCompleted)
-                    send= Task.Run(new Action(() =>{ SendData(RX_data);})); 
+                if (send.IsCompleted)
+                    send= Task.Run(new Action(() =>{
+                        try
+                        {
+                            Thread.Sleep(50);     //ожидаем завершения передачи
+                            foreach (char c in RX_data)
+                            {
+                                this.Invoke(new Action(() => { Console.Text += c; }));
+                            }
+
+                            RX_data = new Queue<char>();
+                        }
+                        catch(Exception te) { this.Invoke(new Action(() => { Console.Text += te.Message + '\n'; }));  }
+
+                    }));
+
+                
             }
             catch (Exception ex)
             {
@@ -358,7 +406,7 @@ namespace Servo_Manipulator_COM
         {
             //отправляет координаты и заключает их в символs: n- начало пакета, k- конец пакета
             serialWrite("n");
-            foreach (Point p in points)  p.write();
+          //  foreach (Point p in points)  p;
             serialWrite("k");
         }
 
@@ -370,7 +418,7 @@ namespace Servo_Manipulator_COM
         
         private void filePozition_Leave(object sender, EventArgs e)=>textBox_status = false;
         
-        private void startExecution_Click(object sender, EventArgs e) => Execution2();
+        private void startExecution_Click(object sender, EventArgs e) => Execution();
 
         private void clearPoints_Click(object sender, EventArgs e)
         {
@@ -412,7 +460,7 @@ namespace Servo_Manipulator_COM
             trackBarSet(pastP);
 
             points.Add(pastP);
-            pastP.writeCanal();
+            serialPort.Write(pastP);
             PointListView.Text = "";
             foreach (Point p in points) PointListView.Text += p.numString(); //выводит список точек
         }
@@ -447,11 +495,11 @@ namespace Servo_Manipulator_COM
                 trackBar_E.Maximum = 90;
                 trackBar_E.Minimum = -90;
 
-                trackBar_A.Value = point.CanA;
-                trackBar_B.Value = point.CanB;
-                trackBar_C.Value = point.CanC;
-                trackBar_D.Value = point.CanD;
-                trackBar_E.Value = point.CanE;
+                trackBar_A.Value = (int)point.CanA;
+                trackBar_B.Value = (int)point.CanB;
+                trackBar_C.Value = (int)point.CanC;
+                trackBar_D.Value = (int)point.CanD;
+                trackBar_E.Value = (int)point.CanE;
 
               
 

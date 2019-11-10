@@ -19,65 +19,66 @@ namespace PointSpase
             get { return numPoint; }
         }
 
-        //Константы, учитывающие изначальный поворот осей сервоприводов
-        private const int qA = 90;
-        private const int qB = 180;
-        private const int qC = -40;
-        private const int qD = -100;
-        private const int qE = 90;
 
-        private int canA, canB, canC, canD, canE, canF; //обобщенные координаты (углы поворота сервориводов)
+        private float canA, canB, canC, canD, canE, canF, canGrab; //обобщенные координаты (углы поворота сервориводов)
         protected long time;                //задержка от начала выполнения (сначала устанавливается поворот, затем задержка)
 
-        public int CanA
+        public float CanA
         {
-            get { return canA-qA; }
+            get { return canA; }
         }
-        public int CanB
+        public float CanB
         {
-            get { return 180-canB; }
+            get { return canB; }
         }
-        public int CanC
+        public float CanC
         {
-            get { return canC-qC; }
+            get { return canC; }
         }
-        public int CanD
+        public float CanD
         {
-            get { return canD-qD; }
+            get { return canD; }
         }
-        public int CanE
+        public float CanE
         {
-            get { return canE-qE; }
+            get { return canE; }
         }
-        public int CanF
+        public float CanF
         {
             get { return canF; }
         }
+        public float CanGrab
+        {
+            get { return canGrab; }
+        }
         public long Time { get { return time; } }
 
-        public int this[char ch]
+        public float this[char ch]
         {
             set
             {
                 switch (ch)
                 {
                     case 'a':
-                        canA = value+qA;
+                        canA = value;
                         return;
                     case 'b':
-                        canB = value*(-1)+qB;
+                        canB = value;
                         return;
                     case 'c':
-                        canC = value+qC;
+                        canC = value;
                         return;
                     case 'd':
-                        canD = value+qD;
+                        canD = value;
                         return;
                     case 'e':
-                        canE = value+qE;
+                        canE = value;
                         return;
                     case 'f':
                         canF = value;
+                        return;
+                    case 'g':
+                        canGrab = value;
                         return;
                     default:
                         return;
@@ -85,11 +86,12 @@ namespace PointSpase
             }
         }
 
-        public Point(int canA = 0, int canB = 0, int canC = 0, int canD = 0, int canE = 0, int canF = 0, long time = 0)
-        {
+        public Point(   float canA = 0, float canB = 0, float canC = 0, 
+                        float canD = 0, float canE = 0, float canF = 0, long time = 0)=>
             setAllDegree(canA, canB, canC, canD, canE, canF, time);
-            numPoint = ++numPoints;
-        }
+        
+
+        public void IncrementPoint()=> numPoint =++numPoints;
 
         public static Point operator ~(Point p) => equivalent(p);   
 
@@ -115,7 +117,7 @@ namespace PointSpase
         /// <param name="canE"></param>
         /// <param name="canF"></param>
         /// <param name="time"></param>
-        public void setAllCanal(int canA, int canB, int canC, int canD, int canE, int canF, long time)  
+        private void setAllDegree(float canA, float canB, float canC, float canD, float canE, float canF, long time)  
         {
             this.canA = canA;
             this.canB = canB;
@@ -127,93 +129,16 @@ namespace PointSpase
         }
 
         /// <summary>
-        /// функция принимает значения для каждого канала обобщенных координат
-        /// </summary>
-        /// <param name="canA"></param>
-        /// <param name="canB"></param>
-        /// <param name="canC"></param>
-        /// <param name="canD"></param>
-        /// <param name="canE"></param>
-        /// <param name="canF"></param>
-        /// <param name="time"></param>
-        public void setAllDegree(int canA, int canB, int canC, int canD, int canE, int canF, long time) => 
-        
-                setAllCanal(    canA+qA,        //-90/90
-                                (canB*-1)+qB,   // 0/180
-                                canC+qC,        //40/220
-                                canD+qD,        //100/280
-                                canE+qE,        //-90/90 
-                                canF, 
-                                time);
-
-        /// <summary>
-        /// функция для ввода и отправки значений обобщенных координат
-        /// </summary>
-        /// <param name="canA"></param>
-        /// <param name="canB"></param>
-        /// <param name="canC"></param>
-        /// <param name="canD"></param>
-        /// <param name="canE"></param>
-        /// <param name="canF"></param>
-        /// <param name="time"></param>
-        /// <param name="config"></param>
-        public void write(  int canA, int canB, int canC, 
-                            int canD, int canE, int canF, 
-                            long time, bool config = false)    
-        {
-            try
-            {
-                if(!config) setAllCanal(canA, canB, canC, canD, canE, canF, time);
-                else setAllDegree(canA, canB, canC, canD, canE, canF, time);
-            //отправляет координаты и заключает их в символs: $- начало точки #- конец точки, 
-            sent("$");
-                writeCanal();
-                sent("#");
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-
-        public void write(bool config = false) => write(    this.canA, 
-                                                            this.canB, 
-                                                            this.canC, 
-                                                            this.canD, 
-                                                            this.canE, 
-                                                            this.canF,
-                                                            this.time,
-                                                            config);
-        /// <summary>
-        /// функция для отправки значений обобщенных координат не в виде пакета
-        /// </summary>
-        public void writeCanal()    
-        {
-            try
-            {
-                sent('a' + this.canA.ToString() + 'z');
-                sent('b' + this.canB.ToString() + 'z');
-                sent('c' + this.canC.ToString() + 'z');
-                sent('d' + this.canD.ToString() + 'z');
-                sent('e' + this.canE.ToString() + 'z');
-                sent('f' + this.canF.ToString() + 'z');
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-            
-        /// <summary>
         /// Возвращает строку с выписанными в ряд значениями индекса канала, координаты и завершающего знака
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            return   'a' + this.canA.ToString()+ 'z' + 'b' + this.canB.ToString()+ 'z' + 'c' + this.canC.ToString()+ 'z' +
+            return      'a' + this.canA.ToString()+ 'z' + 'b' + this.canB.ToString()+ 'z' + 'c' + this.canC.ToString()+ 'z' +
                         'd' + this.canD.ToString()+ 'z' + 'e' + this.canE.ToString()+ 'z' + 'f' + this.canF.ToString()+ 'z' +
                         'g' + this.time.ToString()+'z' ;
         }
+ 
         public string numString()
         {
             return "Point " + this.numPoint.ToString() + '\t' + this.time.ToString() + " ms." + '\r' + '\n';
@@ -240,6 +165,7 @@ namespace PointSpase
         {
         //if (pointsCoint != 0) pastPoint = this[pointsCoint - 1]; //помещаем предыдущую точку в pastPoint
             base.Add(temp);
+            temp.IncrementPoint();
             this.pointsCoint++;
         }
 
@@ -305,66 +231,5 @@ namespace PointSpase
                 throw new Exception(e.Message);
             }
         }
-    }
-
-
-    public class num
-    {
-        public char index;
-        public char[] num_c=new char[4];
-        public int coint;
-        public void invert()
-        {
-            char temp;
-            switch (coint)
-            {
-                case 2:
-                    temp = num_c[0];
-                    num_c[0] = num_c[1];
-                    num_c[1] = temp;
-                    break;
-                case 3:
-                    temp = num_c[0];
-                    num_c[0] = num_c[2];
-                    num_c[2] = temp;
-                    break;
-                default:
-                    break;
-            }
-            return;
-        }
-        public int toint()
-        {
-            invert();
-            int toint = 0;
-            for (int i = 0; i < coint; i++)
-            {
-                if (num_c[i] >= '0' && num_c[i] <= '9')
-                {
-                    toint += (num_c[i] - 48) * Convert.ToInt32(Math.Pow(10,Convert.ToDouble(i)));
-                }
-            }
-            return toint;
-        }
-
-        /// <summary>
-        /// преобразует строку в значение и индекс координаты
-        /// </summary>
-        /// <param name="str"></param>
-        public void processing(string str) 
-        {
-            foreach (char temp in str)
-            {
-                if (temp >= 'A' && temp < 'z') index = temp; 
-
-                else if (temp >= '0' && temp <= '9')
-                {
-                    num_c[coint] = temp;
-                    coint++;
-                }
-            }
-        }
-        public num(){}
-        public num(string str) => processing(str);
     }
 }
