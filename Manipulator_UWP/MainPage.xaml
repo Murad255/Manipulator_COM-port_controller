@@ -8,11 +8,52 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="359*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="750*" />
+            <RowDefinition Height="250*"/>
+            <RowDefinition Height="50*"/>
         </Grid.RowDefinitions>
+        <RelativePanel Background="#FF1D64A3">
+            <Button x:Name="HamburgerButton" RelativePanel.AlignLeftWithPanel="True"
+                    FontFamily="Segoe MDL2 Assets" FontSize="36"
+                    Content="&#xE700;" Click="HamburgerButton_Click" Background="#CCFFFFFF"/>
+            <TextBlock Name="TitleTextBlock" RelativePanel.RightOf="HamburgerButton"
+                       FontSize="28" FontWeight="Bold" Margin="30 5 0 0" FocusVisualPrimaryBrush="White" Foreground="#FFF8F8F8" />
+        </RelativePanel>
 
+        <SplitView Name="mySplitView" Grid.Row="1" OpenPaneLength="250"  PaneBackground="#FF27A8E4">
+            <SplitView.Pane>
+                <ListBox SelectionMode="Single" SelectionChanged="ListBox_SelectionChanged" Background="#FF47A0D3">
+                    <ListBoxItem Name="home">
+                        <TextBlock FontSize="30" Text="Главная"  Foreground="White"  />
+                    </ListBoxItem>
+                    <ListBoxItem Name="share">
+                        <TextBlock FontSize="30" Text="Редактор точки" Foreground="White"/>
+                    </ListBoxItem>
+                    <ListBoxItem Name="settings">
+                        <TextBlock FontSize="30" Text="Настройки" Foreground="White" />
+                    </ListBoxItem>
+                </ListBox>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Frame Name="myFrame" />
+            </SplitView.Content>
+        </SplitView>
+
+        <Grid Grid.Row="2" Margin="30 5 30 5" BorderBrush="Brown">
+            <TextBlock Name="Console"  Text="Hello" FontSize="30"/>
+        </Grid>
+
+        <Grid Grid.Row="4" Margin="30 0 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="13*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0" Name="TextConsoleUmput"  Text="umput" FontSize="18"/>
+            <Button  Grid.Column="1" x:Name="ButtonConsoleUmput" Content="Отправить" Width="135" HorizontalAlignment="Center" Height="50" />
+        </Grid>
     </Grid>
 </Page>

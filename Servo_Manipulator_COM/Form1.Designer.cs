@@ -178,7 +178,7 @@
             "steady",
             "work"});
             this.comboHomeMode.Location = new System.Drawing.Point(9, 349);
-            this.comboHomeMode.Margin = new System.Windows.Forms.Padding(2);
+            this.comboHomeMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboHomeMode.Name = "comboHomeMode";
             this.comboHomeMode.Size = new System.Drawing.Size(62, 21);
             this.comboHomeMode.TabIndex = 19;
@@ -433,9 +433,9 @@
             this.tabPage3.Controls.Add(this.PointListView);
             this.tabPage3.Controls.Add(this.groupBox2);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(2);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage3.Size = new System.Drawing.Size(636, 427);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "перемещения по точкам";
@@ -539,7 +539,7 @@
             // 
             this.PointListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.PointListView.Location = new System.Drawing.Point(308, 44);
-            this.PointListView.Margin = new System.Windows.Forms.Padding(2);
+            this.PointListView.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.PointListView.Multiline = true;
             this.PointListView.Name = "PointListView";
             this.PointListView.ScrollBars = System.Windows.Forms.ScrollBars.Both;
@@ -570,9 +570,9 @@
             this.groupBox2.Controls.Add(this.valueCoordX);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox2.Location = new System.Drawing.Point(13, 22);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox2.Size = new System.Drawing.Size(291, 265);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
@@ -592,7 +592,7 @@
             // 
             this.valueCoordF.Enabled = false;
             this.valueCoordF.Location = new System.Drawing.Point(203, 74);
-            this.valueCoordF.Margin = new System.Windows.Forms.Padding(2);
+            this.valueCoordF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.valueCoordF.Name = "valueCoordF";
             this.valueCoordF.Size = new System.Drawing.Size(45, 21);
             this.valueCoordF.TabIndex = 18;
@@ -615,7 +615,7 @@
             this.checkAlgoritm.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkAlgoritm.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.checkAlgoritm.Location = new System.Drawing.Point(148, 168);
-            this.checkAlgoritm.Margin = new System.Windows.Forms.Padding(2);
+            this.checkAlgoritm.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkAlgoritm.Name = "checkAlgoritm";
             this.checkAlgoritm.Size = new System.Drawing.Size(122, 19);
             this.checkAlgoritm.TabIndex = 16;
@@ -627,7 +627,7 @@
             // 
             this.cycleStatus.AutoSize = true;
             this.cycleStatus.Location = new System.Drawing.Point(4, 168);
-            this.cycleStatus.Margin = new System.Windows.Forms.Padding(2);
+            this.cycleStatus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cycleStatus.Name = "cycleStatus";
             this.cycleStatus.Size = new System.Drawing.Size(70, 19);
             this.cycleStatus.TabIndex = 15;
@@ -647,7 +647,7 @@
             // delay
             // 
             this.delay.Location = new System.Drawing.Point(84, 110);
-            this.delay.Margin = new System.Windows.Forms.Padding(2);
+            this.delay.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.delay.Name = "delay";
             this.delay.Size = new System.Drawing.Size(45, 21);
             this.delay.TabIndex = 14;
@@ -657,7 +657,7 @@
             // 
             this.checkGrip.AutoSize = true;
             this.checkGrip.Location = new System.Drawing.Point(78, 168);
-            this.checkGrip.Margin = new System.Windows.Forms.Padding(2);
+            this.checkGrip.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkGrip.Name = "checkGrip";
             this.checkGrip.Size = new System.Drawing.Size(66, 19);
             this.checkGrip.TabIndex = 12;
@@ -669,7 +669,7 @@
             // 
             this.SentButton.Enabled = false;
             this.SentButton.Location = new System.Drawing.Point(163, 191);
-            this.SentButton.Margin = new System.Windows.Forms.Padding(2);
+            this.SentButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.SentButton.Name = "SentButton";
             this.SentButton.Size = new System.Drawing.Size(107, 34);
             this.SentButton.TabIndex = 1;
@@ -680,7 +680,7 @@
             // SaveButton
             // 
             this.SaveButton.Location = new System.Drawing.Point(17, 191);
-            this.SaveButton.Margin = new System.Windows.Forms.Padding(2);
+            this.SaveButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(107, 34);
             this.SaveButton.TabIndex = 2;
@@ -702,7 +702,7 @@
             // 
             this.valueCoordA.Enabled = false;
             this.valueCoordA.Location = new System.Drawing.Point(203, 49);
-            this.valueCoordA.Margin = new System.Windows.Forms.Padding(2);
+            this.valueCoordA.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.valueCoordA.Name = "valueCoordA";
             this.valueCoordA.Size = new System.Drawing.Size(45, 21);
             this.valueCoordA.TabIndex = 11;
@@ -721,7 +721,7 @@
             // 
             this.valueCoordB.Enabled = false;
             this.valueCoordB.Location = new System.Drawing.Point(203, 22);
-            this.valueCoordB.Margin = new System.Windows.Forms.Padding(2);
+            this.valueCoordB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.valueCoordB.Name = "valueCoordB";
             this.valueCoordB.Size = new System.Drawing.Size(45, 21);
             this.valueCoordB.TabIndex = 9;
@@ -740,7 +740,7 @@
             // 
             this.valueCoordZ.Enabled = false;
             this.valueCoordZ.Location = new System.Drawing.Point(58, 72);
-            this.valueCoordZ.Margin = new System.Windows.Forms.Padding(2);
+            this.valueCoordZ.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.valueCoordZ.Name = "valueCoordZ";
             this.valueCoordZ.Size = new System.Drawing.Size(45, 21);
             this.valueCoordZ.TabIndex = 7;
@@ -759,7 +759,7 @@
             // 
             this.valueCoordY.Enabled = false;
             this.valueCoordY.Location = new System.Drawing.Point(58, 46);
-            this.valueCoordY.Margin = new System.Windows.Forms.Padding(2);
+            this.valueCoordY.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.valueCoordY.Name = "valueCoordY";
             this.valueCoordY.Size = new System.Drawing.Size(45, 21);
             this.valueCoordY.TabIndex = 5;
@@ -778,7 +778,7 @@
             // 
             this.valueCoordX.Enabled = false;
             this.valueCoordX.Location = new System.Drawing.Point(58, 22);
-            this.valueCoordX.Margin = new System.Windows.Forms.Padding(2);
+            this.valueCoordX.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.valueCoordX.Name = "valueCoordX";
             this.valueCoordX.Size = new System.Drawing.Size(45, 21);
             this.valueCoordX.TabIndex = 3;
@@ -789,7 +789,7 @@
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPage1.Size = new System.Drawing.Size(636, 427);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "управление";
@@ -812,8 +812,8 @@
             this.tabPage2.Controls.Add(this.Console);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(636, 427);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Size = new System.Drawing.Size(637, 426);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Консоль";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -824,7 +824,7 @@
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(630, 21);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(631, 21);
             this.flowLayoutPanel2.TabIndex = 16;
             // 
             // flowLayoutPanel1
@@ -832,9 +832,9 @@
             this.flowLayoutPanel1.Controls.Add(this.textBox2);
             this.flowLayoutPanel1.Controls.Add(this.button1);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 389);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 388);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(630, 35);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(631, 35);
             this.flowLayoutPanel1.TabIndex = 15;
             // 
             // textBox2

@@ -47,6 +47,9 @@ namespace Servo_Manipulator_COM
 
         private static string BinPacskage(int index, int numbers)
         {
+            if (numbers > 2000 )    throw new Exception("Значение подвижности на канале "+ index.ToString()+" превысило предел!");
+            if (numbers < 0)        throw new Exception("Значение подвижности на канале " + index.ToString() + " ниже предела!");
+
             char[] mas = new char[3];
             mas[0] = Convert.ToChar((index << 4) | (numbers & 0xF));
             mas[1] = Convert.ToChar((index << 4) | ((numbers & 0xF0) >> 4));
@@ -77,7 +80,7 @@ namespace Servo_Manipulator_COM
         public void Write(int i) => port.Write(i.ToString());
         public void Write(String st) => port.Write(st);
 
-        public string Write(PointSpase.Point p)
+        public string WriteEndDebug(PointSpase.Point p)
         {
             string writeSrt = null;
             string  deb= "str";
@@ -107,5 +110,19 @@ namespace Servo_Manipulator_COM
             return deb;
         }
 
+        public void Write(PointSpase.Point p)
+        {
+            string writeSrt = null;
+            string deb = "str";
+            writeSrt += BinPacskage((int)chanal.chanalA, Map(p.CanA, qAmin, qAmax));
+            writeSrt += BinPacskage((int)chanal.chanalB, Map(p.CanB, qBmin, qBmax));
+            writeSrt += BinPacskage((int)chanal.chanalC, Map(p.CanC, qCmin, qCmax));
+            writeSrt += BinPacskage((int)chanal.chanalD, Map(p.CanD, qDmin, qDmax));
+            writeSrt += BinPacskage((int)chanal.chanalE, Map(p.CanE, qEmin, qEmax));
+            writeSrt += BinPacskage((int)chanal.chanalF, Map(p.CanF, qFmin, qFmax));
+            writeSrt += BinPacskage((int)chanal.grabChanal, Map(p.CanGrab, qGmin, qGmax));
+
+            port.Write(writeSrt);
+        }
     }
 }

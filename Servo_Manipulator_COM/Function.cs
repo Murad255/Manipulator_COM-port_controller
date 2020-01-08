@@ -27,7 +27,7 @@ namespace Servo_Manipulator_COM
                 {
                     //serialWrite(ch + trackBar.Value.ToString() + 'z');
                     Point.tempPoint[ch] = trackBar.Value;
-                    Console.Text = serialPort.Write(Point.tempPoint);
+                    Console.Text = serialPort.WriteEndDebug(Point.tempPoint);
                     //trackBar.Value.ToString();
                     //label.Text = trackBar.Value.ToString();
                     labelUpdate();
@@ -86,7 +86,7 @@ namespace Servo_Manipulator_COM
                     }
                     else if ((string)comboHomeMode.SelectedItem == "steady")
                     {
-                        Point homePoint = new Point(0, 140, 87, 260, 0, 140);
+                        Point homePoint = new Point(0, 45, 87, 0, 240, 0);
                         Point.tempPoint = homePoint;
                         serialPort.Write(homePoint);
                         trackBarSet(homePoint);
@@ -209,12 +209,13 @@ namespace Servo_Manipulator_COM
                         do
                         {
                             Passing.pastPoint = tempPoints[0];
-                            foreach (Point p in tempPoints)
+                            foreach (Point point in tempPoints)
                             {
                                 if (eexecutionToken.IsCancellationRequested) return; //принудительное закрытие задачи
                                 Passing.sinFunc(Passing.pastPoint,
-                                                p, serialPort.Write);
-                                Passing.pastPoint = p;
+                                                point, 
+                                                serialPort.Write);
+                                Passing.pastPoint = point;
                             }
 
                         } while (cycleStatus.Checked && startExecution_status);
@@ -276,16 +277,16 @@ namespace Servo_Manipulator_COM
                         foreach (Point p in tempPoints)
                         {
 
-                            Passing.sinFunc(Passing.pastPoint,
-                                            p,
-                                            (string data) =>
-                                            {
-                                                sentData.Add(data);
-                                            },
-                                            (string data) =>
-                                            {
-                                                sentTime.Add(Convert.ToInt32(data));
-                                            });
+                            //Passing.sinFunc(Passing.pastPoint,
+                            //                p,
+                            //                (string data) =>
+                            //                {
+                            //                    sentData.Add(data);
+                            //                },
+                            //                (string data) =>
+                            //                {
+                            //                    sentTime.Add(Convert.ToInt32(data));
+                            //                });
                             Passing.pastPoint = p;
                         }
 

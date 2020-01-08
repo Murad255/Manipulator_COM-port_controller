@@ -18,6 +18,10 @@ namespace Servo_Manipulator_COM
             InitializeComponent();
             SerialRate.Text = programConfig.Speed.ToString();
             this.SerialRate.SelectedIndexChanged += new System.EventHandler(this.SerialRate_SelectedIndexChanged);
+
+            if (programConfig.Strategy  is SinPassingStrategy) trackBarStrategy.Value = 0;
+            
+            else if (programConfig.Strategy is LinearPassingStrategy) trackBarStrategy.Value = 1;
         }
 
         private void SerialRate_SelectedIndexChanged(object sender, EventArgs e)
@@ -41,8 +45,8 @@ namespace Servo_Manipulator_COM
             }
             else if (trackBarStrategy.Value == 1)
             {
-                programConfig.Strategy = new SinPassingStrategy();
-                Passing.ContextStrategy = new SinPassingStrategy();
+                programConfig.Strategy = new LinearPassingStrategy();
+                Passing.ContextStrategy = new LinearPassingStrategy();
             }
         }
     }

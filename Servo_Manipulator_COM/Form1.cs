@@ -44,7 +44,6 @@ namespace Servo_Manipulator_COM
         {
             InitializeComponent();
             loadArgument = args;
-            Point.sent = serialPortBase.Write;
             programConfig = ProgramConfig.Instance;
             if (programConfig.FilePozition != null) filePozition.Text = programConfig.FilePozition;
 
@@ -79,6 +78,10 @@ namespace Servo_Manipulator_COM
 
             trackBar_F.Maximum = Convert.ToInt32(Serial.qFmin);
             trackBar_F.Maximum = Convert.ToInt32(Serial.qFmax);
+
+            //passing
+            Passing.ContextStrategy = programConfig.Strategy;
+            Passing.SentPointFunction = serialPort.Write;
 
             RX_data = new Queue<char>();
             send = new Task(() => { });

@@ -13,7 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x419
+// Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Manipulator_UWP
 {
@@ -25,6 +25,34 @@ namespace Manipulator_UWP
         public MainPage()
         {
             this.InitializeComponent();
+
+            // по умолчанию открываем страницу home.xaml
+            myFrame.Navigate(typeof(Home));
+            TitleTextBlock.Text = "Главная";
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (home.IsSelected) 
+            {
+                myFrame.Navigate(typeof(Home));
+                TitleTextBlock.Text = "Главная";
+            }
+            else if (share.IsSelected)
+            {
+                myFrame.Navigate(typeof(Points_Editor));
+                TitleTextBlock.Text = "Редактор точек";
+            }
+            else if (settings.IsSelected)
+            {
+                myFrame.Navigate(typeof(Settings));
+                TitleTextBlock.Text = "Настройки";
+            }
+        }
+
+        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
+        {
+            mySplitView.IsPaneOpen = !mySplitView.IsPaneOpen;
         }
     }
 }

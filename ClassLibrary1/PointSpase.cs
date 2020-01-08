@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json;
+using Newtonsoft.Json;       
 
 namespace PointSpase
 {
@@ -11,7 +11,7 @@ namespace PointSpase
         protected static int numPoints = 0; //общее количество созданных точек 
         protected int numPoint;             //номер данного экземпляра
         public static Point tempPoint = new Point();
-      
+
         public int NumPoint
         {
             get { return numPoint; }
@@ -84,14 +84,14 @@ namespace PointSpase
             }
         }
 
-        public Point(   float canA = 0, float canB = 0, float canC = 0, 
-                        float canD = 0, float canE = 0, float canF = 0, long time = 0)=>
+        public Point(float canA = 0, float canB = 0, float canC = 0,
+                        float canD = 0, float canE = 0, float canF = 0, long time = 0) =>
             setAllDegree(canA, canB, canC, canD, canE, canF, time);
-        
 
-        public void IncrementPoint()=> numPoint =++numPoints;
 
-        public static Point operator ~(Point p) => equivalent(p);   
+        public void IncrementPoint() => numPoint = ++numPoints;
+
+        public static Point operator ~(Point p) => equivalent(p);
 
         /// <summary>
         /// создаёт эквивалентный обьект
@@ -100,7 +100,7 @@ namespace PointSpase
         /// <returns></returns>
         public static Point equivalent(Point p)
         {
-            return new Point(   p.CanA, p.CanB,
+            return new Point(p.CanA, p.CanB,
                                 p.CanC, p.CanD,
                                 p.CanE, p.CanF, p.Time);
         }
@@ -115,7 +115,7 @@ namespace PointSpase
         /// <param name="canE"></param>
         /// <param name="canF"></param>
         /// <param name="time"></param>
-        private void setAllDegree(float canA, float canB, float canC, float canD, float canE, float canF, long time)  
+        private void setAllDegree(float canA, float canB, float canC, float canD, float canE, float canF, long time)
         {
             this.canA = canA;
             this.canB = canB;
@@ -132,11 +132,11 @@ namespace PointSpase
         /// <returns></returns>
         public override string ToString()
         {
-            return      'a' + this.canA.ToString()+ 'z' + 'b' + this.canB.ToString()+ 'z' + 'c' + this.canC.ToString()+ 'z' +
-                        'd' + this.canD.ToString()+ 'z' + 'e' + this.canE.ToString()+ 'z' + 'f' + this.canF.ToString()+ 'z' +
-                        'g' + this.time.ToString()+'z' ;
+            return 'a' + this.canA.ToString() + 'z' + 'b' + this.canB.ToString() + 'z' + 'c' + this.canC.ToString() + 'z' +
+                        'd' + this.canD.ToString() + 'z' + 'e' + this.canE.ToString() + 'z' + 'f' + this.canF.ToString() + 'z' +
+                        'g' + this.time.ToString() + 'z';
         }
- 
+
         public string numString()
         {
             return "Point " + this.numPoint.ToString() + '\t' + this.time.ToString() + " ms." + '\r' + '\n';
@@ -145,7 +145,7 @@ namespace PointSpase
 
 
 
-    public class Points: List<Point>
+    public class Points : List<Point>
     {
         //private Point pastPoint= new Point();
         //public Point PastPoint
@@ -154,20 +154,20 @@ namespace PointSpase
         //}
 
         private int pointsCoint = 0;
-        public  int PointsCoint
+        public int PointsCoint
         {
             get { return pointsCoint; }
         }
 
         public void Add(Point temp)
         {
-        //if (pointsCoint != 0) pastPoint = this[pointsCoint - 1]; //помещаем предыдущую точку в pastPoint
+            //if (pointsCoint != 0) pastPoint = this[pointsCoint - 1]; //помещаем предыдущую точку в pastPoint
             base.Add(temp);
             temp.IncrementPoint();
             this.pointsCoint++;
         }
 
-        public void Add(int canA, int canB, int canC,int canD,
+        public void Add(int canA, int canB, int canC, int canD,
                         int canE, int canF, long time)
         {
             Point temp = new Point(canA, canB, canC, canD, canE, canF, time);
@@ -178,35 +178,10 @@ namespace PointSpase
         {
             try
             {
-            /*
-            using (StreamReader sr = new StreamReader(Path))
-            {
-                // Считываем файл
-                // В файле каждая строчка должна соотвествовать
-                // координатам с индексами через "z"
-                while (!sr.EndOfStream)
-                {
-                    int[] intPoint = new int[8];
-                string[] tmp = sr.ReadLine().Split('z').ToArray(); //помещаем все координаты строки в массив из 7 элементов
 
-                    foreach(string st in tmp)
-                    {
-                    num n = new num(st);
-                    int i = (int)n.index - 97;
-
-                    if(i>=0&&i<7)intPoint[i] = n.toint();    //т.к. координата поределяется буквой от a  до f + g--для времени, то можно отнять из индекса 97
-                    }    
-
-                Point temp = new Point( intPoint[0], intPoint[1], intPoint[2], intPoint[3],
-                                        intPoint[4], intPoint[5], intPoint[6]);
-                    Add(temp);
-                }
-                sr.Close();
-            }
-            */
-            var data = File.ReadAllText(Path);//File.ReadAllText($"{Environment.CurrentDirectory}\\{Path}");
-            Points temp = JsonConvert.DeserializeObject<Points>(data);
-            this.AddRange(temp);
+                var data = File.ReadAllText(Path);//File.ReadAllText($"{Environment.CurrentDirectory}\\{Path}");
+                Points temp = JsonConvert.DeserializeObject<Points>(data);
+                this.AddRange(temp);
             }
             catch (Exception e)
             {
@@ -218,10 +193,10 @@ namespace PointSpase
         {
             try
             {
-            using (StreamWriter sr = new StreamWriter(Path, false))
-            {
-                sr.WriteLine(JsonConvert.SerializeObject(this));
-            }
+                using (StreamWriter sr = new StreamWriter(Path, false))
+                {
+                    sr.WriteLine(JsonConvert.SerializeObject(this));
+                }
 
             }
             catch (Exception e)

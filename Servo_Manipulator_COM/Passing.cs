@@ -9,15 +9,11 @@ using PointSpase;
 
 namespace Servo_Manipulator_COM
 {
+    public delegate void Sent(Point point); //делегат для отправки сообщения в COM-порт
 
     public interface PassingStrategy
     {
-        void PassingAlgoritm(   float pastCoint,
-                                float nextCoint,
-                                Sent func,
-                                char numCanal,
-                                int cycle,
-                                long maxCycle);
+
 
         float PassingAlgoritmData(  float pastCoint,
                                     float nextCoint,
@@ -29,20 +25,6 @@ namespace Servo_Manipulator_COM
     /// </summary>
     class SinPassingStrategy : PassingStrategy
     {
-        static public Task sendTask;
-
-        public void PassingAlgoritm(float pastCoint,
-                                    float nextCoint,
-                                    Sent func,
-                                    char numCanal,
-                                    int cycle,
-                                    long maxCycle)
-        {
-            double a = (nextCoint - pastCoint) / 2;
-            int coint = Convert.ToInt32(a * (-Math.Cos(3.14 / Convert.ToDouble(maxCycle) * Convert.ToDouble(cycle)) + 1) + pastCoint);
-            sendTask.Wait();
-            sendTask = Task.Run(() => func(numCanal + coint.ToString() + 'z'));
-        }
 
         public float PassingAlgoritmData(float pastCoint, float nextCoint, int cycle,long maxCycle)
         {
@@ -58,16 +40,6 @@ namespace Servo_Manipulator_COM
     /// </summary>
     class LinearPassingStrategy : PassingStrategy
     {
-        static public Task sendTask;
-
-        public void PassingAlgoritm(float pastCoint, float nextCoint, Sent func, char numCanal, int cycle, long maxCycle)
-        {
-            double a = (nextCoint - pastCoint) / maxCycle;
-            int coint =  Convert.ToInt32((a * cycle) + pastCoint);
-            sendTask.Wait();
-            sendTask = Task.Run(() => func(numCanal + coint.ToString() + 'z'));
-        }
-
         public float PassingAlgoritmData(float pastCoint, float nextCoint, int cycle, long maxCycle)
         {
             double a = (nextCoint - pastCoint)/ maxCycle;
@@ -87,20 +59,22 @@ namespace Servo_Manipulator_COM
         static Task sendTask;
         public static Point pastPoint = new Point();
         static private long passingValue = 0;
+
+        static public Sent sentPointFunction;
         static private PassingStrategy contextStrategy;
         static public PassingStrategy ContextStrategy
         {
             set { contextStrategy = value; }
         }
 
+        static public Sent SentPointFunction
+        { set { sentPointFunction = value; } }
+
             public void Context(PassingStrategy _strategy)
             {
                 ContextStrategy = _strategy;
-                SinPassingStrategy.sendTask = sendTask;
             }
 
-        static public void PassingAlgoritm(float pastCoint, float nextCoint, Sent func, char numCanal, int cycle) =>
-            Passing.contextStrategy.PassingAlgoritm( pastCoint, nextCoint,  func,  numCanal,  cycle, passingValue);
 
         static public float PassingAlgoritmData(float pastCoint, float nextCoint, int cycle) =>
             Passing.contextStrategy.PassingAlgoritmData(pastCoint,  nextCoint, cycle, passingValue);
@@ -110,7 +84,7 @@ namespace Servo_Manipulator_COM
         static public void sinFunc(Point pastCoint, Point nextCoint, Sent func)
         {
             long time = nextCoint.Time;
-            Point.sent = func;
+           // Point.sent = func;
 
             sendTask = new Task(() => { });
             sendTask.Start();
@@ -120,12 +94,15 @@ namespace Servo_Manipulator_COM
             int delay = (int)(time / passingValue * 9 / 10);
             for (int i = 0; i <= passingValue; i++)
             {
-                PassingAlgoritm(pastCoint.CanA, nextCoint.CanA, func,'a', i);
-                PassingAlgoritm(pastCoint.CanB, nextCoint.CanB, func,'b', i);
-                PassingAlgoritm(pastCoint.CanC, nextCoint.CanC, func,'c', i);
-                PassingAlgoritm(pastCoint.CanD, nextCoint.CanD, func,'d', i);
-                PassingAlgoritm(pastCoint.CanE, nextCoint.CanE, func,'e', i);
-                PassingAlgoritm(pastCoint.CanF, nextCoint.CanF, func,'f', i);
+                Point temp = new Point(
+                    PassingAlgoritmData(pastCoint.CanA, nextCoint.CanA, i),
+                    PassingAlgoritmData(pastCoint.CanB, nextCoint.CanB, i),
+                    PassingAlgoritmData(pastCoint.CanC, nextCoint.CanC, i),
+                    PassingAlgoritmData(pastCoint.CanD, nextCoint.CanD, i),
+                    PassingAlgoritmData(pastCoint.CanE, nextCoint.CanE, i),
+                    PassingAlgoritmData(pastCoint.CanF, nextCoint.CanF, i)
+                );
+                func(temp);
                 Thread.Sleep(delay); 
             }
             
@@ -151,8 +128,8 @@ namespace Servo_Manipulator_COM
                 oneSinFuncData(pastCoint.CanF, nextCoint.CanF, i),
                 0);
 
-                funcData(point.ToString());
-                funcTime(delay.ToString());
+               // funcData(point.ToString());
+                //funcTime(delay.ToString());
             }
 
         }
@@ -162,7 +139,7 @@ namespace Servo_Manipulator_COM
             double a = (nextCoint - pastCoint) / 2;
             int coint = Convert.ToInt32(a * (-Math.Cos(3.14 / Convert.ToDouble(passingValue) * Convert.ToDouble(cycle)) + 1) + pastCoint);
             sendTask.Wait();
-            sendTask = Task.Run(() => func(numCanal + coint.ToString() + 'z'));
+            //sendTask = Task.Run(() => func(numCanal + coint.ToString() + 'z'));
         }
 
         static private float oneSinFuncData(float pastCoint, float nextCoint, int cycle)
