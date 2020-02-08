@@ -2,7 +2,6 @@
 
 namespace Intersection
 {
-
     public static class Shape
     {
         public const double L2 = 147;
@@ -63,5 +62,4 @@ namespace Intersection
         : base(message)
         { }
     }
-
 }

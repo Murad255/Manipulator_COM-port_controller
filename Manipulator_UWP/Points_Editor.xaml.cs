@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ManipulatorSerialInterfase;
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -22,9 +23,23 @@ namespace Manipulator_UWP
     /// </summary>
     public sealed partial class Points_Editor : Page
     {
+        ManipulatorSerialPort serialPort;
+
         public Points_Editor()
         {
             this.InitializeComponent();
+            serialPort = ManipulatorSerialPort.Instance;
+
+        }
+
+        private void chanal_A_minus_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void chanal_A_plus_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

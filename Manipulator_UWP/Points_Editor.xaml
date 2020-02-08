@@ -70,27 +70,31 @@
                         <RowDefinition Height="3*"/>
                     </Grid.RowDefinitions>
 
-                    <Button Content="-" Grid.Column="6" Grid.Row="1" Style="{StaticResource ChangeValueButtonStyle}" />
-                    <Button Content="+" Grid.Column="8" Grid.Row="1" Style="{StaticResource ChangeValueButtonStyle}"/>
-                    <Button Content="-" Grid.Column="6" Grid.Row="3" Style="{StaticResource ChangeValueButtonStyle}"/>
-                    <Button Content="+" Grid.Column="8" Grid.Row="3" Style="{StaticResource ChangeValueButtonStyle}"/>
-                    <Button Content="-" Grid.Column="6" Grid.Row="5" Style="{StaticResource ChangeValueButtonStyle}"/>
-                    <Button Content="+" Grid.Column="8" Grid.Row="5" Style="{StaticResource ChangeValueButtonStyle}"/>
-                    <Button Content="-" Grid.Column="6" Grid.Row="7" Style="{StaticResource ChangeValueButtonStyle}"/>
-                    <Button Content="+" Grid.Column="8" Grid.Row="7" Style="{StaticResource ChangeValueButtonStyle}"/>
-                    <Button Content="-" Grid.Column="6" Grid.Row="9" Style="{StaticResource ChangeValueButtonStyle}"/>
-                    <Button Content="+" Grid.Column="8" Grid.Row="9" Style="{StaticResource ChangeValueButtonStyle}"/>
-                    <Button Content="-" Grid.Column="6" Grid.Row="11" Style="{StaticResource ChangeValueButtonStyle}"/>
-                    <Button Content="+" Grid.Column="8" Grid.Row="11" Style="{StaticResource ChangeValueButtonStyle}"/>
-                    <Button Content="-" Grid.Column="6" Grid.Row="13" Style="{StaticResource ChangeValueButtonStyle}"/>
-                    <Button Content="+" Grid.Column="8" Grid.Row="13" Style="{StaticResource ChangeValueButtonStyle}"/>
+                    <Button x:Name="chanal_A_minus" Content="&#xE949;" Grid.Column="6" Grid.Row="1" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets" Click="chanal_A_minus_Click" />
+                    <Button x:Name="chanal_A_plus" Content="&#xE948;" Grid.Column="8" Grid.Row="1" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets" Click="chanal_A_plus_Click" RenderTransformOrigin="0.5,0.5" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" Padding="0,0,0,0">
+                        <Button.RenderTransform>
+                            <CompositeTransform TranslateY="0" Rotation="0"/>
+                        </Button.RenderTransform>
+                    </Button>
+                    <Button x:Name="chanal_B_minus" Content="&#xE949;" Grid.Column="6" Grid.Row="3" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets"/>
+                    <Button x:Name="chanal_B_plus" Content="&#xE948;" Grid.Column="8" Grid.Row="3" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets"/>
+                    <Button x:Name="chanal_C_minus" Content="&#xE949;" Grid.Column="6" Grid.Row="5" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets"/>
+                    <Button x:Name="chanal_C_plus" Content="&#xE948;" Grid.Column="8" Grid.Row="5" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets"/>
+                    <Button x:Name="chanal_D_minus" Content="&#xE949;" Grid.Column="6" Grid.Row="7" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets"/>
+                    <Button x:Name="chanal_D_plus" Content="&#xE948;" Grid.Column="8" Grid.Row="7" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets"/>
+                    <Button x:Name="chanal_E_minus" Content="&#xE949;" Grid.Column="6" Grid.Row="9" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets"/>
+                    <Button x:Name="chanal_E_plus" Content="&#xE948;" Grid.Column="8" Grid.Row="9" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets"/>
+                    <Button x:Name="chanal_F_minus" Content="&#xE949;" Grid.Column="6" Grid.Row="11" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets"/>
+                    <Button x:Name="chanal_F_plus" Content="&#xE948;" Grid.Column="8" Grid.Row="11" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets"/>
+                    <Button x:Name="chanal_TIME_minus" Content="&#xE949;" Grid.Column="6" Grid.Row="13" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets"/>
+                    <Button x:Name="chanal_TIME_plus" Content="&#xE948;" Grid.Column="8" Grid.Row="13" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets"/>
 
-                    <ProgressBar Grid.Column="2" HorizontalAlignment="Center" Height="31" Grid.Row="1" Width="382"/>
-                    <ProgressBar Grid.Column="2" HorizontalAlignment="Center" Height="31" Grid.Row="3" Width="382"/>
-                    <ProgressBar Grid.Column="2" HorizontalAlignment="Center" Height="31" Grid.Row="5" Width="382"/>
-                    <ProgressBar Grid.Column="2" HorizontalAlignment="Center" Height="31" Grid.Row="7" Width="382"/>
-                    <ProgressBar Grid.Column="2" HorizontalAlignment="Center" Height="31" Grid.Row="9" Width="382"/>
-                    <ProgressBar Grid.Column="2" HorizontalAlignment="Center" Height="31" Grid.Row="11" Width="382"/>
+                    <ProgressBar x:Name="pbCanal_A" Grid.Column="2" HorizontalAlignment="Center" Height="31" Grid.Row="1" Width="382"/>
+                    <ProgressBar x:Name="pbCanal_B" Grid.Column="2" HorizontalAlignment="Center" Height="31" Grid.Row="3" Width="382"/>
+                    <ProgressBar x:Name="pbCanal_C" Grid.Column="2" HorizontalAlignment="Center" Height="31" Grid.Row="5" Width="382"/>
+                    <ProgressBar x:Name="pbCanal_D" Grid.Column="2" HorizontalAlignment="Center" Height="31" Grid.Row="7" Width="382"/>
+                    <ProgressBar x:Name="pbCanal_E" Grid.Column="2" HorizontalAlignment="Center" Height="31" Grid.Row="9" Width="382"/>
+                    <ProgressBar x:Name="pbCanal_F" Grid.Column="2" HorizontalAlignment="Center" Height="31" Grid.Row="11" Width="382"/>
 
                     <TextBlock x:Name="tBlock1" Grid.Column="1"  Grid.Row="1" Text="Канал А"  Style="{StaticResource LabelStyle}" Height="42" Margin="9,0,0,0" Width="150" Padding="5,0,0,0"/>
                     <TextBlock x:Name="tBlock2" Grid.Column="1"  Grid.Row="3" Text="Канал B"  Style="{StaticResource LabelStyle}" Grid.ColumnSpan="2" Height="33" Margin="9,0,0,0" Width="290"/>

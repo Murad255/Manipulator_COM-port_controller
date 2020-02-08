@@ -52,11 +52,8 @@
     <ApplicationIcon>robot-icon-free-29.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClassLibrary1">
-      <HintPath>..\ClassLibrary1.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -108,9 +105,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Диаграммы\ClassDiagram1.cd" />
     <None Include="Диаграммы\Passing.cd" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -132,9 +129,13 @@
     <Content Include="Servo_serial_handler.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Point_lib\Point_lib.csproj">
-      <Project>{06cbc0b2-e0ed-4450-9818-b6bdf1b9a5d2}</Project>
-      <Name>Point_lib</Name>
+    <ProjectReference Include="..\Intersection_lib_Standart\Intersection_lib_Standart.csproj">
+      <Project>{daf7d517-16d9-4d72-ac09-ba7155ccd789}</Project>
+      <Name>Intersection_lib_Standart</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PointLibStandart\PointLibStandart.csproj">
+      <Project>{00a789ff-ca89-40d9-bf5b-e5d702b9fd90}</Project>
+      <Name>PointLibStandart</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +149,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

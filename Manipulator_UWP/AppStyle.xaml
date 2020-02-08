@@ -27,8 +27,9 @@
         <Setter Property="VerticalAlignment"    Value="Stretch"/>
         <Setter Property="HorizontalContentAlignment"  Value="Center"/>
         <Setter Property="VerticalContentAlignment"    Value="Center"/>
-        <Setter Property="FontSize"             Value="36*"/>
-        <Setter Property="Padding"              Value="0,-15,0,0"/>
+        <Setter Property="FontSize"             Value="28*"/>
+        <Setter Property="Padding"              Value="0,0,0,0"/>
+        <Setter Property="FontFamily"           Value="Segoe MDL2 Assets"/>
     </Style>
 </ResourceDictionary>
 

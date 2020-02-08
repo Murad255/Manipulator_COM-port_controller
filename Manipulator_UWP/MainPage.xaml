@@ -8,20 +8,39 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="21*" />
         </Grid.RowDefinitions>
-        
-        <RelativePanel Background="#FF1D64A3">
-            <Button x:Name="HamburgerButton" RelativePanel.AlignLeftWithPanel="True"
-                    FontFamily="Segoe MDL2 Assets" FontSize="36"
-                    Content="&#xE700;" Click="HamburgerButton_Click" Background="#CCFFFFFF"/>
-            <TextBlock Name="TitleTextBlock" RelativePanel.RightOf="HamburgerButton"
-                       FontSize="28" FontWeight="Bold" Margin="30 5 0 0" FocusVisualPrimaryBrush="White" Foreground="#FFF8F8F8" />
-        </RelativePanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="697*"/>
+                <ColumnDefinition Width="136*"/>
+                <ColumnDefinition Width="155*"/>
+                <ColumnDefinition Width="78*"/>
+                <ColumnDefinition Width="434*"/>
+            </Grid.ColumnDefinitions>
+            <RelativePanel Background="#FF1D64A3" Grid.ColumnSpan="5">
 
+
+                <Button x:Name="HamburgerButton" RelativePanel.AlignLeftWithPanel="True"
+                        FontFamily="Segoe MDL2 Assets" FontSize="36"
+                        Content="&#xE700;" Click="HamburgerButton_Click" Background="#CCFFFFFF"/>
+                <TextBlock Name="TitleTextBlock" RelativePanel.RightOf="HamburgerButton"
+                           FontSize="28" FontWeight="Bold" Margin="30 5 0 0" FocusVisualPrimaryBrush="White" Foreground="#FFF8F8F8" />
+
+
+
+            </RelativePanel>
+            <TextBlock Text="COM порт" Grid.Column="1" TextWrapping="Wrap" HorizontalAlignment="Left" FocusVisualPrimaryBrush="White" FontSize="28" FontFamily="Calibri" VerticalAlignment="Center" Height="29" Width="124" Foreground="#FFC3D7E8"/>
+            <ComboBox x:Name="comboSelectPort" Width="127" Grid.Column="2" VerticalAlignment="Center" Height="30" HorizontalAlignment="Center" Tapped="comboSelectPort_Tapped" SelectionChanged="comboSelectPort_SelectionChanged"/>
+            <Button x:Name="ConectButton" Grid.Column="3" HorizontalAlignment="Center" Height="30" Width="122" RelativePanel.AlignLeftWithPanel="True"
+                        FontFamily="Segoe MDL2 Assets" FontSize="30"
+                        Content="&#xE8AB; "  Background="#CCFFFFFF" Padding="0,-2,-4,0" Click="ConectButton_Click"/>
+        </Grid>
         <SplitView Name="mySplitView" Grid.Row="1"  OpenPaneLength="250"  PaneBackground="#FF27A8E4" >
             <SplitView.Pane>
                 <ListBox SelectionMode="Single" SelectionChanged="ListBox_SelectionChanged" Background="#FF47A0D3">
@@ -45,9 +64,17 @@
                     </Grid.RowDefinitions>
 
                     <Frame Name="myFrame" Grid.Row="0"   Grid.RowSpan="3"/>
-                    
+
                     <Grid Grid.Row="1" Margin="5 5 5 5" BorderBrush="Brown" Background="#FFE6F3FF">
-                        <TextBlock Name="Console"  Text="Hello" FontSize="30" Margin="10,0,10,0" FocusVisualSecondaryBrush="#99FFFFFF" SelectionHighlightColor="#FF00101D"  />
+                        <ScrollViewer Name="ConsoleScrollPanel" 
+                                      VerticalScrollMode="Auto"    
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Auto"
+                                      ZoomMode="Enabled"
+                                      ZoomSnapPointsType="Optional"> 
+                            
+                            <StackPanel Name="Console"  Margin="10,0,10,0" />
+                        </ScrollViewer>
                     </Grid>
 
                     <Grid Grid.Row="2">
@@ -63,6 +90,6 @@
             </SplitView.Content>
         </SplitView>
 
-        
+
     </Grid>
 </Page>

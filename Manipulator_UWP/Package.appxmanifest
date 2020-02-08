@@ -4,8 +4,19 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
-  IgnorableNamespaces="uap mp">
-
+  xmlns:iot="http://schemas.microsoft.com/appx/manifest/iot/windows10"
+  IgnorableNamespaces="uap mp iot">
+  
+<Capabilities>
+    <Capability Name="internetClient" />
+    <DeviceCapability Name="serialcommunication">
+      <Device Id="any">
+        <Function Type="name:serialPort"/>
+      </Device>
+    </DeviceCapability>
+    <DeviceCapability Name="bluetooth"/>
+</Capabilities>
+  
   <Identity
     Name="e30347a0-de69-45e2-a5a4-a0273199767c"
     Publisher="CN=murad"
@@ -38,12 +49,10 @@
         Description="Manipulator_UWP"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
   </Applications>
 
-  <Capabilities>
-    <Capability Name="internetClient" />
-  </Capabilities>
+
+  
 </Package>

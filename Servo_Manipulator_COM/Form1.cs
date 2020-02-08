@@ -11,7 +11,7 @@ using Intersection;
 namespace Servo_Manipulator_COM
 {
     public partial class Form1 : Form
-    {
+    { 
         private const int WAIT_ANSWER_TIMEOUT = 500;
         private const int speed = 1;
         private bool textBox_status = false;                 //флаг направленности фокуса на элемент textBox2
@@ -57,6 +57,7 @@ namespace Servo_Manipulator_COM
             }
             if (portCount > programConfig.PortNum)
                 comboBox.SelectedIndex = programConfig.PortNum;
+
             comboHomeMode.SelectedIndex = 0;
             serialPort = new Serial(serialPortBase);
 
@@ -197,12 +198,6 @@ namespace Servo_Manipulator_COM
         private void trackBar_E_Scroll(object sender, EventArgs e) => ScrollFunction('e', trackBar_E, label_E, valueCoordA);
 
         private void trackBar_F_Scroll(object sender, EventArgs e) => ScrollFunction('f', trackBar_F, label_F, valueCoordF);
-        //{
-        //    serialWrite('f' + trackBar_F.Value.ToString() + 'z');
-        //    Console.Text = trackBar_F.Value.ToString();
-        //    label_F.Text = trackBar_F.Value.ToString();
-        //}
-
 
 
         private void button1_Click(object sender, EventArgs e)

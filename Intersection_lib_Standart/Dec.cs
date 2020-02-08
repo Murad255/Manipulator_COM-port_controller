@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace Intersection
 {
+
     public class Dec
     {
         public double decX, decY, decZ, pXY, decA, decB;
@@ -24,4 +26,5 @@ namespace Intersection
             this.pXY = Math.Sqrt(decX * decX + decY * decY);
         }
     }
+
 }
