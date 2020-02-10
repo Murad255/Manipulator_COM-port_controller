@@ -43,8 +43,8 @@ namespace ManipulatorSerialInterfase
         public const float qCmin = -45;
         public const float qDmin = -90;
         public const float qEmin = 100;
-        public const float qGmin = 0;
         public const float qFmin = -90;
+        public const float qGmin = 0;
 
         public const float qAmax = qAmin + 180;
         public const float qBmax = qBmin + 270;
@@ -56,8 +56,14 @@ namespace ManipulatorSerialInterfase
 
         public  enum chanal { chanalA = 1, chanalB, chanalC, chanalD, chanalE, chanalF, grabChanal };
 
-
-        private static int Map(float degre, float min, float max)
+        /// <summary>
+        /// Конвертирует значение угла с заданым минимальным и максимальным углом в ззначение от 0 до 2000
+        /// </summary>
+        /// <param name="degre"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public static int Map(float degre, float min, float max)
         {
             return (int)((degre - min) / (max - min) * 2000);
         }
@@ -69,8 +75,8 @@ namespace ManipulatorSerialInterfase
         /// <returns></returns>
         private static string BinPacskage(int index, int numbers)
         {
-            if (numbers > 2000) throw new Exception("Значение подвижности на канале " + index.ToString() + " превысило предел!");
-            if (numbers < 0) throw new Exception("Значение подвижности на канале " + index.ToString() + " ниже предела!");
+            if (numbers > 2000) throw new MaxValueException("Значение подвижности на канале " + index.ToString() + " превысило предел!");
+            if (numbers < 0)    throw new MinValueException("Значение подвижности на канале " + index.ToString() + " ниже предела!");
 
             char[] mas = new char[3];
             mas[0] = Convert.ToChar((index << 4) | (numbers & 0xF));
@@ -138,17 +144,48 @@ namespace ManipulatorSerialInterfase
         /// <param name="p"></param>
         public void Write(PointSpase.Point p)
         {
-            string writeSrt = null;
+            try
+            {
+                string writeSrt = null;
 
-            writeSrt += BinPacskage((int)chanal.chanalA, Map(p.CanA, qAmin, qAmax));
-            writeSrt += BinPacskage((int)chanal.chanalB, Map(p.CanB, qBmin, qBmax));
-            writeSrt += BinPacskage((int)chanal.chanalC, Map(p.CanC, qCmin, qCmax));
-            writeSrt += BinPacskage((int)chanal.chanalD, Map(p.CanD, qDmin, qDmax));
-            writeSrt += BinPacskage((int)chanal.chanalE, Map(p.CanE, qEmin, qEmax));
-            writeSrt += BinPacskage((int)chanal.chanalF, Map(p.CanF, qFmin, qFmax));
-            writeSrt += BinPacskage((int)chanal.grabChanal, Map(p.CanGrab, qGmin, qGmax));
+                writeSrt += BinPacskage((int)chanal.chanalA, Map(p.CanA, qAmin, qAmax));
+                writeSrt += BinPacskage((int)chanal.chanalB, Map(p.CanB, qBmin, qBmax));
+                writeSrt += BinPacskage((int)chanal.chanalC, Map(p.CanC, qCmin, qCmax));
+                writeSrt += BinPacskage((int)chanal.chanalD, Map(p.CanD, qDmin, qDmax));
+                writeSrt += BinPacskage((int)chanal.chanalE, Map(p.CanE, qEmin, qEmax));
+                writeSrt += BinPacskage((int)chanal.chanalF, Map(p.CanF, qFmin, qFmax));
+                writeSrt += BinPacskage((int)chanal.grabChanal, Map(p.CanGrab, qGmin, qGmax));
 
-            Write(writeSrt);
+                Write(writeSrt);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
+    }
+
+    /// <summary>
+    /// исключение, возникающее при значения угла, меньшим чем минимально допустимое
+    /// </summary>
+    public class MinValueException : Exception
+    {
+
+        public MinValueException() : base("Значение подвижности ниже предела!") { }
+
+        public MinValueException(string message) : base(message) { }
+
+    }
+
+    /// <summary>
+    /// исключение, возникающёё при значения угла, большим чем максимально допустимое
+    /// </summary>
+    public class MaxValueException : Exception
+    {
+
+        public MaxValueException() : base("Значение подвижности превысило предел!") { }
+
+        public MaxValueException(string message) : base(message) { }
+
     }
 }

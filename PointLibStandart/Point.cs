@@ -13,7 +13,8 @@ namespace PointSpase
             get { return numPoint; }
         }
 
-
+        public static readonly Point MinPoint = new Point(-90, -45, -45, -90,100,-90);
+        public static readonly Point MaxPoint = new Point( 90, 225, 225,  90, 280, 90);
         private float canA, canB, canC, canD, canE, canF, canGrab; //обобщенные координаты (углы поворота сервориводов)
         protected long time;                //задержка от начала выполнения (сначала устанавливается поворот, затем задержка)
 
@@ -74,8 +75,35 @@ namespace PointSpase
                     case 'g':
                         canGrab = value;
                         return;
+                    case 't':
+                        time = (long)value;
+                        return ;
                     default:
                         return;
+                }
+            }
+            get
+            {
+                switch (ch)
+                {
+                    case 'a':
+                        return canA;
+                    case 'b':
+                        return canB;
+                    case 'c':
+                        return canC;
+                    case 'd':
+                        return canD;
+                    case 'e':
+                        return canE;
+                    case 'f':
+                        return canF;
+                    case 'g':
+                        return canGrab;
+                    case 't':
+                        return time;
+                    default:
+                        return 0;
                 }
             }
         }

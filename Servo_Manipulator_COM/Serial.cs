@@ -113,7 +113,7 @@ namespace Servo_Manipulator_COM
         public void Write(PointSpase.Point p)
         {
             string writeSrt = null;
-            string deb = "str";
+ 
             writeSrt += BinPacskage((int)chanal.chanalA, Map(p.CanA, qAmin, qAmax));
             writeSrt += BinPacskage((int)chanal.chanalB, Map(p.CanB, qBmin, qBmax));
             writeSrt += BinPacskage((int)chanal.chanalC, Map(p.CanC, qCmin, qCmax));

@@ -59,9 +59,11 @@ namespace Manipulator_UWP
                 SerialPort sr = this.serialPort;
                 sr = new System.IO.Ports.SerialPort(this.components);
 
-                this.serialPort.BaudRate = 38400;
-                this.serialPort.WriteTimeout = 50;
+                this.serialPort.BaudRate = 115200;
+               // this.serialPort.WriteTimeout = 50;
                 this.serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
+
+                CommonFunction.SetsendMessage(ConsoleWrite);    //для доступа к консоли другим Page
 
                 comboSelectPort.Items.Clear();
                 GetPortNames();
@@ -113,7 +115,7 @@ namespace Manipulator_UWP
         }
 
         private long  lineCount= 0;
-        private async void ConsoleWrite(string message, Color colors)
+        public async void ConsoleWrite(string message, Color colors)
         {
             
             await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -179,6 +181,7 @@ namespace Manipulator_UWP
                         comboSelectPort.Items.Add(portName);
                     }
                 }
+                comboSelectPort.Items.Add("COM5");
                 comboSelectPort.Items.Add("Добавить другой");
             }
         }
@@ -288,7 +291,7 @@ namespace Manipulator_UWP
 
         private void comboSelectPort_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            GetPortNames();
+           // GetPortNames();
         }
 
         private async void comboSelectPort_SelectionChanged(object sender, SelectionChangedEventArgs e)
