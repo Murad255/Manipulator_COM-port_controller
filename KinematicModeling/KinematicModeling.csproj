@@ -43,7 +43,14 @@
   <ItemGroup>
     <Compile Include="Data.cs" />
     <Compile Include="MathOperations.cs" />
+    <Compile Include="Passing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PointLibStandart\PointLibStandart.csproj">
+      <Project>{00a789ff-ca89-40d9-bf5b-e5d702b9fd90}</Project>
+      <Name>PointLibStandart</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

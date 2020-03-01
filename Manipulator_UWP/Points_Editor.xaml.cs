@@ -122,9 +122,6 @@ namespace Manipulator_UWP
             catch (Exception e) { CommonConsoleWrite(e.Message, Colors.Red); }
 
         }
- 
-        //private void chanal_A_minus_Click(object sender, RoutedEventArgs e) => ScrollFunction('a',-1, chanal_A_minus);
-       // private void chanal_A_plus_Click(object sender, RoutedEventArgs e) => ScrollFunction('a', 1, chanal_A_plus);
 
         private void ClickHandler(TextBox textBox)
         {
@@ -132,12 +129,6 @@ namespace Manipulator_UWP
             textBox.Focus(FocusState.Programmatic);
         }
  
-
-
-
- 
-        private void chanal_TIME_minus_Click(object sender, RoutedEventArgs e) => ScrollFunction('t', -1);
-        private void chanal_TIME_plus_Click(object sender, RoutedEventArgs e) => ScrollFunction('t', 1);
 
         private float degreeChangeValue = (float)0.5;
 
@@ -173,8 +164,44 @@ namespace Manipulator_UWP
         private void chanal_F_minus_Click(object sender, RoutedEventArgs e) =>      ClickHandler(tBoxF);
         private void chanal_F_plus_Click(object sender, RoutedEventArgs e) =>       ClickHandler(tBoxF);
 
+        private void chanal_TIME_minus_Click(object sender, RoutedEventArgs e) => ScrollFunction('t', -1);
+        private void chanal_TIME_plus_Click(object sender, RoutedEventArgs e) => ScrollFunction('t', 1);
+        private void chanal_TIME_minus_GotFocus(object sender, RoutedEventArgs e) => ClickHandler(tBoxTime);
+        private void chanal_TIME_plus_GotFocus(object sender, RoutedEventArgs e) => ClickHandler(tBoxTime);
+
+
         private void chanal_A_minus_DragEnter(object sender, DragEventArgs e)
         {
+
+        }
+
+        private void Saveutton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (CommonPoint.Time < 249) throw new Exception("Задержка меньше 250 мс.\n");
+                PointList.Add( Point.equivalent(CommonPoint));
+
+            }
+            catch (FormatException fe)
+            {
+                CommonConsoleWrite(fe.Message);
+            }
+            catch (Exception sve)
+            {
+                CommonConsoleWrite(sve.Message);
+            }
+        }
+
+        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (serialPort.IsOpen)
+            {
+                Point homePoint = new Point(0, 45, 87, 0, 240, 0,500);
+                CommonPoint = homePoint;
+                serialPort.Write(homePoint);
+                EditorUpdate();
+            }
 
         }
     }

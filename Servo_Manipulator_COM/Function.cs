@@ -188,6 +188,10 @@ namespace Servo_Manipulator_COM
                 }
             }
         }
+        
+        /// <summary>
+        /// отправка точек через функцию интерполяции
+        /// </summary>
         private void Execution()
         {
             try
@@ -251,6 +255,9 @@ namespace Servo_Manipulator_COM
                                 MessageBoxIcon.Error);
             }
         }
+        /// <summary>
+        /// запись в лист и отправка точек
+        /// </summary>
         private async void Execution2()
         {
             try
@@ -279,14 +286,14 @@ namespace Servo_Manipulator_COM
 
                             //Passing.sinFunc(Passing.pastPoint,
                             //                p,
-                            //                (string data) =>
-                            //                {
-                            //                    sentData.Add(data);
-                            //                },
-                            //                (string data) =>
-                            //                {
-                            //                    sentTime.Add(Convert.ToInt32(data));
-                            //                });
+                                            //(string data) =>
+                                            //{
+                                            //    sentData.Add(data);
+                                            //},
+                                            //(string data) =>
+                                            //{
+                                            //    sentTime.Add(Convert.ToInt32(data));
+                                            //});
                             Passing.pastPoint = p;
                         }
 

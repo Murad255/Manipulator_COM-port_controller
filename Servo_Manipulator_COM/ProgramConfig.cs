@@ -86,7 +86,7 @@ namespace Servo_Manipulator_COM
                 var data = File.ReadAllText(Path);//File.ReadAllText($"{Environment.CurrentDirectory}\\{Path}");
                 ProgramConfig p = JsonConvert.DeserializeObject<ProgramConfig>(data);
             }
-            catch(FileNotFoundException fnfe)
+            catch(FileNotFoundException)
             {
                 ProgramConfig p = ProgramConfig.Instance;
                 p.Speed = 9600;

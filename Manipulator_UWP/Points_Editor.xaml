@@ -29,14 +29,21 @@
                         <ColumnDefinition Width="281*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="325*"/>
-                        <RowDefinition Height="29*"/>
-                        <RowDefinition Height="84*"/>
-                        <RowDefinition Height="28*"/>
-                        <RowDefinition Height="58*"/>
+                        <RowDefinition Height="18*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="8*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="7*"/>
                     </Grid.RowDefinitions>
-                    <Button x:Name="GripButton" Content="Захват" Grid.Column="1" Grid.Row="3" Width="168" VerticalAlignment="Stretch" Padding="0,0,0,0" FontSize="20" FontFamily="Calibri"/>
-                    <Button x:Name="UndoPOintButton" Content="Назад" Grid.Column="1" Grid.Row="1" Width="168" VerticalAlignment="Stretch" Padding="0,0,0,0" FontSize="20" FontFamily="Calibri" Margin="0,0,0,1"/>
+
+                    <Button x:Name="GripButton" Content="Захват" Grid.Column="1" Grid.Row="7" Width="168" VerticalAlignment="Stretch" Padding="0,0,0,0" FontSize="20" FontFamily="Calibri"  />
+                    <Button x:Name="UndoPOintButton" Content="Назад" Grid.Column="1" Grid.Row="5" Width="168" VerticalAlignment="Stretch" Padding="0,0,0,0" FontSize="20" FontFamily="Calibri" />
+                    <Button x:Name="Saveutton" Content="Сохранить" Grid.Column="1"  Width="168" Grid.Row="1"  VerticalAlignment="Stretch" Padding="0,0,0,0" FontSize="20" FontFamily="Calibri" Click="Saveutton_Click"/>
+                    <Button x:Name="HomeButton" Content="Home" Grid.Column="1" Grid.Row="3"  Width="168" VerticalAlignment="Stretch" Padding="0,0,0,0" FontSize="20" FontFamily="Calibri" Click="HomeButton_Click"/>
 
                 </Grid>
                 <Grid Grid.Column="1">
@@ -82,8 +89,8 @@
                     <Button x:Name="chanal_E_plus" Content="&#xE948;" Grid.Column="8" Grid.Row="9" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets" Click="chanal_E_plus_Click" GotFocus="chanal_E_plus_GotFocus"/>
                     <Button x:Name="chanal_F_minus" Content="&#xE949;" Grid.Column="6" Grid.Row="11" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets" Click="chanal_F_minus_Click"  GotFocus="chanal_F_minus_GotFocus"/>
                     <Button x:Name="chanal_F_plus" Content="&#xE948;" Grid.Column="8" Grid.Row="11" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets" Click="chanal_F_plus_Click" GotFocus="chanal_F_plus_GotFocus"/>
-                    <Button x:Name="chanal_TIME_minus" Content="&#xE949;" Grid.Column="6" Grid.Row="13" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets" Click="chanal_TIME_minus_Click"/>
-                    <Button x:Name="chanal_TIME_plus" Content="&#xE948;" Grid.Column="8" Grid.Row="13" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets" Click="chanal_TIME_plus_Click"/>
+                    <Button x:Name="chanal_TIME_minus" Content="&#xE949;" Grid.Column="6" Grid.Row="13" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets" Click="chanal_TIME_minus_Click" GotFocus="chanal_TIME_minus_GotFocus"/>
+                    <Button x:Name="chanal_TIME_plus" Content="&#xE948;" Grid.Column="8" Grid.Row="13" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets" Click="chanal_TIME_plus_Click" GotFocus="chanal_TIME_plus_GotFocus"/>
 
                     <ProgressBar x:Name="pbCanal_A" Grid.Column="2" HorizontalAlignment="Center" Height="31" Grid.Row="1" Width="382"/>
                     <ProgressBar x:Name="pbCanal_B" Grid.Column="2" HorizontalAlignment="Center" Height="31" Grid.Row="3" Width="382"/>

@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
@@ -16,11 +16,54 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="1">
-            
-            
-            
-            
-            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75*"/>
+                <RowDefinition Height="575*"/>
+                <RowDefinition Height="32*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="28*"/>
+                <ColumnDefinition Width="20*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="1" Grid.Column="1" BorderBrush="Brown" Background="#63A8B9DE">
+                <StackPanel  >
+                    <TextBlock x:Name="PointListView" FontSize="30" FocusVisualSecondaryBrush="#99A8A6A6"/>
+                </StackPanel>
+
+            </Grid>
+            <Grid Grid.Column="2" Grid.Row="1" Margin="1,1,1,1" FocusVisualSecondaryBrush="#99ADD1E6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="62*"/>
+                    <ColumnDefinition Width="152*"/>
+                    <ColumnDefinition Width="128*"/>
+                    <ColumnDefinition Width="152*"/>
+                    <ColumnDefinition Width="153*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="7*"/>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="7*"/>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="8*"/>
+                </Grid.RowDefinitions>
+                <Button x:Name="ExecutionButton" FontFamily="Segoe MDL2 Assets" FontSize="36" Padding="0,0,0,0"
+                        Content="&#xE768;" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="5" Grid.Column="1" Click="ExecutionButton_Click" Grid.ColumnSpan="2" Margin="0,0,36,0"/>
+                <CheckBox x:Name="cycleStatusCheck" Content="  В цикле" Grid.Column="3"  Grid.Row="5" VerticalAlignment="Stretch" FontSize="28" Unchecked="cycleStatusCheck_Unchecked" Checked="cycleStatusCheck_Checked" Grid.ColumnSpan="2" Padding="0,0,0,0"/>
+                <TextBox x:Name="filePozition" Grid.Column="1" Grid.ColumnSpan="3"  Grid.Row="1" Text="" TextWrapping="Wrap" VerticalAlignment="Center" Height="28" Margin="0,0,45,0" AcceptsReturn="True" PlaceholderText="путь к файлу"/>
+                <Button x:Name="SaveButton" FontFamily="Segoe MDL2 Assets" FontSize="34" Padding="0,0,0,0"
+                        Content="&#xE78C;" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" Height="50" Width="143" Click="SaveButton_Click" />
+                <Button x:Name="LoadListButton" FontFamily="Segoe MDL2 Assets" FontSize="34" Padding="0,0,0,0"
+                        Content="&#xE7AC;" Grid.Column="3" Grid.Row="3" Height="50" Width="145" HorizontalAlignment="Center" Click="LoadListButton_Click"/>
+                <Button x:Name="OpenDirectorry" Content=". . ." Grid.Column="3" Margin="99,0,0,0" Grid.Row="1" HorizontalAlignment="Stretch" Height="28" Padding="0,0,0,0" Click="OpenDirectorry_Click"/>
+
+            </Grid>
+
+
+
         </Grid>
     </Grid>
 </Page>

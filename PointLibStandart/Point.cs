@@ -156,9 +156,7 @@ namespace PointSpase
         /// <returns></returns>
         public override string ToString()
         {
-            return 'a' + this.canA.ToString() + 'z' + 'b' + this.canB.ToString() + 'z' + 'c' + this.canC.ToString() + 'z' +
-                        'd' + this.canD.ToString() + 'z' + 'e' + this.canE.ToString() + 'z' + 'f' + this.canF.ToString() + 'z' +
-                        'g' + this.time.ToString() + 'z';
+            return "Point " + this.numPoint.ToString() + '\t' + this.time.ToString() + " ms.";
         }
 
         public string numString()

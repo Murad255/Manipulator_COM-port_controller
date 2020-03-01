@@ -36,8 +36,8 @@
 
             </RelativePanel>
             <TextBlock Text="COM порт" Grid.Column="1" TextWrapping="Wrap" HorizontalAlignment="Left" FocusVisualPrimaryBrush="White" FontSize="28" FontFamily="Calibri" VerticalAlignment="Center" Height="29" Width="124" Foreground="#FFC3D7E8"/>
-            <ComboBox x:Name="comboSelectPort" Width="127" Grid.Column="2" VerticalAlignment="Center" Height="30" HorizontalAlignment="Center" Tapped="comboSelectPort_Tapped" SelectionChanged="comboSelectPort_SelectionChanged"/>
-            <Button x:Name="ConectButton" Grid.Column="3" HorizontalAlignment="Center" Height="30" Width="122" RelativePanel.AlignLeftWithPanel="True"
+            <ComboBox x:Name="comboSelectPort" Width="127" Grid.Column="2" VerticalAlignment="Center" Height="30" HorizontalAlignment="Center" SelectionChanged="comboSelectPort_SelectionChanged"/>
+            <Button x:Name="ConectButton" Grid.Column="3" HorizontalAlignment="Center" Height="28" Width="78" RelativePanel.AlignLeftWithPanel="True"
                         FontFamily="Segoe MDL2 Assets" FontSize="30"
                         Content="&#xE8AB; "  Background="#CCFFFFFF" Padding="0,-2,-4,0" Click="ConectButton_Click"/>
         </Grid>
@@ -71,8 +71,8 @@
                                       VerticalScrollBarVisibility="Auto"
                                       HorizontalScrollBarVisibility="Auto"
                                       ZoomMode="Enabled"
-                                      ZoomSnapPointsType="Optional"> 
-                            
+                                      ZoomSnapPointsType="Optional">
+
                             <StackPanel Name="Console"  Margin="10,0,10,0" />
                         </ScrollViewer>
                     </Grid>

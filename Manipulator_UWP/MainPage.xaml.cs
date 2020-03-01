@@ -29,6 +29,7 @@ using Windows.Security.Credentials.UI;
 using Windows.Security.Credentials;
 using static Manipulator_UWP.CommonFunction;
 using PointSpase;
+using KinematicModeling;
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Manipulator_UWP
@@ -64,13 +65,17 @@ namespace Manipulator_UWP
                 this.serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
 
                 CommonFunction.SetsendMessage(ConsoleWrite);    //для доступа к консоли другим Page
-
                 comboSelectPort.Items.Clear();
-                GetPortNames();
+                GetPortNames();                                 //загрузить список портов в comboSelectPort
 
                 // по умолчанию открываем страницу home.xaml
                 myFrame.Navigate(typeof(Home));
                 TitleTextBlock.Text = "Главная";
+
+                //passing
+                Passing.ContextStrategy = new SinPassingStrategy();
+                Passing.SentPointFunction = serialPort.Write;
+
             }
             catch (Exception e)
             {
@@ -78,37 +83,43 @@ namespace Manipulator_UWP
             }
         }
 
+        string RX_Message="";
+        int RX_countSumbol = 0;
         private  void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             try
             {
                 SerialPort sp = (SerialPort)sender;
                 while (0 != sp.BytesToRead) serialPort.RX_Data.Enqueue((char)sp.ReadByte());
+
                 if (send.IsCompleted)
                     send = Task.Run(new Action(() => {
-                        try
+                    try
+                    {
+                        Thread.Sleep(50);     //ожидаем завершения передачи
+                        foreach (char c in serialPort.RX_Data)
                         {
-                            Thread.Sleep(50);     //ожидаем завершения передачи
-                            foreach (char c in serialPort.RX_Data)
+                            if ((c != '\n') && RX_countSumbol <= 20)
                             {
-
-                                //this.Invoke(new Action(() => { Console.Text += c; }));
-                                ConsoleWrite(c.ToString());
+                                RX_Message += c.ToString();
+                                RX_countSumbol++;
                             }
 
+                            else
+                            {
+                                ConsoleWrite(RX_Message, Colors.Blue);
+                                RX_Message = "";
+                                RX_countSumbol = 0;
+                            }
+                        }
                             serialPort.RX_Data = new Queue<char>();
                         }
                         catch (Exception te) { ConsoleWrite(te.ToString(),Colors.Red); }
 
                     }));
-
-
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.ToString(), "Ошибка",
-                //               MessageBoxButtons.OK,
-                //               MessageBoxIcon.Error);
                 ConsoleWrite(ex.ToString(), Colors.Red);
             }
             
@@ -144,7 +155,6 @@ namespace Manipulator_UWP
                 printTextBlock.FontSize = 20;
                 Console.Children.Insert(0, printTextBlock); //Add(printTextBlock);
 
-
                 var transform = Console.TransformToVisual((UIElement)ConsoleScrollPanel.Content);
                 var position = transform.TransformPoint(new Windows.Foundation.Point(0, 0));
                 ConsoleScrollPanel.ChangeView(null, position.Y, null, true);
@@ -153,7 +163,7 @@ namespace Manipulator_UWP
         }
 
 
-        private async void GetPortNames()
+        private async void GetPortNames(bool debug = true)
         {
             try
             {
@@ -170,12 +180,13 @@ namespace Manipulator_UWP
             }
             catch (Exception e)
             {
-                ConsoleWrite(e.ToString(), Colors.Red);
+               if(debug) ConsoleWrite(e.ToString(), Colors.Red);
             }
             finally
             {
                 if (portNamesList != null)
                 {
+                    comboSelectPort.Items.Clear();
                     foreach (string portName in portNamesList)  //заполняем список портов
                     {
                         comboSelectPort.Items.Add(portName);
@@ -192,21 +203,44 @@ namespace Manipulator_UWP
             {
                 myFrame.Navigate(typeof(Home));
                 TitleTextBlock.Text = "Главная";
+                HamburgerButton.Content = "\uE700";
+                HamburgerMenuFlag = false;
+                mySplitView.IsPaneOpen = !mySplitView.IsPaneOpen;
+
             }
             else if (share.IsSelected)
             {
                 myFrame.Navigate(typeof(Points_Editor));
                 TitleTextBlock.Text = "Редактор точек";
+                HamburgerButton.Content = "\uE700";
+                HamburgerMenuFlag = false;
+                mySplitView.IsPaneOpen = !mySplitView.IsPaneOpen;
+
             }
             else if (settings.IsSelected)
             {
                 myFrame.Navigate(typeof(Settings));
                 TitleTextBlock.Text = "Настройки";
+                HamburgerButton.Content = "\uE700";
+                HamburgerMenuFlag = false;
+                mySplitView.IsPaneOpen = !mySplitView.IsPaneOpen;
+
             }
         }
 
+        bool HamburgerMenuFlag = false;
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
+            if (HamburgerMenuFlag)
+            {
+                HamburgerButton.Content = "\uE700";
+                HamburgerMenuFlag = false;
+            }
+            else
+            {
+                HamburgerButton.Content = "\uE72B";
+                HamburgerMenuFlag = true;
+            }
             mySplitView.IsPaneOpen = !mySplitView.IsPaneOpen;
         }
 
@@ -217,6 +251,7 @@ namespace Manipulator_UWP
             {
                 if (!serialPort.IsOpen)
                 {
+                    ConectButton.IsEnabled = false;
                     serialPort.PortName = ((string)comboSelectPort.SelectedItem);
 
                     await Task.Run(() =>
@@ -225,7 +260,7 @@ namespace Manipulator_UWP
                         {
                             //  serialPort.BaudRate = programConfig.Speed;
                             serialPort.Open();
-                            Point homePoint = new Point(0, 45, 87, 0, 240, 0);
+                            Point homePoint = new Point(0, 45, 87, 0, 240, 0, 500);
                             CommonPoint = homePoint;
                             serialPort.Write(homePoint);
                         }
@@ -237,7 +272,7 @@ namespace Manipulator_UWP
                         {
                             ConsoleWrite(soe.ToString(), Colors.Red);
                         }
-                        finally 
+                        finally
                         {
                             if (serialPort.IsOpen)
                             {
@@ -245,6 +280,10 @@ namespace Manipulator_UWP
                             }
                         }
                     });
+
+                    send = new Task(() => { });
+                    send.Start();
+                    Execution.Start();
                 }
                 else
                 {
@@ -287,12 +326,13 @@ namespace Manipulator_UWP
             {
                 ConsoleWrite(ce.ToString(), Colors.Red);
             }
+            finally 
+            {
+                ConectButton.IsEnabled = true;
+            }
         }
 
-        private void comboSelectPort_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-           // GetPortNames();
-        }
+
 
         private async void comboSelectPort_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

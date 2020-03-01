@@ -6,11 +6,26 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
 
     <Grid>
-        <Slider HorizontalAlignment="Left" Margin="916,664,0,0" VerticalAlignment="Top" Width="100"/>
-        <CheckBox Content="CheckBox" Margin="966,152,0,0" VerticalAlignment="Top"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="76*"/>
+            <ColumnDefinition Width="179*"/>
+            <ColumnDefinition Width="88*"/>
+            <ColumnDefinition Width="407*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75*"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="26*"/>
+            <RowDefinition Height="350*"/>
+        </Grid.RowDefinitions>
+        <Slider HorizontalAlignment="Left" Margin="286,364,0,0" VerticalAlignment="Top" Width="100" Grid.Row="4" Grid.Column="3" Height="32"/>
+        <CheckBox Content="" Grid.Row="3" Grid.Column="2" Height="0" Width="54" Margin="14,0,0,0"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" Text="Скорость передачи:" TextWrapping="Wrap" VerticalAlignment="Stretch" Height="40" Width="228" FontSize="20"/>
+        <ComboBox x:Name="SpeedSeetCombo" Grid.Column="2" Width="174" Grid.Row="1" VerticalAlignment="Stretch" FontSize="20" SelectionChanged="SpeedSeetCombo_SelectionChanged" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalContentAlignment="Stretch" Padding="0,0,0,0" />
 
     </Grid>
 </Page>

@@ -14,7 +14,10 @@ namespace ManipulatorSerialInterfase
         private static readonly Object s_lock = new Object();
         private static ManipulatorSerialPort instance = null;
 
-        private ManipulatorSerialPort() { }
+        private ManipulatorSerialPort() 
+        {
+            RX_data = new Queue<char>();
+        }
 
         public static ManipulatorSerialPort Instance
         {

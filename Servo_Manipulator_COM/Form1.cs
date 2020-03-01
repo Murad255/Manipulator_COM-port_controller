@@ -272,7 +272,7 @@ namespace Servo_Manipulator_COM
         //    }));
         //}
 
-        private async void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        private  void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             try
             {
