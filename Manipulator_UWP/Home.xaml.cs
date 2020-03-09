@@ -21,6 +21,7 @@ namespace Manipulator_UWP
     public sealed partial class Home : Page
     {
         ManipulatorSerialPort serialPort;
+        private ProgramConfig programConfig = ProgramConfig.Instance;
         StorageFile pointListFile;
         FileSavePicker savePicker;
         FileOpenPicker openPicker;
@@ -36,8 +37,11 @@ namespace Manipulator_UWP
             PointListView.Text = "";
             foreach (Point p in PointList) PointListView.Text += p.ToString() + "\n"; //выводит список точекPointListView
 
+            //Настройки кнопки запуска\останова передачи 
             if (StartExecution_status) ExecutionButton.Content = "\uE769";
             else ExecutionButton.Content = "\uE768";
+
+
         }
 
         private void ExecutionButton_Click(object sender, RoutedEventArgs e)
@@ -56,13 +60,13 @@ namespace Manipulator_UWP
             );
         }
 
-        private void cycleStatusCheck_Unchecked(object sender, RoutedEventArgs e) { CycleStatus = false; }
-        private void cycleStatusCheck_Checked(object sender, RoutedEventArgs e) { CycleStatus = true; }
+
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if (pointListFile == null) 
             {
+                //вызываем окно для выбора папки
                 savePicker = new FileSavePicker();
                 savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
                 savePicker.FileTypeChoices.Add("Manipulator Points", new List<string>() { ".man" });
@@ -85,7 +89,10 @@ namespace Manipulator_UWP
             openPicker.CommitButtonText = "Открыть";
             openPicker.FileTypeFilter.Add(".man");
             pointListFile = await openPicker.PickSingleFileAsync();
+            if (pointListFile == null) return;
             filePozition.Text = pointListFile.Path;
+
+            LoadListButton_Click(sender,  e);
         }
 
         private async void LoadListButton_Click(object sender, RoutedEventArgs e)
@@ -98,6 +105,12 @@ namespace Manipulator_UWP
                 PointListView.Text = "";
                 foreach (Point p in PointList) PointListView.Text += p.ToString()+"\n"; //выводит список точек
             }
+        }
+
+        private void cycleStatusCheck_Toggled(object sender, RoutedEventArgs e)
+        {
+            if(cycleStatusCheck.IsOn)   CycleStatus = true; 
+            else                        CycleStatus = false; 
         }
     }
 }

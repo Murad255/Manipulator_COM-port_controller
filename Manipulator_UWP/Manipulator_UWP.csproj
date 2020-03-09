@@ -134,6 +134,7 @@
     <Compile Include="Points_Editor.xaml.cs">
       <DependentUpon>Points_Editor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProgramConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>

@@ -26,6 +26,8 @@ namespace Manipulator_UWP
     public sealed partial class Settings : Page
     {
         ManipulatorSerialPort serialPort;
+        private ProgramConfig programConfig = ProgramConfig.Instance;
+
 
         public Settings()
         {
@@ -55,12 +57,40 @@ namespace Manipulator_UWP
 
         private void SpeedSeetCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            serialPort.BaudRate = Convert.ToInt32( SpeedSeetCombo.SelectedItem);
+            if (serialPort.IsOpen) serialPort.BaudRate = Convert.ToInt32( SpeedSeetCombo.SelectedItem);
+
+            programConfig.SpeedComboCount= SpeedSeetCombo.SelectedIndex ;
+            programConfig.Speed = Convert.ToInt32(SpeedSeetCombo.SelectedItem);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            SpeedSeetCombo.SelectedIndex = 9;
+            // SpeedSeetCombo.Text =  programConfig.Speed.ToString();
+            SpeedSeetCombo.SelectedIndex = programConfig.SpeedComboCount;
+            MinGripValueTBox.Text = programConfig.MinGripValue.ToString();
+            MaxGripValueTBox.Text = programConfig.MaxGripValue.ToString();
+
+        }
+
+
+
+        private void SaveSetingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                int min = Convert.ToInt32(MinGripValueTBox.Text);
+                int max = Convert.ToInt32(MaxGripValueTBox.Text);
+                if (min < 0 || min > 180 || max < 0 || max > 180) throw new Exception("Выход за перделы! значения должны быть в пределах от 0 до 180");
+                else
+                {
+                    programConfig.MinGripValue = min;
+                    programConfig.MaxGripValue = max;
+                }
+            }
+            catch (Exception ex)
+            {
+                CommonConsoleWrite(ex.Message);
+            }
         }
     }
 }

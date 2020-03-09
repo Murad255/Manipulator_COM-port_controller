@@ -13,6 +13,7 @@ namespace Servo_Manipulator_COM
     public partial class ConfigForm : Form
     {
         private ProgramConfig programConfig = ProgramConfig.Instance;
+
         public ConfigForm()
         {
             InitializeComponent();

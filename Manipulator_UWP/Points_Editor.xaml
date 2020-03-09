@@ -40,7 +40,7 @@
                         <RowDefinition Height="7*"/>
                     </Grid.RowDefinitions>
 
-                    <Button x:Name="GripButton" Content="Захват" Grid.Column="1" Grid.Row="7" Width="168" VerticalAlignment="Stretch" Padding="0,0,0,0" FontSize="20" FontFamily="Calibri"  />
+                    <Button x:Name="GripButton" Content="Захват" Grid.Column="1" Grid.Row="7" Width="168" VerticalAlignment="Stretch" Padding="0,0,0,0" FontSize="20" FontFamily="Calibri" Click="GripButton_Click"  />
                     <Button x:Name="UndoPOintButton" Content="Назад" Grid.Column="1" Grid.Row="5" Width="168" VerticalAlignment="Stretch" Padding="0,0,0,0" FontSize="20" FontFamily="Calibri" />
                     <Button x:Name="Saveutton" Content="Сохранить" Grid.Column="1"  Width="168" Grid.Row="1"  VerticalAlignment="Stretch" Padding="0,0,0,0" FontSize="20" FontFamily="Calibri" Click="Saveutton_Click"/>
                     <Button x:Name="HomeButton" Content="Home" Grid.Column="1" Grid.Row="3"  Width="168" VerticalAlignment="Stretch" Padding="0,0,0,0" FontSize="20" FontFamily="Calibri" Click="HomeButton_Click"/>
@@ -77,7 +77,7 @@
                         <RowDefinition Height="3*"/>
                     </Grid.RowDefinitions>
 
-                    <Button x:Name="chanal_A_minus" Content="&#xE949;" Grid.Column="6" Grid.Row="1" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets" GotFocus="chanal_A_minus_GotFocus" Click="chanal_A_minus_Click" HorizontalAlignment="Left" Width="62" DragEnter="chanal_A_minus_DragEnter"/>
+                    <Button x:Name="chanal_A_minus" Content="&#xE949;" Grid.Column="6" Grid.Row="1" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets" GotFocus="chanal_A_minus_GotFocus" Click="chanal_A_minus_Click"/>
                     <Button x:Name="chanal_A_plus" Content="&#xE948;" Grid.Column="8" Grid.Row="1" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets"  Click="chanal_A_plus_Click"  GotFocus="chanal_A_plus_GotFocus"/>
                     <Button x:Name="chanal_B_minus" Content="&#xE949;" Grid.Column="6" Grid.Row="3" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets" Click="chanal_B_minus_Click" GotFocus="chanal_B_minus_GotFocus"/>
                     <Button x:Name="chanal_B_plus" Content="&#xE948;" Grid.Column="8" Grid.Row="3" Style="{StaticResource ChangeValueButtonStyle}" FontFamily="Segoe MDL2 Assets" Click="chanal_B_plus_Click" GotFocus="chanal_B_plus_GotFocus"/>

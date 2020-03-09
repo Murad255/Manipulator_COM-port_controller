@@ -52,13 +52,20 @@
                 </Grid.RowDefinitions>
                 <Button x:Name="ExecutionButton" FontFamily="Segoe MDL2 Assets" FontSize="36" Padding="0,0,0,0"
                         Content="&#xE768;" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="5" Grid.Column="1" Click="ExecutionButton_Click" Grid.ColumnSpan="2" Margin="0,0,36,0"/>
-                <CheckBox x:Name="cycleStatusCheck" Content="  В цикле" Grid.Column="3"  Grid.Row="5" VerticalAlignment="Stretch" FontSize="28" Unchecked="cycleStatusCheck_Unchecked" Checked="cycleStatusCheck_Checked" Grid.ColumnSpan="2" Padding="0,0,0,0"/>
-                <TextBox x:Name="filePozition" Grid.Column="1" Grid.ColumnSpan="3"  Grid.Row="1" Text="" TextWrapping="Wrap" VerticalAlignment="Center" Height="28" Margin="0,0,45,0" AcceptsReturn="True" PlaceholderText="путь к файлу"/>
+                <ToggleSwitch  x:Name="cycleStatusCheck"  OnContent="Повторять" OffContent="Однократно" Grid.Column="3"  Grid.Row="5"  IsOn="False" VerticalAlignment="Stretch" FontSize="28" Padding="0,0,0,0" Width="225" Grid.ColumnSpan="2" Toggled="cycleStatusCheck_Toggled"/>
+                <Grid Grid.Column="1" Grid.ColumnSpan="3"  Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="61*"/>
+                        <ColumnDefinition Width="7*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="filePozition" Text="" TextWrapping="Wrap" VerticalAlignment="Center" Height="28" AcceptsReturn="True" PlaceholderText="путь к файлу"/>
+                    <Button x:Name="OpenDirectorry" Content=". . ." HorizontalAlignment="Stretch" Height="28" Padding="0,0,0,0" Click="OpenDirectorry_Click" Grid.Column="1"/>
+                </Grid>
+
                 <Button x:Name="SaveButton" FontFamily="Segoe MDL2 Assets" FontSize="34" Padding="0,0,0,0"
                         Content="&#xE78C;" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" Height="50" Width="143" Click="SaveButton_Click" />
                 <Button x:Name="LoadListButton" FontFamily="Segoe MDL2 Assets" FontSize="34" Padding="0,0,0,0"
                         Content="&#xE7AC;" Grid.Column="3" Grid.Row="3" Height="50" Width="145" HorizontalAlignment="Center" Click="LoadListButton_Click"/>
-                <Button x:Name="OpenDirectorry" Content=". . ." Grid.Column="3" Margin="99,0,0,0" Grid.Row="1" HorizontalAlignment="Stretch" Height="28" Padding="0,0,0,0" Click="OpenDirectorry_Click"/>
 
             </Grid>
 

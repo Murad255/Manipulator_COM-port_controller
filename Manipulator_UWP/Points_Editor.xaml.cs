@@ -33,6 +33,8 @@ namespace Manipulator_UWP
     public sealed partial class Points_Editor : Page
     {
         ManipulatorSerialPort serialPort;
+        private ProgramConfig programConfig = ProgramConfig.Instance;
+
         private static System.Timers.Timer loopTimer;
         volatile bool clicFlag;
         public Points_Editor()
@@ -164,8 +166,8 @@ namespace Manipulator_UWP
         private void chanal_F_minus_Click(object sender, RoutedEventArgs e) =>      ClickHandler(tBoxF);
         private void chanal_F_plus_Click(object sender, RoutedEventArgs e) =>       ClickHandler(tBoxF);
 
-        private void chanal_TIME_minus_Click(object sender, RoutedEventArgs e) => ScrollFunction('t', -1);
-        private void chanal_TIME_plus_Click(object sender, RoutedEventArgs e) => ScrollFunction('t', 1);
+        private void chanal_TIME_minus_Click(object sender, RoutedEventArgs e) => ScrollFunction('t', -degreeChangeValue);
+        private void chanal_TIME_plus_Click(object sender, RoutedEventArgs e) => ScrollFunction('t', degreeChangeValue);
         private void chanal_TIME_minus_GotFocus(object sender, RoutedEventArgs e) => ClickHandler(tBoxTime);
         private void chanal_TIME_plus_GotFocus(object sender, RoutedEventArgs e) => ClickHandler(tBoxTime);
 
@@ -203,6 +205,23 @@ namespace Manipulator_UWP
                 EditorUpdate();
             }
 
+        }
+        
+        private void GripButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (CommonPoint.CanGrab == programConfig.MinGripValue)
+            {
+                CommonPoint['g'] = (float)programConfig.MaxGripValue;
+                GripButton.Content = "Захват";
+            }
+            else
+            {
+                CommonPoint['g'] = (float)programConfig.MinGripValue;
+                GripButton.Content = "Разжать";
+
+            }
+            serialPort.Write(CommonPoint);
+            EditorUpdate();
         }
     }
 }

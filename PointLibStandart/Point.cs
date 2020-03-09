@@ -124,9 +124,11 @@ namespace PointSpase
         /// <returns></returns>
         public static Point equivalent(Point p)
         {
-            return new Point(p.CanA, p.CanB,
-                                p.CanC, p.CanD,
-                                p.CanE, p.CanF, p.Time);
+           Point np= new Point(p.CanA, p.CanB,
+                                   p.CanC, p.CanD,
+                                   p.CanE, p.CanF, p.Time);
+            np.canGrab = p.canGrab;
+            return np;
         }
 
         /// <summary>

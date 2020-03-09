@@ -43,6 +43,8 @@ namespace Manipulator_UWP
        // string deviceId;
         List<string> portNamesList ;
         ManipulatorSerialPort serialPort;
+        private ProgramConfig programConfig;
+
         private System.ComponentModel.IContainer components = null;
         Task send;                      //поток для приняти данных
         //Task execution;                 //поток для отправки коллекции точек
@@ -53,14 +55,15 @@ namespace Manipulator_UWP
             try {
                 this.InitializeComponent();
                 ConsoleWrite("Hello word ");
+                programConfig = ProgramConfig.Instance;
 
-                /////////////Serial port initialize////////////
+                //Serial port initialize
                 serialPort = ManipulatorSerialPort.Instance;
                 this.components = new System.ComponentModel.Container();
                 SerialPort sr = this.serialPort;
                 sr = new System.IO.Ports.SerialPort(this.components);
-
                 this.serialPort.BaudRate = 115200;
+
                // this.serialPort.WriteTimeout = 50;
                 this.serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
 
@@ -167,7 +170,6 @@ namespace Manipulator_UWP
         {
             try
             {
-
                 string aqs = SerialDevice.GetDeviceSelector();
                 var deviceCollection = await DeviceInformation.FindAllAsync(aqs);
                 portNamesList = new List<string>();
@@ -184,16 +186,26 @@ namespace Manipulator_UWP
             }
             finally
             {
+                int portCount = 1;
                 if (portNamesList != null)
                 {
                     comboSelectPort.Items.Clear();
                     foreach (string portName in portNamesList)  //заполняем список портов
                     {
                         comboSelectPort.Items.Add(portName);
+                        portCount++;
                     }
                 }
                 comboSelectPort.Items.Add("COM5");
+                if(programConfig.PortName.Count>0)
+                    foreach (string portName in programConfig.PortName)  
+                    {
+                        comboSelectPort.Items.Add(portName);
+                        portCount++;
+                    }
                 comboSelectPort.Items.Add("Добавить другой");
+                if (portCount > programConfig.PortNum) comboSelectPort.SelectedIndex = programConfig.PortNum; 
+
             }
         }
         
@@ -345,9 +357,10 @@ namespace Manipulator_UWP
                     while (AddWindow.AddFlag == false) { }
                 });
                 comboSelectPort.Items.Add(AddWindow.PortName);
+                programConfig.AddPortName(AddWindow.PortName);
                 ConsoleWrite($"{AddWindow.PortName} добавлен", Colors.Green);
-
             }
+            else programConfig.PortNum = comboSelectPort.SelectedIndex;
         }
     }
 }
