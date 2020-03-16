@@ -139,6 +139,7 @@ namespace Manipulator_UWP
         private void chanal_A_plus_GotFocus(object sender, RoutedEventArgs e) =>    ScrollFunction('a', degreeChangeValue);
         private void chanal_A_plus_Click(object sender, RoutedEventArgs e) =>       ClickHandler(tBoxA);
 
+        #region настройки остальных кнопок 
         private void chanal_B_minus_GotFocus(object sender, RoutedEventArgs e) =>   ScrollFunction('b', -degreeChangeValue);
         private void chanal_B_plus_GotFocus(object sender, RoutedEventArgs e) =>    ScrollFunction('b', degreeChangeValue);
         private void chanal_B_minus_Click(object sender, RoutedEventArgs e) =>      ClickHandler(tBoxB);
@@ -166,17 +167,12 @@ namespace Manipulator_UWP
         private void chanal_F_minus_Click(object sender, RoutedEventArgs e) =>      ClickHandler(tBoxF);
         private void chanal_F_plus_Click(object sender, RoutedEventArgs e) =>       ClickHandler(tBoxF);
 
-        private void chanal_TIME_minus_Click(object sender, RoutedEventArgs e) => ScrollFunction('t', -degreeChangeValue);
-        private void chanal_TIME_plus_Click(object sender, RoutedEventArgs e) => ScrollFunction('t', degreeChangeValue);
-        private void chanal_TIME_minus_GotFocus(object sender, RoutedEventArgs e) => ClickHandler(tBoxTime);
-        private void chanal_TIME_plus_GotFocus(object sender, RoutedEventArgs e) => ClickHandler(tBoxTime);
+        private void chanal_TIME_minus_GotFocus(object sender, RoutedEventArgs e) => ScrollFunction('t', -degreeChangeValue*20);
+        private void chanal_TIME_plus_GotFocus(object sender, RoutedEventArgs e) => ScrollFunction('t', degreeChangeValue*20);
+        private void chanal_TIME_minus_Click(object sender, RoutedEventArgs e) => ClickHandler(tBoxTime);
+        private void chanal_TIME_plus_Click(object sender, RoutedEventArgs e) => ClickHandler(tBoxTime);
 
-
-        private void chanal_A_minus_DragEnter(object sender, DragEventArgs e)
-        {
-
-        }
-
+        #endregion
         private void Saveutton_Click(object sender, RoutedEventArgs e)
         {
             try
