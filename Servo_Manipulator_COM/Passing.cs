@@ -100,7 +100,8 @@ namespace Servo_Manipulator_COM
                     PassingAlgoritmData(pastCoint.CanC, nextCoint.CanC, i),
                     PassingAlgoritmData(pastCoint.CanD, nextCoint.CanD, i),
                     PassingAlgoritmData(pastCoint.CanE, nextCoint.CanE, i),
-                    PassingAlgoritmData(pastCoint.CanF, nextCoint.CanF, i)
+                    PassingAlgoritmData(pastCoint.CanF, nextCoint.CanF, i), 
+                    180
                 );
                 func(temp);
                 Thread.Sleep(delay); 
@@ -126,7 +127,7 @@ namespace Servo_Manipulator_COM
                 oneSinFuncData(pastCoint.CanD, nextCoint.CanD, i),
                 oneSinFuncData(pastCoint.CanE, nextCoint.CanE, i),
                 oneSinFuncData(pastCoint.CanF, nextCoint.CanF, i),
-                0);
+                180);
 
                // funcData(point.ToString());
                 //funcTime(delay.ToString());

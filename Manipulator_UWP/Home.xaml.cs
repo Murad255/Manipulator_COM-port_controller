@@ -64,21 +64,27 @@ namespace Manipulator_UWP
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (pointListFile == null) 
-            {
-                //вызываем окно для выбора папки
-                savePicker = new FileSavePicker();
-                savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-                savePicker.FileTypeChoices.Add("Manipulator Points", new List<string>() { ".man" });
-                savePicker.SuggestedFileName = "New Points";
-                savePicker.CommitButtonText = "Сохранить";
+            try {
+                if (pointListFile == null)
+                {
+                    //вызываем окно для выбора папки
+                    savePicker = new FileSavePicker();
+                    savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+                    savePicker.FileTypeChoices.Add("Manipulator Points", new List<string>() { ".man" });
+                    savePicker.SuggestedFileName = "New Points";
+                    savePicker.CommitButtonText = "Сохранить";
 
-                pointListFile = await savePicker.PickSaveFileAsync();
-                filePozition.Text = pointListFile.Path;
+                    pointListFile = await savePicker.PickSaveFileAsync();
+                    filePozition.Text = pointListFile.Path;
+                }
+
+                if (pointListFile != null) await FileIO.WriteTextAsync(pointListFile, PointList.GetJsonConvertString());
+                else CommonConsoleWrite("Не удалось сохранить файл", Colors.Red);
             }
-
-            if (pointListFile != null) await FileIO.WriteTextAsync(pointListFile, PointList.GetJsonConvertString());
-            else CommonConsoleWrite("Не удалось сохранить файл", Colors.Red);
+            catch(Exception ex)
+            {
+                CommonConsoleWrite(ex.Message);
+            }
         }
 
         private async void OpenDirectorry_Click(object sender, RoutedEventArgs e)
@@ -111,6 +117,12 @@ namespace Manipulator_UWP
         {
             if(cycleStatusCheck.IsOn)   CycleStatus = true; 
             else                        CycleStatus = false; 
+        }
+
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            PointList.Clear();
+            PointListView.Text = "";
         }
     }
 }

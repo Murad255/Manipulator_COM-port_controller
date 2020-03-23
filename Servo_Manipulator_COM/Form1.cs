@@ -370,6 +370,7 @@ namespace Servo_Manipulator_COM
                                trackBar_D.Value,
                                trackBar_E.Value,
                                trackBar_F.Value,
+                               180,
                                Convert.ToInt32(delay.Text)
                                    );
                 else

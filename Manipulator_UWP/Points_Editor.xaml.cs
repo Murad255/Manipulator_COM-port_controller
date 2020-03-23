@@ -195,7 +195,7 @@ namespace Manipulator_UWP
         {
             if (serialPort.IsOpen)
             {
-                Point homePoint = new Point(0, 45, 87, 0, 240, 0,500);
+                Point homePoint = new Point(0, 45, 87, 0, 240, 0,programConfig.MaxGripValue, 500);
                 CommonPoint = homePoint;
                 serialPort.Write(homePoint);
                 EditorUpdate();

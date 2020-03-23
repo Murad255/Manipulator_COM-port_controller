@@ -17,23 +17,26 @@
 
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="75*"/>
+                <RowDefinition Height="18*"/>
+                <RowDefinition Height="43*"/>
+                <RowDefinition Height="14*"/>
                 <RowDefinition Height="575*"/>
                 <RowDefinition Height="32*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="28*"/>
-                <ColumnDefinition Width="20*"/>
+                <ColumnDefinition Width="31*"/>
+                <ColumnDefinition Width="233*"/>
+                <ColumnDefinition Width="624*"/>
+                <ColumnDefinition Width="612*"/>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Row="1" Grid.Column="1" BorderBrush="Brown" Background="#63A8B9DE">
+            <Grid Grid.Row="3" Grid.Column="1" BorderBrush="Brown" Background="#63A8B9DE" Grid.ColumnSpan="2">
                 <StackPanel  >
                     <TextBlock x:Name="PointListView" FontSize="30" FocusVisualSecondaryBrush="#99A8A6A6"/>
                 </StackPanel>
 
             </Grid>
-            <Grid Grid.Column="2" Grid.Row="1" Margin="1,1,1,1" FocusVisualSecondaryBrush="#99ADD1E6">
+            <Grid Grid.Column="3" Grid.Row="3" Margin="1,1,1,1" FocusVisualSecondaryBrush="#99ADD1E6">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="62*"/>
                     <ColumnDefinition Width="152*"/>
@@ -68,6 +71,13 @@
                         Content="&#xE7AC;" Grid.Column="3" Grid.Row="3" Height="50" Width="145" HorizontalAlignment="Center" Click="LoadListButton_Click"/>
 
             </Grid>
+            <Button x:Name="ClearButton"  FontSize="24" Padding="0,0,0,0"
+                Content="Отчистить
+" Grid.Column="1" Click="ClearButton_Click" Grid.Row="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Background="#33AC6868" RenderTransformOrigin="0.5,0.5" BorderThickness="2,0,2,0"  >
+                <Button.RenderTransform>
+                    <CompositeTransform TranslateY="0"/>
+                </Button.RenderTransform>
+            </Button>
 
 
 

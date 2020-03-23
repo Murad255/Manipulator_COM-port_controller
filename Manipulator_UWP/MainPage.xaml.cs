@@ -272,7 +272,7 @@ namespace Manipulator_UWP
                         {
                             //  serialPort.BaudRate = programConfig.Speed;
                             serialPort.Open();
-                            Point homePoint = new Point(0, 45, 87, 0, 240, 0, 500);
+                            Point homePoint = new Point(0, 45, 87, 0, 240, 0, programConfig.MaxGripValue, 500);
                             CommonPoint = homePoint;
                             serialPort.Write(homePoint);
                         }
@@ -299,7 +299,7 @@ namespace Manipulator_UWP
                 }
                 else
                 {
-                    Point homePoint = new Point(0, 0, 8, 0, 245, 0);
+                    Point homePoint = new Point(0, 0, 8, 0, 245, 0, programConfig.MaxGripValue, 500);
                     CommonPoint = homePoint;
                     serialPort.Write(homePoint);
 

@@ -31,13 +31,19 @@ namespace PointSpase
             this.pointsCoint++;
         }
 
-        public void Add(int canA, int canB, int canC, int canD,
-                        int canE, int canF, long time)
-        {
-            Point temp = new Point(canA, canB, canC, canD, canE, canF, time);
-            base.Add(temp);
-        }
+        //public void Add(int canA, int canB, int canC, int canD,
+        //                int canE, int canF, long time)
+        //{
+        //    Point temp = new Point(canA, canB, canC, canD, canE, canF, time);
+        //    this.Add(temp);
+        //}
 
+        public void Add(float canA, float canB, float canC, float canD,
+                float canE, float canF, float grabCan, long time)
+        {
+            Point temp = new Point(canA, canB, canC, canD, canE, canF, grabCan, time);
+            this.Add(temp);
+        }
         public void Load(string Path)
         {
             try

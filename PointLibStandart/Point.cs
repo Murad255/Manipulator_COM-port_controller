@@ -13,8 +13,8 @@ namespace PointSpase
             get { return numPoint; }
         }
 
-        public static readonly Point MinPoint = new Point(-90, -45, -45, -90,100,-90);
-        public static readonly Point MaxPoint = new Point( 90, 225, 225,  90, 280, 90);
+        public static readonly Point MinPoint = new Point(-90, -45, -45, -90,100,-90,0);
+        public static readonly Point MaxPoint = new Point( 90, 225, 225,  90, 280, 90,180);
         private float canA, canB, canC, canD, canE, canF, canGrab; //обобщенные координаты (углы поворота сервориводов)
         protected long time;                //задержка от начала выполнения (сначала устанавливается поворот, затем задержка)
 
@@ -108,9 +108,12 @@ namespace PointSpase
             }
         }
 
-        public Point(float canA = 0, float canB = 0, float canC = 0,
-                        float canD = 0, float canE = 0, float canF = 0, long time = 0) =>
-            setAllDegree(canA, canB, canC, canD, canE, canF, time);
+        public Point(   float canA=0 , float canB=0 , float canC=0 ,float canD =0, 
+                        float canE =0, float canF=0 , float canGrab = 0, long time=0 ) =>
+            setAllDegree(canA, canB, canC, canD, canE, canF, canGrab, time);
+
+        //public Point() => setAllDegree(0, 0, 0, 0, 0, 0, 0, 0);
+
 
 
         public void IncrementPoint() => numPoint = ++numPoints;
@@ -124,10 +127,11 @@ namespace PointSpase
         /// <returns></returns>
         public static Point equivalent(Point p)
         {
-           Point np= new Point(p.CanA, p.CanB,
+           Point np= new Point(    p.CanA, p.CanB,
                                    p.CanC, p.CanD,
-                                   p.CanE, p.CanF, p.Time);
-            np.canGrab = p.canGrab;
+                                   p.CanE, p.CanF,
+                                   p.canGrab, p.Time);
+            
             return np;
         }
 
@@ -141,7 +145,7 @@ namespace PointSpase
         /// <param name="canE"></param>
         /// <param name="canF"></param>
         /// <param name="time"></param>
-        private void setAllDegree(float canA, float canB, float canC, float canD, float canE, float canF, long time)
+        private void setAllDegree(float canA, float canB, float canC, float canD, float canE, float canF, float grabCan, long time)
         {
             this.canA = canA;
             this.canB = canB;
@@ -149,6 +153,7 @@ namespace PointSpase
             this.canD = canD;
             this.canE = canE;
             this.canF = canF;
+            this.canGrab = grabCan;
             this.time = time;
         }
 

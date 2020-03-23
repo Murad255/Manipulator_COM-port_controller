@@ -97,7 +97,8 @@ namespace KinematicModelingS
                     PassingAlgoritmData(pastCoint.CanC, nextCoint.CanC, i),
                     PassingAlgoritmData(pastCoint.CanD, nextCoint.CanD, i),
                     PassingAlgoritmData(pastCoint.CanE, nextCoint.CanE, i),
-                    PassingAlgoritmData(pastCoint.CanF, nextCoint.CanF, i)
+                    PassingAlgoritmData(pastCoint.CanF, nextCoint.CanF, i),
+                    PassingAlgoritmData(pastCoint.CanGrab, nextCoint.CanGrab, i)
                 );
                 func(temp);
                 Thread.Sleep(delay);
@@ -123,7 +124,8 @@ namespace KinematicModelingS
                 oneSinFuncData(pastCoint.CanD, nextCoint.CanD, i),
                 oneSinFuncData(pastCoint.CanE, nextCoint.CanE, i),
                 oneSinFuncData(pastCoint.CanF, nextCoint.CanF, i),
-                0);
+                oneSinFuncData(pastCoint.CanGrab, nextCoint.CanGrab, i)
+                );
 
                 // funcData(point.ToString());
                 //funcTime(delay.ToString());

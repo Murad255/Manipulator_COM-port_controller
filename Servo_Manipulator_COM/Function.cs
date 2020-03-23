@@ -77,7 +77,7 @@ namespace Servo_Manipulator_COM
                 {
                     if ((string)comboHomeMode.SelectedItem == "work")
                     {
-                        Point homePoint = new Point(0, 0, 8, 0, 245, 0);
+                        Point homePoint = new Point(0, 0, 8, 0, 245, 0,180);
 
                         Point.tempPoint = homePoint;
                         serialPort.Write(homePoint);
@@ -86,7 +86,7 @@ namespace Servo_Manipulator_COM
                     }
                     else if ((string)comboHomeMode.SelectedItem == "steady")
                     {
-                        Point homePoint = new Point(0, 45, 87, 0, 240, 0);
+                        Point homePoint = new Point(0, 45, 87, 0, 240, 0,180);
                         Point.tempPoint = homePoint;
                         serialPort.Write(homePoint);
                         trackBarSet(homePoint);
@@ -99,7 +99,7 @@ namespace Servo_Manipulator_COM
                         //Dec homeDec = new Dec(0, 85, 135, 120, 0);
                         //trackBarSet(homeDec);
                         //trackBar_A_Scroll(new object(), new EventArgs());
-                        Point homePoint = new Point(0, 53, 95, 0, 245, 0);
+                        Point homePoint = new Point(0, 53, 95, 0, 245, 0,180);
                         Dec homeDec = DecPointTransform.PointToDec(homePoint);
                         trackBarSet(homeDec);
                         trackBar_D_Scroll(new object(), new EventArgs());
@@ -107,7 +107,7 @@ namespace Servo_Manipulator_COM
                     }
                     else if ((string)comboHomeMode.SelectedItem == "steady")
                     {
-                        Point homePoint = new Point(0, 150, 54, 120, 0, 155);
+                        Point homePoint = new Point(0, 150, 54, 120, 0, 155,180);
                         Dec homeDec = DecPointTransform.PointToDec(homePoint);
                         trackBarSet(homeDec);
                         trackBar_D_Scroll(new object(), new EventArgs());
