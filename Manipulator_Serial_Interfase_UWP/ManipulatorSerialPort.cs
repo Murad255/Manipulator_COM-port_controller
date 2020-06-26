@@ -40,22 +40,21 @@ namespace ManipulatorSerialInterfase
             set { RX_data = value; }
         }
 
-        //Константы, учитывающие изначальный поворот осей сервоприводов
-        public const float qAmin = -90;
-        public const float qBmin = -45;
-        public const float qCmin = -45;
-        public const float qDmin = -90;
-        public const float qEmin = 100;
-        public const float qFmin = -90;
-        public const float qGmin = 0;
-
-        public const float qAmax = qAmin + 180;
-        public const float qBmax = qBmin + 270;
-        public const float qCmax = qCmin + 270;
-        public const float qDmax = qDmin + 180;
-        public const float qEmax = qEmin + 180;
-        public const float qFmax = qFmin + 180;
-        public const float qGmax = qGmin + 180;
+        ////Константы, учитывающие изначальный поворот осей сервоприводов
+        //public const float qAmin = -90;
+        //public const float qBmin = -45;
+        //public const float qCmin = -45;
+        //public const float qDmin = -90;
+        //public const float qEmin = 100;
+        //public const float qFmin = -90;
+        //public const float qGmin = 0;
+        //public const float qAmax = qAmin + 180;
+        //public const float qBmax = qBmin + 270;
+        //public const float qCmax = qCmin + 270;
+        //public const float qDmax = qDmin + 180;
+        //public const float qEmax = qEmin + 180;
+        //public const float qFmax = qFmin + 180;
+        //public const float qGmax = qGmin + 180;
 
         public  enum chanal { chanalA = 1, chanalB, chanalC, chanalD, chanalE, chanalF, grabChanal };
 
@@ -115,27 +114,21 @@ namespace ManipulatorSerialInterfase
         {
             string writeSrt = null;
             string deb = "str";
-            writeSrt += BinPacskage((int)chanal.chanalA, Map(p.CanA, qAmin, qAmax));
+            writeSrt += BinPacskage((int)chanal.chanalA, Map(p.CanA, Point.MinPoint.CanA, Point.MaxPoint.CanA));
+            writeSrt += BinPacskage((int)chanal.chanalB, Map(p.CanB, Point.MinPoint.CanB, Point.MaxPoint.CanB));
+            writeSrt += BinPacskage((int)chanal.chanalC, Map(p.CanC, Point.MinPoint.CanC, Point.MaxPoint.CanC));
+            writeSrt += BinPacskage((int)chanal.chanalD, Map(p.CanD, Point.MinPoint.CanD, Point.MaxPoint.CanD));
+            writeSrt += BinPacskage((int)chanal.chanalE, Map(p.CanE, Point.MinPoint.CanE, Point.MaxPoint.CanE));
+            writeSrt += BinPacskage((int)chanal.chanalF, Map(p.CanF, Point.MinPoint.CanF, Point.MaxPoint.CanF));
+            writeSrt += BinPacskage((int)chanal.grabChanal, Map(p.CanGrab, Point.MinPoint.CanGrab, Point.MaxPoint.CanGrab));
 
-            writeSrt += BinPacskage((int)chanal.chanalB, Map(p.CanB, qBmin, qBmax));
-
-            writeSrt += BinPacskage((int)chanal.chanalC, Map(p.CanC, qCmin, qCmax));
-
-            writeSrt += BinPacskage((int)chanal.chanalD, Map(p.CanD, qDmin, qDmax));
-
-            writeSrt += BinPacskage((int)chanal.chanalE, Map(p.CanE, qEmin, qEmax));
-
-            writeSrt += BinPacskage((int)chanal.chanalF, Map(p.CanF, qFmin, qFmax));
-
-            writeSrt += BinPacskage((int)chanal.grabChanal, Map(p.CanGrab, qGmin, qGmax));
-
-            deb += BinPacskage2((int)chanal.chanalA, Map(p.CanA, qAmin, qAmax)) + '\t';
-            deb += BinPacskage2((int)chanal.chanalB, Map(p.CanB, qBmin, qBmax)) + '\t';
-            deb += BinPacskage2((int)chanal.chanalC, Map(p.CanC, qCmin, qCmax)) + '\t';
-            deb += BinPacskage2((int)chanal.chanalD, Map(p.CanD, qDmin, qDmax)) + '\t';
-            deb += BinPacskage2((int)chanal.chanalE, Map(p.CanE, qEmin, qEmax)) + '\t';
-            deb += BinPacskage2((int)chanal.chanalF, Map(p.CanF, qFmin, qFmax)) + '\t';
-            deb += BinPacskage2((int)chanal.grabChanal, Map(p.CanGrab, qGmin, qGmax));
+            deb += BinPacskage2((int)chanal.chanalA, Map(p.CanA, Point.MinPoint.CanA, Point.MaxPoint.CanA)) + '\t';
+            deb += BinPacskage2((int)chanal.chanalB, Map(p.CanB, Point.MinPoint.CanB, Point.MaxPoint.CanB)) + '\t';
+            deb += BinPacskage2((int)chanal.chanalC, Map(p.CanC, Point.MinPoint.CanC, Point.MaxPoint.CanC)) + '\t';
+            deb += BinPacskage2((int)chanal.chanalD, Map(p.CanD, Point.MinPoint.CanD, Point.MaxPoint.CanD)) + '\t';
+            deb += BinPacskage2((int)chanal.chanalE, Map(p.CanE, Point.MinPoint.CanE, Point.MaxPoint.CanE)) + '\t';
+            deb += BinPacskage2((int)chanal.chanalF, Map(p.CanF, Point.MinPoint.CanF, Point.MaxPoint.CanF)) + '\t';
+            deb += BinPacskage2((int)chanal.grabChanal, Map(p.CanGrab, Point.MinPoint.CanGrab, Point.MaxPoint.CanGrab));
             deb += '\n';
             Write(writeSrt);
             return deb;
@@ -150,20 +143,20 @@ namespace ManipulatorSerialInterfase
             try
             {
                 string writeSrt = null;
-
-                writeSrt += BinPacskage((int)chanal.chanalA, Map(p.CanA, qAmin, qAmax));
-                writeSrt += BinPacskage((int)chanal.chanalB, Map(p.CanB, qBmin, qBmax));
-                writeSrt += BinPacskage((int)chanal.chanalC, Map(p.CanC, qCmin, qCmax));
-                writeSrt += BinPacskage((int)chanal.chanalD, Map(p.CanD, qDmin, qDmax));
-                writeSrt += BinPacskage((int)chanal.chanalE, Map(p.CanE, qEmin, qEmax));
-                writeSrt += BinPacskage((int)chanal.chanalF, Map(p.CanF, qFmin, qFmax));
-                writeSrt += BinPacskage((int)chanal.grabChanal, Map(p.CanGrab, qGmin, qGmax));
+                //собираем строку для отправки
+                writeSrt += BinPacskage((int)chanal.chanalA, Map(p.CanA, Point.MinPoint.CanA, Point.MaxPoint.CanA));
+                writeSrt += BinPacskage((int)chanal.chanalB, Map(p.CanB, Point.MinPoint.CanB, Point.MaxPoint.CanB));
+                writeSrt += BinPacskage((int)chanal.chanalC, Map(p.CanC, Point.MinPoint.CanC, Point.MaxPoint.CanC));
+                writeSrt += BinPacskage((int)chanal.chanalD, Map(p.CanD, Point.MinPoint.CanD, Point.MaxPoint.CanD));
+                writeSrt += BinPacskage((int)chanal.chanalE, Map(p.CanE, Point.MinPoint.CanE, Point.MaxPoint.CanE));
+                writeSrt += BinPacskage((int)chanal.chanalF, Map(p.CanF, Point.MinPoint.CanF, Point.MaxPoint.CanF));
+                writeSrt += BinPacskage((int)chanal.grabChanal, Map(p.CanGrab, Point.MinPoint.CanGrab, Point.MaxPoint.CanGrab));
 
                 Write(writeSrt);
             }
             catch (Exception e)
             {
-                throw e;
+                  throw e;
             }
         }
     }

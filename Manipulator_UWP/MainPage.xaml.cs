@@ -1,35 +1,20 @@
-﻿using System;
+﻿using KinematicModeling;
+using ManipulatorSerialInterfase;
+using PointSpase;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation.Collections;
-using Windows.UI;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Windows.Devices.SerialCommunication;
-using Windows.Devices.Enumeration;
-using Windows.Storage.Streams;
-using System.Threading.Tasks;
-using System.Windows.Input;
-
 using System.IO.Ports;
 using System.Threading;
-using ManipulatorSerialInterfase;
+using System.Threading.Tasks;
+using Windows.Devices.Enumeration;
+using Windows.Devices.SerialCommunication;
+using Windows.UI;
 using Windows.UI.Core;
-using Windows.Devices.Bluetooth;
-using Windows.Networking.Connectivity;
-using Windows.UI.Popups;
-using Windows.Security.Credentials.UI;
-using Windows.Security.Credentials;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using static Manipulator_UWP.CommonFunction;
-using PointSpase;
-using KinematicModeling;
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Manipulator_UWP
@@ -40,32 +25,33 @@ namespace Manipulator_UWP
     /// </summary>
     public sealed partial class MainPage : Page
     {
-       // string deviceId;
-        List<string> portNamesList ;
-        ManipulatorSerialPort serialPort;
+        // string deviceId;
+        private List<string> portNamesList;
+        private ManipulatorSerialPort serialPort;
         private ProgramConfig programConfig;
 
         private System.ComponentModel.IContainer components = null;
-        Task send;                      //поток для приняти данных
+        private Task send;                      //поток для приняти данных
         //Task execution;                 //поток для отправки коллекции точек
 
 
         public MainPage()
         {
-            try {
-                this.InitializeComponent();
+            try
+            {
+                InitializeComponent();
                 ConsoleWrite("Hello word ");
                 programConfig = ProgramConfig.Instance;
 
                 //Serial port initialize
                 serialPort = ManipulatorSerialPort.Instance;
-                this.components = new System.ComponentModel.Container();
-                SerialPort sr = this.serialPort;
-                sr = new System.IO.Ports.SerialPort(this.components);
-                this.serialPort.BaudRate = 115200;
+                components = new System.ComponentModel.Container();
+                SerialPort sr = serialPort;
+                sr = new System.IO.Ports.SerialPort(components);
+                serialPort.BaudRate = 115200;
 
-               // this.serialPort.WriteTimeout = 50;
-                this.serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
+                // this.serialPort.WriteTimeout = 50;
+                serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(serialPort_DataReceived);
 
                 CommonFunction.SetsendMessage(ConsoleWrite);    //для доступа к консоли другим Page
                 comboSelectPort.Items.Clear();
@@ -86,9 +72,9 @@ namespace Manipulator_UWP
             }
         }
 
-        string RX_Message="";
-        int RX_countSumbol = 0;
-        private  void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        private string RX_Message = "";
+        private int RX_countSumbol = 0;
+        private void serialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             try
             {
@@ -96,28 +82,29 @@ namespace Manipulator_UWP
                 while (0 != sp.BytesToRead) serialPort.RX_Data.Enqueue((char)sp.ReadByte());
 
                 if (send.IsCompleted)
-                    send = Task.Run(new Action(() => {
-                    try
+                    send = Task.Run(new Action(() =>
                     {
-                        Thread.Sleep(50);     //ожидаем завершения передачи
-                        foreach (char c in serialPort.RX_Data)
+                        try
                         {
-                            if ((c != '\n') && RX_countSumbol <= 20)
+                            Thread.Sleep(50);     //ожидаем завершения передачи
+                            foreach (char c in serialPort.RX_Data)
                             {
-                                RX_Message += c.ToString();
-                                RX_countSumbol++;
-                            }
+                                if ((c != '\n') && RX_countSumbol <= 20)
+                                {
+                                    RX_Message += c.ToString();
+                                    RX_countSumbol++;
+                                }
 
-                            else
-                            {
-                                ConsoleWrite(RX_Message, Colors.Blue);
-                                RX_Message = "";
-                                RX_countSumbol = 0;
+                                else
+                                {
+                                    ConsoleWrite(RX_Message, Colors.Blue);
+                                    RX_Message = "";
+                                    RX_countSumbol = 0;
+                                }
                             }
-                        }
                             serialPort.RX_Data = new Queue<char>();
                         }
-                        catch (Exception te) { ConsoleWrite(te.ToString(),Colors.Red); }
+                        catch (Exception te) { ConsoleWrite(te.ToString(), Colors.Red); }
 
                     }));
             }
@@ -125,14 +112,13 @@ namespace Manipulator_UWP
             {
                 ConsoleWrite(ex.ToString(), Colors.Red);
             }
-            
+
         }
 
-        private long  lineCount= 0;
+        private long lineCount = 0;
         public async void ConsoleWrite(string message, Color colors)
         {
-            
-            await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 lineCount++;
                 TextBlock printTextBlock = new TextBlock();
@@ -141,16 +127,12 @@ namespace Manipulator_UWP
                 printTextBlock.FontSize = 20;
                 Console.Children.Insert(0, printTextBlock);
             });
-
-            //var transform = element.TransformToVisual((UIElement)scrollViewer.Content);
-            //var position = transform.TransformPoint(new Point(0, 0));
-            //ConsoleScrollPanel.ChangeView(null, abosulatePosition.Y, null, true);
         }
 
         private async void ConsoleWrite(string message)
         {
-            
-            await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 lineCount++;
                 TextBlock printTextBlock = new TextBlock();
@@ -182,7 +164,7 @@ namespace Manipulator_UWP
             }
             catch (Exception e)
             {
-               if(debug) ConsoleWrite(e.ToString(), Colors.Red);
+                if (debug) ConsoleWrite(e.ToString(), Colors.Red);
             }
             finally
             {
@@ -197,21 +179,21 @@ namespace Manipulator_UWP
                     }
                 }
                 comboSelectPort.Items.Add("COM5");
-                if(programConfig.PortName.Count>0)
-                    foreach (string portName in programConfig.PortName)  
+                if (programConfig.PortName.Count > 0)
+                    foreach (string portName in programConfig.PortName)
                     {
                         comboSelectPort.Items.Add(portName);
                         portCount++;
                     }
                 comboSelectPort.Items.Add("Добавить другой");
-                if (portCount > programConfig.PortNum) comboSelectPort.SelectedIndex = programConfig.PortNum; 
+                if (portCount > programConfig.PortNum) comboSelectPort.SelectedIndex = programConfig.PortNum;
 
             }
         }
-        
+
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (home.IsSelected) 
+            if (home.IsSelected)
             {
                 myFrame.Navigate(typeof(Home));
                 TitleTextBlock.Text = "Главная";
@@ -240,7 +222,7 @@ namespace Manipulator_UWP
             }
         }
 
-        bool HamburgerMenuFlag = false;
+        private bool HamburgerMenuFlag = false;
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
             if (HamburgerMenuFlag)
@@ -266,15 +248,21 @@ namespace Manipulator_UWP
                     ConectButton.IsEnabled = false;
                     serialPort.PortName = ((string)comboSelectPort.SelectedItem);
 
-                    await Task.Run(() =>
+                    await Task.Run(async () =>
                     {
                         try
                         {
                             //  serialPort.BaudRate = programConfig.Speed;
                             serialPort.Open();
-                            Point homePoint = new Point(0, 45, 87, 0, 240, 0, programConfig.MaxGripValue, 500);
+                            Point homePoint = new Point(0, 135, 0, 0, 60, 0, programConfig.MaxGripValue, 500);
                             CommonPoint = homePoint;
                             serialPort.Write(homePoint);
+
+                            await  this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, 
+                                ()=> { ConectButton.Background = new SolidColorBrush(Windows.UI.Colors.LightGreen); 
+                                });
+                            
+
                         }
                         catch (UnauthorizedAccessException)
                         {
@@ -299,13 +287,13 @@ namespace Manipulator_UWP
                 }
                 else
                 {
-                    Point homePoint = new Point(0, 0, 8, 0, 245, 0, programConfig.MaxGripValue, 500);
+                    Point homePoint = new Point(0, 180, -90, 0, 30, 0, programConfig.MaxGripValue, 500);
                     CommonPoint = homePoint;
                     serialPort.Write(homePoint);
 
                     serialPort.Close();
                     ConsoleWrite("Отключено от " + serialPort.PortName, Colors.Green);
-
+                    ConectButton.Background = new SolidColorBrush(Windows.UI.Colors.White); ;
                 }
             }
             catch (IOException)
@@ -338,7 +326,7 @@ namespace Manipulator_UWP
             {
                 ConsoleWrite(ce.ToString(), Colors.Red);
             }
-            finally 
+            finally
             {
                 ConectButton.IsEnabled = true;
             }

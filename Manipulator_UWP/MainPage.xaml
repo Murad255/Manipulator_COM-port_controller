@@ -37,9 +37,9 @@
             </RelativePanel>
             <TextBlock Text="COM порт" Grid.Column="1" TextWrapping="Wrap" HorizontalAlignment="Left" FocusVisualPrimaryBrush="White" FontSize="28" FontFamily="Calibri" VerticalAlignment="Center" Height="29" Width="124" Foreground="#FFC3D7E8"/>
             <ComboBox x:Name="comboSelectPort" Width="127" Grid.Column="2" Height="30" SelectionChanged="comboSelectPort_SelectionChanged" Margin="11,0,0,0" VerticalAlignment="Center"/>
-            <Button x:Name="ConectButton" Grid.Column="3" HorizontalAlignment="Center" Height="28" Width="78" RelativePanel.AlignLeftWithPanel="True"
+            <Button x:Name="ConectButton" Grid.Column="3" Height="28" Width="78" RelativePanel.AlignLeftWithPanel="True"
                         FontFamily="Segoe MDL2 Assets" FontSize="30"
-                        Content="&#xE8AB; "  Background="#CCFFFFFF" Padding="0,-2,-4,0" Click="ConectButton_Click"/>
+                        Content="&#xE8AB; "  Background="#CCFFFFFF" Padding="0,-2,-4,0" Click="ConectButton_Click" HorizontalAlignment="Center" Margin="0,0,0,11" VerticalAlignment="Bottom"/>
         </Grid>
         <SplitView Name="mySplitView" Grid.Row="1"  OpenPaneLength="250"  PaneBackground="#FF27A8E4" >
             <SplitView.Pane>

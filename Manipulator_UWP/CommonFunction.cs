@@ -7,6 +7,7 @@ using Windows.UI;
 using ManipulatorSerialInterfase;
 using KinematicModeling;
 using Windows.UI.Core;
+using KinematicTask;
 
 namespace Manipulator_UWP
 {
@@ -18,16 +19,18 @@ namespace Manipulator_UWP
     /// </summary>
     static class CommonFunction
     {
-        static SendMessage sendMessage;
-        static Point commonPoint = new Point();
-        static Points pointList = new Points();
-        static private Task execution;                          //поток для отправки коллекции точек
-        static ManipulatorSerialPort serialPort = ManipulatorSerialPort.Instance;
+        static SendMessage  sendMessage;
+        static Point        commonPoint = new Point();
+        static Dec          commonDec   = new Dec();
+        static Points       pointList   = new Points();
+        static private Task execution;               //поток для отправки коллекции точек
+
+        static ManipulatorSerialPort    serialPort = ManipulatorSerialPort.Instance;
 
         static CancellationTokenSource  eexecutionTokenSource = new CancellationTokenSource();
-        static CancellationToken        eexecutionToken       =     eexecutionTokenSource.Token;
+        static CancellationToken        eexecutionToken       = eexecutionTokenSource.Token;
+        static private volatile bool    startExecution_status = false; //статус передачи комманд каналам
 
-        static private volatile bool startExecution_status = false; //статус передачи комманд каналам
         static public  bool StartExecution_status
         {
             get { return startExecution_status;}
@@ -56,7 +59,11 @@ namespace Manipulator_UWP
             get{ return commonPoint; }
             set{ commonPoint = value; }         
         }
-
+        static public Dec CommonDec
+        {
+            get { return commonDec; }
+            set { commonDec = value; }
+        }
         /// <summary>
         /// поток для отправки коллекции точек
         /// </summary>

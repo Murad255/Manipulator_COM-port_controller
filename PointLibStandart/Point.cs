@@ -13,8 +13,8 @@ namespace PointSpase
             get { return numPoint; }
         }
 
-        public static readonly Point MinPoint = new Point(-90, -45, -45, -90,100,-90,0);
-        public static readonly Point MaxPoint = new Point( 90, 225, 225,  90, 280, 90,180);
+        public static readonly Point MinPoint = new Point(-90, 220, -50-90, -90, -80,-98, 0);
+        public static readonly Point MaxPoint = new Point( 90, -50, 220-90,  90, 100, 82, 180);
         private float canA, canB, canC, canD, canE, canF, canGrab; //обобщенные координаты (углы поворота сервориводов)
         protected long time;                //задержка от начала выполнения (сначала устанавливается поворот, затем задержка)
 
@@ -48,6 +48,7 @@ namespace PointSpase
         }
         public long Time { get { return time; } }
 
+        public enum pointEnum { A = 'a', B = 'b', C = 'c', D = 'd', E = 'e', F = 'f',Grab='g', Time = 't' }
         public float this[char ch]
         {
             set

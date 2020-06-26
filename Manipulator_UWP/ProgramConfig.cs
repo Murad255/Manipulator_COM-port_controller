@@ -53,7 +53,7 @@ namespace Manipulator_UWP
         private List<string> portName;
         private int minGripValue;
         private int maxGripValue;
-
+        private float stepChangevalue;
         public List<string> PortName { get { return portName; } }
 
         public void AddPortName( string name)
@@ -84,6 +84,17 @@ namespace Manipulator_UWP
             set
             {
                 Instance.minGripValue = value;
+                Save();
+            }
+        }
+
+        
+        public float StepChangevalue
+        {
+            get { return Instance.stepChangevalue; }
+            set
+            {
+                Instance.stepChangevalue = value;
                 Save();
             }
         }

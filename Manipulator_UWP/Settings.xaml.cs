@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -69,7 +69,7 @@ namespace Manipulator_UWP
             SpeedSeetCombo.SelectedIndex = programConfig.SpeedComboCount;
             MinGripValueTBox.Text = programConfig.MinGripValue.ToString();
             MaxGripValueTBox.Text = programConfig.MaxGripValue.ToString();
-
+            StepChangeTBox.Text = programConfig.StepChangevalue.ToString();
         }
 
 
@@ -86,6 +86,8 @@ namespace Manipulator_UWP
                     programConfig.MinGripValue = min;
                     programConfig.MaxGripValue = max;
                 }
+               
+                programConfig.StepChangevalue = (float)Convert.ToDouble(StepChangeTBox.Text); ;
             }
             catch (Exception ex)
             {
