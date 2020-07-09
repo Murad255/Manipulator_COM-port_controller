@@ -32,7 +32,7 @@ namespace Manipulator_UWP
 
         private System.ComponentModel.IContainer components = null;
         private Task send;                      //поток для приняти данных
-        //Task execution;                 //поток для отправки коллекции точек
+                                                //Task execution;                 //поток для отправки коллекции точек
 
 
         public MainPage()
@@ -49,11 +49,11 @@ namespace Manipulator_UWP
                 SerialPort sr = serialPort;
                 sr = new System.IO.Ports.SerialPort(components);
                 serialPort.BaudRate = 115200;
+                CommonFunction.SendMessage = ConsoleWrite;    //для доступа к консоли другим Page
 
                 // this.serialPort.WriteTimeout = 50;
                 serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(serialPort_DataReceived);
 
-                CommonFunction.SetsendMessage(ConsoleWrite);    //для доступа к консоли другим Page
                 comboSelectPort.Items.Clear();
                 GetPortNames();                                 //загрузить список портов в comboSelectPort
 
@@ -238,14 +238,15 @@ namespace Manipulator_UWP
             mySplitView.IsPaneOpen = !mySplitView.IsPaneOpen;
         }
 
-
+        int trying=0; //количество попыток подключения
         private async void ConectButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (!serialPort.IsOpen)
+                ConectButton.IsEnabled = false;
+                if (!(serialPort.IsOpen && serialPort.CtsHolding))
                 {
-                    ConectButton.IsEnabled = false;
+                    ConectButton.Background = new SolidColorBrush(Windows.UI.Colors.Gray);
                     serialPort.PortName = ((string)comboSelectPort.SelectedItem);
 
                     await Task.Run(async () =>
@@ -254,36 +255,49 @@ namespace Manipulator_UWP
                         {
                             //  serialPort.BaudRate = programConfig.Speed;
                             serialPort.Open();
-                            Point homePoint = new Point(0, 135, 0, 0, 60, 0, programConfig.MaxGripValue, 500);
+                            Point homePoint = new Point(0, 90, 0, 0, 0, 0, programConfig.MaxGripValue, 500);
                             CommonPoint = homePoint;
                             serialPort.Write(homePoint);
-
-                            await  this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, 
-                                ()=> { ConectButton.Background = new SolidColorBrush(Windows.UI.Colors.LightGreen); 
+                            trying = 0;
+                            ConsoleWrite("подключено к " + serialPort.PortName, Colors.Green);
+                            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                                () =>
+                                {
+                                    ConectButton.Background = new SolidColorBrush(Windows.UI.Colors.LightGreen);
                                 });
-                            
-
-                        }
+                            }
                         catch (UnauthorizedAccessException)
                         {
                             ConsoleWrite("COM порт занят.", Colors.Red);
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            ConsoleWrite("Не выбран COM-порт.\nПовторить поиск?", Colors.Red);
+                        }
+                        catch (IOException)
+                        {
+                            ++trying;
+                            if (trying >= 10)
+                            {
+                                ConsoleWrite($"Не удалюсь подключиться к {serialPort.PortName}.", Colors.Red);
+                                trying = 0;
+                                return; 
+                            }
+                            ConsoleWrite("Повторное подключение",Colors.Orange);
+                            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                             () =>                          {
+                                 ConectButton_Click(new object(), new RoutedEventArgs());
+                             });
                         }
                         catch (Exception soe)
                         {
                             ConsoleWrite(soe.ToString(), Colors.Red);
                         }
-                        finally
-                        {
-                            if (serialPort.IsOpen)
-                            {
-                                ConsoleWrite("подключено к " + serialPort.PortName, Colors.Green);
-                            }
-                        }
                     });
 
                     send = new Task(() => { });
                     send.Start();
-                    Execution.Start();
+                    // Execution.Start();
                 }
                 else
                 {
@@ -293,12 +307,19 @@ namespace Manipulator_UWP
 
                     serialPort.Close();
                     ConsoleWrite("Отключено от " + serialPort.PortName, Colors.Green);
-                    ConectButton.Background = new SolidColorBrush(Windows.UI.Colors.White); ;
+                    ConectButton.Background = new SolidColorBrush(Windows.UI.Colors.Gray); 
                 }
             }
             catch (IOException)
             {
-                ConsoleWrite("Повторное подключение");
+                ++trying;
+                if (trying >= 10)
+                {
+                    ConsoleWrite($"Не удалюсь подключиться к {serialPort.PortName}.", Colors.Red);
+                    trying = 0;
+                    return;
+                }
+                ConsoleWrite("Повторное подключение", Colors.Orange);
                 ConectButton_Click(new object(), new RoutedEventArgs());
             }
             //catch (ArgumentNullException)
@@ -322,13 +343,19 @@ namespace Manipulator_UWP
             //        connectButton_Click_1(sender, e);
             //    }
             //}
+            catch (InvalidOperationException)
+            {
+                serialPort.Close();
+                ConectButton.Background = new SolidColorBrush(Windows.UI.Colors.Gray);
+                ConectButton_Click(new object(), new RoutedEventArgs());
+            }
             catch (Exception ce)
             {
                 ConsoleWrite(ce.ToString(), Colors.Red);
             }
             finally
             {
-                ConectButton.IsEnabled = true;
+               if(trying==0) ConectButton.IsEnabled = true;
             }
         }
 

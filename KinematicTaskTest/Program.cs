@@ -1,6 +1,7 @@
 ﻿using System;
 using KinematicTask;
 using PointSpase;
+using KinematicModeling;
 
 namespace KinematicTaskTest
 {

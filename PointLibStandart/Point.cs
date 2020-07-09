@@ -2,21 +2,14 @@
 
 namespace PointSpase
 {
-    public class Point
+    public class Point : PointParam
     {
-        protected static int numPoints = 0; //общее количество созданных точек 
-        protected int numPoint;             //номер данного экземпляра
         public static Point tempPoint = new Point();
 
-        public int NumPoint
-        {
-            get { return numPoint; }
-        }
 
-        public static readonly Point MinPoint = new Point(-90, 220, -50-90, -90, -80,-98, 0);
-        public static readonly Point MaxPoint = new Point( 90, -50, 220-90,  90, 100, 82, 180);
-        private float canA, canB, canC, canD, canE, canF, canGrab; //обобщенные координаты (углы поворота сервориводов)
-        protected long time;                //задержка от начала выполнения (сначала устанавливается поворот, затем задержка)
+        public static readonly Point MinPoint = new Point(-90, -50, -50 - 90, -90, -80, -98, 0,0);
+        public static readonly Point MaxPoint = new Point(90, 220 , 220 - 90, 90, 100, 82, 180,long.MaxValue);
+        private float canA, canB, canC, canD, canE, canF; //обобщенные координаты (углы поворота сервориводов)
 
         public float CanA
         {
@@ -42,17 +35,46 @@ namespace PointSpase
         {
             get { return canF; }
         }
-        public float CanGrab
-        {
-            get { return canGrab; }
-        }
-        public long Time { get { return time; } }
 
-        public enum pointEnum { A = 'a', B = 'b', C = 'c', D = 'd', E = 'e', F = 'f',Grab='g', Time = 't' }
+        //public Point(float canA, float canB , float canC , float canD ,
+        //                    float canE , float canF , float canGrab , long time ) =>
+        //        setAllDegree(canA, canB, canC, canD, canE, canF, canGrab, time);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="canA">значение канала A</param>
+        /// <param name="canB">значение канала B</param>
+        /// <param name="canC">значение канала C</param>
+        /// <param name="canD">значение канала D</param>
+        /// <param name="canE">значение канала E</param>
+        /// <param name="canF">значение канала F</param>
+        /// <param name="canGrab">значение канала рабочего органа</param>
+        /// <param name="time">время перехода к данной точки из прошлой</param>
+        /// <param name="numPoint">индекс точки (рекомендуется не устанавливать, нужно для десериализации)</param>
+        public Point(float canA = 0, float canB = 0, float canC = 0, float canD = 0,
+                          float canE = 0, float canF = 0, float canGrab = 0, long time = 0, int numPoint = 0)
+        {
+            this[(char)pointEnum.A] = canA;
+            this[(char)pointEnum.B] = canB;
+            this[(char)pointEnum.C] = canC;
+            this[(char)pointEnum.D] = canD;
+            this[(char)pointEnum.E] = canE;
+            this[(char)pointEnum.F] = canF;
+            this[(char)pointEnum.Grab] = canGrab;
+            this[(char)pointEnum.Time] = time;
+
+            this.numPoint = numPoint;
+        }
+
+
+        public enum  pointEnum { A = 'a', B = 'b', C = 'c', D = 'd', E = 'e', F = 'f', Grab = 'g', Time = 't' }
         public float this[char ch]
         {
             set
             {
+                if (value > MaxPoint[ch]) throw new MaxValueException($"Значение подвижности на канале {ch} больше предельного!\t {value} > {MaxPoint[ch]}");
+                if (value < MinPoint[ch]) throw new MinValueException($"Значение подвижности на канале {ch} меньше предельного!\t {value} < {MinPoint[ch]}");
                 switch (ch)
                 {
                     case 'a':
@@ -78,7 +100,7 @@ namespace PointSpase
                         return;
                     case 't':
                         time = (long)value;
-                        return ;
+                        return;
                     default:
                         return;
                 }
@@ -109,13 +131,7 @@ namespace PointSpase
             }
         }
 
-        public Point(   float canA=0 , float canB=0 , float canC=0 ,float canD =0, 
-                        float canE =0, float canF=0 , float canGrab = 0, long time=0 ) =>
-            setAllDegree(canA, canB, canC, canD, canE, canF, canGrab, time);
-
-        //public Point() => setAllDegree(0, 0, 0, 0, 0, 0, 0, 0);
-
-
+       
 
         public void IncrementPoint() => numPoint = ++numPoints;
 
@@ -128,11 +144,11 @@ namespace PointSpase
         /// <returns></returns>
         public static Point equivalent(Point p)
         {
-           Point np= new Point(    p.CanA, p.CanB,
-                                   p.CanC, p.CanD,
-                                   p.CanE, p.CanF,
-                                   p.canGrab, p.Time);
-            
+            Point np = new Point(p.CanA, p.CanB,
+                                    p.CanC, p.CanD,
+                                    p.CanE, p.CanF,
+                                    p.canGrab, p.Time);
+
             return np;
         }
 
@@ -146,17 +162,17 @@ namespace PointSpase
         /// <param name="canE"></param>
         /// <param name="canF"></param>
         /// <param name="time"></param>
-        private void setAllDegree(float canA, float canB, float canC, float canD, float canE, float canF, float grabCan, long time)
-        {
-            this.canA = canA;
-            this.canB = canB;
-            this.canC = canC;
-            this.canD = canD;
-            this.canE = canE;
-            this.canF = canF;
-            this.canGrab = grabCan;
-            this.time = time;
-        }
+        //private void setAllDegree(float canA, float canB, float canC, float canD, float canE, float canF, float grabCan, long time)
+        //{
+        //    this.canA = canA;
+        //    this.canB = canB;
+        //    this.canC = canC;
+        //    this.canD = canD;
+        //    this.canE = canE;
+        //    this.canF = canF;
+        //    canGrab = grabCan;
+        //    this.time = time;
+        //}
 
         /// <summary>
         /// Возвращает строку с выписанными в ряд значениями индекса канала, координаты и завершающего знака
@@ -164,12 +180,37 @@ namespace PointSpase
         /// <returns></returns>
         public override string ToString()
         {
-            return "Point " + this.numPoint.ToString() + '\t' + this.time.ToString() + " ms.";
+            return "Point " + numPoint.ToString() + '\t' + time.ToString() + " ms.";
         }
 
         public string numString()
         {
-            return "Point " + this.numPoint.ToString() + '\t' + this.time.ToString() + " ms." + '\r' + '\n';
+            return "Point " + numPoint.ToString() + '\t' + time.ToString() + " ms." + '\r' + '\n';
         }
+    }
+
+
+    /// <summary>
+    /// исключение, возникающее при значения угла, меньшим чем минимально допустимое
+    /// </summary>
+    public class MinValueException : Exception
+    {
+
+        public MinValueException() : base("Значение подвижности ниже предела!") { }
+
+        public MinValueException(string message) : base(message) { }
+
+    }
+
+    /// <summary>
+    /// исключение, возникающёё при значения угла, большим чем максимально допустимое
+    /// </summary>
+    public class MaxValueException : Exception
+    {
+
+        public MaxValueException() : base("Значение подвижности превысило предел!") { }
+
+        public MaxValueException(string message) : base(message) { }
+
     }
 }

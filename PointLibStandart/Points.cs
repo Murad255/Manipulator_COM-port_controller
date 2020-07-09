@@ -9,34 +9,25 @@ namespace PointSpase
 {
     public class Points : List<Point>
     {
-        //private Point pastPoint= new Point();
-        //public Point PastPoint
-        //{
-        //    get { return pastPoint; }
-        //}
 
-        private int pointsCoint = 0;
+        private int pointsCoint ;
         public int PointsCoint
         {
             get { return pointsCoint; }
         }
 
+        public Points()
+        {
+            pointsCoint = 0;    
+        }
 #pragma warning disable CS0108 // Член скрывает унаследованный член: отсутствует новое ключевое слово
         public void Add(Point temp)
 #pragma warning restore CS0108 // Член скрывает унаследованный член: отсутствует новое ключевое слово
         {
-            //if (pointsCoint != 0) pastPoint = this[pointsCoint - 1]; //помещаем предыдущую точку в pastPoint
             base.Add(temp);
             temp.IncrementPoint();
             this.pointsCoint++;
         }
-
-        //public void Add(int canA, int canB, int canC, int canD,
-        //                int canE, int canF, long time)
-        //{
-        //    Point temp = new Point(canA, canB, canC, canD, canE, canF, time);
-        //    this.Add(temp);
-        //}
 
         public void Add(float canA, float canB, float canC, float canD,
                 float canE, float canF, float grabCan, long time)

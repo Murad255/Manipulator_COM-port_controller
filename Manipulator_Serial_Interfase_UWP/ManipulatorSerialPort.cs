@@ -40,22 +40,6 @@ namespace ManipulatorSerialInterfase
             set { RX_data = value; }
         }
 
-        ////Константы, учитывающие изначальный поворот осей сервоприводов
-        //public const float qAmin = -90;
-        //public const float qBmin = -45;
-        //public const float qCmin = -45;
-        //public const float qDmin = -90;
-        //public const float qEmin = 100;
-        //public const float qFmin = -90;
-        //public const float qGmin = 0;
-        //public const float qAmax = qAmin + 180;
-        //public const float qBmax = qBmin + 270;
-        //public const float qCmax = qCmin + 270;
-        //public const float qDmax = qDmin + 180;
-        //public const float qEmax = qEmin + 180;
-        //public const float qFmax = qFmin + 180;
-        //public const float qGmax = qGmin + 180;
-
         public  enum chanal { chanalA = 1, chanalB, chanalC, chanalD, chanalE, chanalF, grabChanal };
 
         /// <summary>
@@ -130,7 +114,9 @@ namespace ManipulatorSerialInterfase
             deb += BinPacskage2((int)chanal.chanalF, Map(p.CanF, Point.MinPoint.CanF, Point.MaxPoint.CanF)) + '\t';
             deb += BinPacskage2((int)chanal.grabChanal, Map(p.CanGrab, Point.MinPoint.CanGrab, Point.MaxPoint.CanGrab));
             deb += '\n';
-            Write(writeSrt);
+            if (this.IsOpen)
+                Write(writeSrt);
+            else throw new Exception("COM порт закрыт");
             return deb;
         }
 
@@ -145,43 +131,22 @@ namespace ManipulatorSerialInterfase
                 string writeSrt = null;
                 //собираем строку для отправки
                 writeSrt += BinPacskage((int)chanal.chanalA, Map(p.CanA, Point.MinPoint.CanA, Point.MaxPoint.CanA));
-                writeSrt += BinPacskage((int)chanal.chanalB, Map(p.CanB, Point.MinPoint.CanB, Point.MaxPoint.CanB));
+                writeSrt += BinPacskage((int)chanal.chanalB, Map(p.CanB, Point.MaxPoint.CanB, Point.MinPoint.CanB));//для B инвертированно
                 writeSrt += BinPacskage((int)chanal.chanalC, Map(p.CanC, Point.MinPoint.CanC, Point.MaxPoint.CanC));
                 writeSrt += BinPacskage((int)chanal.chanalD, Map(p.CanD, Point.MinPoint.CanD, Point.MaxPoint.CanD));
                 writeSrt += BinPacskage((int)chanal.chanalE, Map(p.CanE, Point.MinPoint.CanE, Point.MaxPoint.CanE));
                 writeSrt += BinPacskage((int)chanal.chanalF, Map(p.CanF, Point.MinPoint.CanF, Point.MaxPoint.CanF));
                 writeSrt += BinPacskage((int)chanal.grabChanal, Map(p.CanGrab, Point.MinPoint.CanGrab, Point.MaxPoint.CanGrab));
-
-                Write(writeSrt);
+                if (this.IsOpen&&this.CtsHolding)
+                    Write(writeSrt);
+                else throw new Exception("COM порт закрыт");
             }
             catch (Exception e)
             {
-                  throw e;
+                throw e;
             }
         }
     }
 
-    /// <summary>
-    /// исключение, возникающее при значения угла, меньшим чем минимально допустимое
-    /// </summary>
-    public class MinValueException : Exception
-    {
 
-        public MinValueException() : base("Значение подвижности ниже предела!") { }
-
-        public MinValueException(string message) : base(message) { }
-
-    }
-
-    /// <summary>
-    /// исключение, возникающёё при значения угла, большим чем максимально допустимое
-    /// </summary>
-    public class MaxValueException : Exception
-    {
-
-        public MaxValueException() : base("Значение подвижности превысило предел!") { }
-
-        public MaxValueException(string message) : base(message) { }
-
-    }
 }

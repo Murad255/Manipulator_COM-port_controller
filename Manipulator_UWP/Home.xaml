@@ -66,9 +66,9 @@
                 </Grid>
 
                 <Button x:Name="SaveButton" FontFamily="Segoe MDL2 Assets" FontSize="34" Padding="0,0,0,0"
-                        Content="&#xE78C;" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" Height="50" Width="143" Click="SaveButton_Click" />
+                        Content="&#xE78C;" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" Height="50" Width="143" Click="SaveButton_Click" AutomationProperties.HelpText="сохранить" />
                 <Button x:Name="LoadListButton" FontFamily="Segoe MDL2 Assets" FontSize="34" Padding="0,0,0,0"
-                        Content="&#xE7AC;" Grid.Column="3" Grid.Row="3" Height="50" Width="145" HorizontalAlignment="Center" Click="LoadListButton_Click"/>
+                        Content="&#xE7AC;" Grid.Column="3" Grid.Row="3" Height="50" Width="145" HorizontalAlignment="Center" Click="LoadListButton_Click" AutomationProperties.HelpText="загрузить"/>
 
             </Grid>
             <Button x:Name="ClearButton"  FontSize="24" Padding="0,0,0,0"

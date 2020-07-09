@@ -32,9 +32,8 @@ namespace Manipulator_UWP
 
             pbCanal_A.Minimum = Point.MinPoint.CanA;
             pbCanal_A.Maximum = Point.MaxPoint.CanA;
-            pbCanal_B.Minimum = Point.MaxPoint.CanB;
-            //для B инвертированно
-            pbCanal_B.Maximum = Point.MinPoint.CanB;
+            pbCanal_B.Minimum = Point.MinPoint.CanB;
+            pbCanal_B.Maximum = Point.MaxPoint.CanB;
             pbCanal_C.Minimum = Point.MinPoint.CanC;
             pbCanal_C.Maximum = Point.MaxPoint.CanC;
             pbCanal_D.Minimum = Point.MinPoint.CanD;
@@ -99,13 +98,16 @@ namespace Manipulator_UWP
                 tBoxF.Text = CommonDec.AnglC.ToString();
                 tBoxTime.Text = CommonDec.Time.ToString();
 
-                CommonPoint = TaskDecision.DecToPoint(CommonDec);
+               // CommonPoint = TaskDecision.DecToPoint(CommonDec);
                 pbCanal_A.Value = CommonPoint.CanA;
                 pbCanal_B.Value = CommonPoint.CanB;
                 pbCanal_C.Value = CommonPoint.CanC;
                 pbCanal_D.Value = CommonPoint.CanD;
                 pbCanal_E.Value = CommonPoint.CanE;
                 pbCanal_F.Value = CommonPoint.CanF;
+
+                CommonConsoleWrite( $"A: {Math.Round(CommonPoint.CanA, 1)}\tB: {Math.Round(CommonPoint.CanB, 1)}\tC: {Math.Round(CommonPoint.CanC, 1)}\t" +
+                                    $"D: {Math.Round(CommonPoint.CanD, 1)}\tE: {Math.Round(CommonPoint.CanE, 1)}\tF: {Math.Round(CommonPoint.CanF, 1)}");
             }
         }
 
@@ -148,9 +150,11 @@ namespace Manipulator_UWP
                 try
                 {
                     //serialWrite(ch + trackBar.Value.ToString() + 'z');
+                    if (!(PointsEditor.serialPort.IsOpen && PointsEditor.serialPort.CtsHolding))
+                        throw new Exception("COM порт закрыт");
                     CommonPoint[ch] = CommonPoint[ch] + addValue;
-                    PointsEditor.serialPort.Write(CommonPoint);
                     PointsEditor.EditorUpdate();
+                    PointsEditor.serialPort.Write(CommonPoint);
                     await Task.Run(async () =>
                     {
                         if (PointsEditor.clicFlag) Thread.Sleep(300);
@@ -167,7 +171,7 @@ namespace Manipulator_UWP
                                 }
                                 catch (MaxValueException e) { CommonConsoleWrite(e.Message, Colors.Red); CommonPoint[ch] -= addValue; }
                                 catch (MinValueException e) { CommonConsoleWrite(e.Message, Colors.Red); CommonPoint[ch] -= addValue; }
-                                catch (Exception e) { CommonConsoleWrite(e.Message, Colors.Red); }
+                                catch (Exception e) { CommonConsoleWrite("PointControl::ScrollFunction:\t" + e.Message, Colors.Red); }
                             });
                             Thread.Sleep(50);
                         }
@@ -177,7 +181,7 @@ namespace Manipulator_UWP
                 }
                 catch (MaxValueException e) { CommonConsoleWrite(e.Message, Colors.Red); CommonPoint[ch] -= addValue; }
                 catch (MinValueException e) { CommonConsoleWrite(e.Message, Colors.Red); CommonPoint[ch] -= addValue; }
-                catch (Exception e) { CommonConsoleWrite(e.Message, Colors.Red); }
+                catch (Exception e) { CommonConsoleWrite("PointControl::ScrollFunction:\t" + e.Message, Colors.Red); }
 
             }
 
@@ -198,8 +202,8 @@ namespace Manipulator_UWP
                 {
                     CommonDec[ch] += addValue;
                     CommonPoint = KinematicTask.TaskDecision.DecToPoint(CommonDec);
-                    PointsEditor.serialPort.Write(CommonPoint);
                     PointsEditor.EditorUpdate();
+                    PointsEditor.serialPort.Write(CommonPoint);
                     await Task.Run(async () =>
                     {
 
@@ -217,9 +221,9 @@ namespace Manipulator_UWP
                                     PointsEditor.serialPort.Write(CommonPoint);
                                     PointsEditor.EditorUpdate();
                                 }
-                                catch (MaxValueException e) { CommonConsoleWrite(e.Message, Colors.Red); CommonPoint[ch] -= addValue; }
-                                catch (MinValueException e) { CommonConsoleWrite(e.Message, Colors.Red); CommonPoint[ch] -= addValue; }
-                                catch (Exception e) { CommonConsoleWrite(e.Message, Colors.Red); }
+                                catch (MaxValueException e) { CommonConsoleWrite( e.Message, Colors.Red); CommonDec[ch] -= addValue; }
+                                catch (MinValueException e) { CommonConsoleWrite( e.Message, Colors.Red); CommonDec[ch] -= addValue; }
+                                catch (Exception e) { CommonConsoleWrite("DecControl::ScrollFunction:\t" + e.Message, Colors.Red); }
                             });
                             Thread.Sleep(50);
                         }
@@ -227,9 +231,9 @@ namespace Manipulator_UWP
                     });
 
                 }
-                catch (MaxValueException e) { CommonConsoleWrite(e.Message, Colors.Red); CommonPoint[ch] -= addValue; }
-                catch (MinValueException e) { CommonConsoleWrite(e.Message, Colors.Red); CommonPoint[ch] -= addValue; }
-                catch (Exception e) { CommonConsoleWrite(e.Message, Colors.Red); }
+                catch (MaxValueException e) { CommonConsoleWrite( e.Message, Colors.Red); CommonDec[ch] -= addValue; }
+                catch (MinValueException e) { CommonConsoleWrite( e.Message, Colors.Red); CommonDec[ch] -= addValue; }
+                catch (Exception e) { CommonConsoleWrite("DecControl::ScrollFunction:\t" + e.Message, Colors.Red); }
 
             }
         }

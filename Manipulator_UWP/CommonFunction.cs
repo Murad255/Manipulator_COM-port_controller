@@ -12,12 +12,9 @@ using KinematicTask;
 namespace Manipulator_UWP
 {
 
-    delegate void SendMessage(string message,  Color colors);
+    public delegate void SendMessage(string message,  Color colors);
 
-    /// <summary>
-    /// Класс для функций, которые потребуются многим страницам HXAML сразу
-    /// </summary>
-    static class CommonFunction
+    public static class CommonFunction
     {
         static SendMessage  sendMessage;
         static Point        commonPoint = new Point();
@@ -36,6 +33,10 @@ namespace Manipulator_UWP
             get { return startExecution_status;}
         }
 
+        static public SendMessage SendMessage
+        {
+            set { sendMessage=value; }
+        }
         static private volatile bool cycleStatus = false;
         /// <summary>
         /// флаг зацикленности процесса отправки точек
@@ -80,7 +81,7 @@ namespace Manipulator_UWP
         /// Установить функцию для отправки сообщений в консоль
         /// </summary>
         /// <param name="send"></param>
-        static public void SetsendMessage(SendMessage send)
+        static public void SetSendMessage(SendMessage send)
         {
             sendMessage = send;
         }
@@ -96,50 +97,59 @@ namespace Manipulator_UWP
         }
 
 
-
-        static  public void ExecutionProcess(Action action,bool debugFlag=false)
+        /// <summary>
+        /// Выполняет проход по массиву точек pointList
+        /// </summary>
+        /// <param name="action">Метод, вызываемый для обновления индикатора работы 
+        /// (метод проверяет флаг StartExecution_status)</param>
+        /// <param name="debugFlag"></param>
+        static public void ExecutionProcess(Action action,bool debugFlag=false)
         {
             try
             {
+                //для предварительной остановки
                 eexecutionTokenSource = new CancellationTokenSource();
                 eexecutionToken = eexecutionTokenSource.Token;
 
                 if (!serialPort.IsOpen) throw new InvalidOperationException();
                 if (!startExecution_status)
-                {
-                    
+                {                    
                     startExecution_status = true;
                     action();
 
                     execution = new Task(()=>
                     {
-                        Point[] tempPoints = new Point[pointList.Count];
-                        pointList.CopyTo(tempPoints);
-                        do
+                        try
                         {
-                            Passing.pastPoint = tempPoints[0];
-                            //проходимся по всем точкам и выролняем их отправку 
-                            foreach (Point point in tempPoints)
+                            Point[] tempPoints = new Point[pointList.Count];
+                            pointList.CopyTo(tempPoints);
+                            do
                             {
-                                if (eexecutionToken.IsCancellationRequested) return; //принудительное закрытие задачи
-                                Passing.sinFunc(Passing.pastPoint,
-                                                point,
-                                                serialPort.Write);
-                                Passing.pastPoint = point;
-                                if (debugFlag) CommonConsoleWrite(point.ToString());
-                            }
+                                Passing.pastPoint = tempPoints[0];
+                                //проходимся по всем точкам и выролняем их отправку 
+                                foreach (Point point in tempPoints)
+                                {
+                                    if (eexecutionToken.IsCancellationRequested) return; //принудительное закрытие задачи
+                                    Passing.PassingAlgoritm(Passing.pastPoint,
+                                                    point,
+                                                    serialPort.Write);
+                                    Passing.pastPoint = point;
+                                    if (debugFlag) CommonConsoleWrite(point.ToString());
+                                }
 
-                        } while (cycleStatus && startExecution_status);
+                            } while (cycleStatus && startExecution_status);
 
-                    startExecution_status = false;
-                        
+                            startExecution_status = false;
+
                             action();
-                        
+                        }
+                        catch(Exception e)
+                        {
+                            CommonConsoleWrite("ExecutionProcess:\t"+e.Message);
+                        }
                     });
                     execution.Start();
-
-
-                }
+                                                       }
                 else
                 {
                     startExecution_status = false;  //в зависимости от него переключить внешний вид кнопки запуска программы точек
@@ -153,7 +163,71 @@ namespace Manipulator_UWP
             }
         }
 
-       
+        static public void ExecutionProcess2(Action action, bool debugFlag = false)
+        {
+            try
+            {
+                //для предварительной остановки
+                eexecutionTokenSource = new CancellationTokenSource();
+                eexecutionToken = eexecutionTokenSource.Token;
+
+                if (!serialPort.IsOpen) throw new InvalidOperationException();
+                if ((!startExecution_status) && pointList.Count > 1)
+                {
+                    startExecution_status = true;
+                    action();
+
+                    execution = new Task(() =>
+                    {
+                        try
+                        {
+                            List<Point> tempPoints = new List<Point>();
+                            Passing.pastPoint = pointList[0];
+                            //проходимся по всем точкам и выролняем их отправку 
+                            foreach (Point point in pointList)
+                            {
+                                tempPoints.AddRange(Passing.PassingAlgoritm(Passing.pastPoint, point));
+                                Passing.pastPoint = point;
+                            }
+
+                            do
+                            {
+                                Passing.PassingAlgoritm(CommonPoint,
+                                    pointList[0],
+                                    serialPort.Write);
+                                foreach (Point point in tempPoints)
+                                {
+                                    if (eexecutionToken.IsCancellationRequested) return; //принудительное закрытие задачи
+                                    serialPort.Write(point);
+                                    Thread.Sleep((int)point.Time);
+
+                                    if (debugFlag) CommonConsoleWrite(point.ToString());
+                                }
+                                commonPoint  = Point.equivalent(tempPoints[tempPoints.Count-1]);
+                            } while (cycleStatus && startExecution_status);
+
+                            startExecution_status = false;
+                            action();
+                        }
+                        catch (Exception e)
+                        {
+                            CommonConsoleWrite("ExecutionProcess:\t" + e.Message);
+                        }
+                    });
+                    execution.Start();
+                }
+                else
+                {
+                    startExecution_status = false;  //в зависимости от него переключить внешний вид кнопки запуска программы точек
+                    action();
+                    eexecutionTokenSource.Cancel();
+                }
+            }
+            catch (Exception ce)
+            {
+                CommonConsoleWrite(ce.Message, Colors.Red);
+            }
+        }
 
     }
 
