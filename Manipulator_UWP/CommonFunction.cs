@@ -13,21 +13,25 @@ namespace Manipulator_UWP
 {
 
     public delegate void SendMessage(string message, Color colors);
+    public enum CoordSystems { PointSystem = 0, DecSystem = 1 }
+
 
     public static class CommonFunction
     {
-        static SendMessage sendMessage;
-        static Point commonPoint = new Point();
-        static Dec commonDec = new Dec();
-        static Points pointList = new Points();
+        static SendMessage  sendMessage;
+        static Point        commonPoint = new Point();
+        static Dec          commonDec = new Dec();
+        static Points       pointList = new Points();
         static private Task execution;               //поток для отправки коллекции точек
 
-        static ManipulatorSerialPort serialPort = ManipulatorSerialPort.Instance;
+        static ManipulatorSerialPort    serialPort = ManipulatorSerialPort.Instance;
 
-        static CancellationTokenSource eexecutionTokenSource = new CancellationTokenSource();
-        static CancellationToken eexecutionToken = eexecutionTokenSource.Token;
-        static private volatile bool startExecution_status = false; //статус передачи комманд каналам
-
+        static CancellationTokenSource  eexecutionTokenSource = new CancellationTokenSource();
+        static CancellationToken        eexecutionToken = eexecutionTokenSource.Token;
+        static  volatile bool           startExecution_status = false; //статус передачи комманд каналам
+        
+        static public CoordSystems  CoordSystem { get; set; }
+        static public int           PassingAlgoritm { get; set; }
         static public bool StartExecution_status
         {
             get { return startExecution_status; }
@@ -38,6 +42,7 @@ namespace Manipulator_UWP
             set { sendMessage = value; }
         }
         static private volatile bool cycleStatus = false;
+
         /// <summary>
         /// флаг зацикленности процесса отправки точек
         /// </summary>
@@ -65,6 +70,7 @@ namespace Manipulator_UWP
             get { return commonDec; }
             set { commonDec = value; }
         }
+        
         /// <summary>
         /// поток для отправки коллекции точек
         /// </summary>
