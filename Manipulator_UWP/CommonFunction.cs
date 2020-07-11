@@ -7,7 +7,6 @@ using Windows.UI;
 using ManipulatorSerialInterfase;
 using KinematicModeling;
 using Windows.UI.Core;
-using KinematicTask;
 
 namespace Manipulator_UWP
 {
