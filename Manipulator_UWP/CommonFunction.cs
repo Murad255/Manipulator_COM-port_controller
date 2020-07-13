@@ -234,6 +234,82 @@ namespace Manipulator_UWP
             }
         }
 
+        static public void ExecutionProcess3(Action action, bool debugFlag = false)
+        {
+            try
+            {
+                //для предварительной остановки
+                eexecutionTokenSource = new CancellationTokenSource();
+                eexecutionToken = eexecutionTokenSource.Token;
+
+                if (!serialPort.IsOpen) throw new InvalidOperationException();
+                if ((!startExecution_status) && pointList.Count > 1)
+                {
+                    startExecution_status = true;
+                    action();
+
+                    execution = new Task(() =>
+                    {
+                        try
+                        {
+                            List<Point> tempPoints = new List<Point>();
+                            Passing.pastPoint = pointList[0];
+                            //проходимся по всем точкам и выролняем их отправку 
+                            foreach (Point point in pointList)
+                            {
+                                if (point.MovementType == MovementTypes.РТР)
+                                {
+                                    tempPoints.AddRange(Passing.PassingAlgoritm(Passing.pastPoint, point));
+                                    Passing.pastPoint = point;
+                                }
+                                else if(point.MovementType == MovementTypes.LIN)
+                                {
+                                    Dec startDec = TaskDecision.PointToDec(Passing.pastPoint);
+                                    Dec endDec = TaskDecision.PointToDec(point);
+                                    tempPoints.AddRange(Passing.PassingAlgoritm(startDec, endDec));
+                                    Passing.pastPoint = point;
+                                }
+                            }
+
+                            do
+                            {
+                                Passing.PassingAlgoritm(CommonPoint,
+                                    pointList[0],
+                                    serialPort.Write);
+                                foreach (Point point in tempPoints)
+                                {
+                                    if (eexecutionToken.IsCancellationRequested) return; //принудительное закрытие задачи
+                                    serialPort.Write(point);
+                                    Thread.Sleep((int)point.Time);
+
+                                    if (debugFlag) CommonConsoleWrite(point.ToString());
+                                }
+                                commonPoint = Point.equivalent(tempPoints[tempPoints.Count - 1]);
+                            } while (cycleStatus && startExecution_status);
+
+                            startExecution_status = false;
+                            action();
+                        }
+                        catch (Exception e)
+                        {
+                            CommonConsoleWrite("ExecutionProcess:\t" + e.Message);
+                        }
+                    });
+                    execution.Start();
+                }
+                else
+                {
+                    startExecution_status = false;  //в зависимости от него переключить внешний вид кнопки запуска программы точек
+                    action();
+                    eexecutionTokenSource.Cancel();
+                }
+            }
+            catch (Exception ce)
+            {
+                CommonConsoleWrite(ce.Message, Colors.Red);
+            }
+        }
+
     }
 
 

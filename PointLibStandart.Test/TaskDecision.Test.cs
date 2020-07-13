@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using KinematicTask;
+using KinematicModeling;
 using PointSpase;
 using System.Diagnostics;
 using System;

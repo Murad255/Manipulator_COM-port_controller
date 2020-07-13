@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using static System.Math;
 
-namespace KinematicTask
+namespace KinematicModeling
 {
     public static class TaskDecision
     {
@@ -98,14 +98,19 @@ namespace KinematicTask
 
             Point point = new Point();
 
-            point[(char)Point.pointEnum.Time] = (float)dec[(char)Dec.decEnum.Time];
-            point[(char)Point.pointEnum.Grab] = (float)dec[(char)Dec.decEnum.Grab];
-            point['a'] = (float)Round((180.0 / PI * FI_1 - 90), accuracy);
-            point['b'] = (float)Round((180.0 / PI * FI_2), accuracy);
-            point['c'] = (float)Round(180.0 / PI * FI_3, accuracy);
-            point['d'] = (float)Round((180.0 / PI * FI_4), accuracy);
-            point['e'] = (float)Round((180.0 / PI * FI_5), accuracy);
-            point['f'] = (float)Round((180.0 / PI * FI_6 - 90), accuracy);
+
+            point.CanA = (float)Round((180.0 / PI * FI_1 - 90), accuracy);
+            point.CanB = (float)Round((180.0 / PI * FI_2), accuracy);
+            point.CanC = (float)Round(180.0 / PI * FI_3, accuracy);
+            point.CanD = (float)Round((180.0 / PI * FI_4), accuracy);
+            point.CanE = (float)Round((180.0 / PI * FI_5), accuracy);
+            point.CanF = (float)Round((180.0 / PI * FI_6 - 90), accuracy);
+
+            point.Time                  = dec.Time;
+            point.CanGrab               = dec.CanGrab;
+            point.NumPoint              = dec.NumPoint;
+            point.PointPassingStrategy  = dec.PointPassingStrategy;
+            point.MovementType          = dec.MovementType;
 
             return point;
         }
@@ -180,8 +185,11 @@ namespace KinematicTask
                              Round(180.0 / PI * bank, accuracy)
                           );
 
-            dec[(char)Dec.decEnum.Time] = point[(char)Point.pointEnum.Time];
-            dec[(char)Dec.decEnum.Grab] = point[(char)Point.pointEnum.Grab];
+            dec.Time                    = point.Time;
+            dec.CanGrab                 = point.CanGrab;
+            dec.NumPoint                = point.NumPoint;
+            dec.PointPassingStrategy    = point.PointPassingStrategy;
+            dec.MovementType            = point.MovementType;
 
             return dec;
         }

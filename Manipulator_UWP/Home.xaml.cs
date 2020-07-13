@@ -47,7 +47,7 @@ namespace Manipulator_UWP
         private void ExecutionButton_Click(object sender, RoutedEventArgs e)
         {
 
-            CommonFunction.ExecutionProcess(ExecutionButtonChange, true);
+            CommonFunction.ExecutionProcess3(ExecutionButtonChange);
         }
 
         async void ExecutionButtonChange()
