@@ -14,7 +14,7 @@ namespace ManipulatorSerialInterfase
         private static readonly Object s_lock = new Object();
         private static ManipulatorSerialPort instance = null;
 
-        private ManipulatorSerialPort() 
+        private ManipulatorSerialPort()
         {
             RX_data = new Queue<char>();
         }
@@ -40,7 +40,7 @@ namespace ManipulatorSerialInterfase
             set { RX_data = value; }
         }
 
-        public  enum chanal { chanalA = 1, chanalB, chanalC, chanalD, chanalE, chanalF, grabChanal };
+        public enum chanal { chanalA = 1, chanalB, chanalC, chanalD, chanalE, chanalF, grabChanal };
 
         /// <summary>
         /// Конвертирует значение угла с заданым минимальным и максимальным углом в ззначение от 0 до 2000
@@ -62,7 +62,7 @@ namespace ManipulatorSerialInterfase
         private static string BinPacskage(int index, int numbers)
         {
             if (numbers > 2000) throw new MaxValueException("Значение подвижности на канале " + index.ToString() + " превысило предел!");
-            if (numbers < 0)    throw new MinValueException("Значение подвижности на канале " + index.ToString() + " ниже предела!");
+            if (numbers < 0) throw new MinValueException("Значение подвижности на канале " + index.ToString() + " ниже предела!");
 
             char[] mas = new char[3];
             mas[0] = Convert.ToChar((index << 4) | (numbers & 0xF));
@@ -137,7 +137,7 @@ namespace ManipulatorSerialInterfase
                 writeSrt += BinPacskage((int)chanal.chanalE, Map(p.CanE, Point.MinPoint.CanE, Point.MaxPoint.CanE));
                 writeSrt += BinPacskage((int)chanal.chanalF, Map(p.CanF, Point.MinPoint.CanF, Point.MaxPoint.CanF));
                 writeSrt += BinPacskage((int)chanal.grabChanal, Map(p.CanGrab, Point.MinPoint.CanGrab, Point.MaxPoint.CanGrab));
-                if (this.IsOpen&&this.CtsHolding)
+                if (this.IsOpen && this.CtsHolding)
                     Write(writeSrt);
                 else throw new Exception("COM порт закрыт");
             }

@@ -16,9 +16,9 @@ namespace KinematicModeling
     /// </summary>
     public class Passing
     {
-        public const long   passingConstValue = 15;
-        public const int    passingTimeLimit = 750;
-        static Task         sendTask;
+        public const long passingConstValue = 15;
+        public const int passingTimeLimit = 750;
+        static Task sendTask;
         public static Point pastPoint = new Point();
         static private long passingValue = 0;
 
@@ -77,14 +77,14 @@ namespace KinematicModeling
         static public Point[] PassingAlgoritm(Point pastCoint, Point nextCoint)
         {
 
-            List<Point> points = new List<Point>(); 
+            List<Point> points = new List<Point>();
             if (nextCoint.Time < passingTimeLimit) passingValue = passingConstValue;
             else passingValue = nextCoint.Time / 50;
 
             int delay = (int)((nextCoint.Time / passingValue) * 92 / 100);
             for (int i = 0; i <= passingValue; i++)
             {
-                points.Add( new Point(
+                points.Add(new Point(
                 PassingAlgoritmData(pastCoint.CanA, nextCoint.CanA, i),
                 PassingAlgoritmData(pastCoint.CanB, nextCoint.CanB, i),
                 PassingAlgoritmData(pastCoint.CanC, nextCoint.CanC, i),
@@ -122,42 +122,49 @@ namespace KinematicModeling
         //            PassingAlgoritmData((float)pastCoint.CanGrab, (float)nextCoint.CanGrab, i),
         //            0
         //        );
-                
+
         //        func(KinematicTask.TaskDecision.DecToPoint(temp));
         //        Thread.Sleep(delay);
         //    }
 
         //}
 
-        ///// <summary>
-        ///// Возвращает массив точек с промежуточными точками
-        ///// </summary>
-        ///// <param name="pastCoint">начальная точка</param>
-        ///// <param name="nextCoint">конечная точка</param>
-        ///// <returns></returns>
-        //static public Dec[] PassingAlgoritm(Dec pastCoint, Dec nextCoint)
-        //{
-        //    List<Dec> decs = new List<Dec>();
-        //    if (nextCoint.Time < passingTimeLimit) passingValue = passingConstValue;
-        //    else passingValue = nextCoint.Time / 50;
+        /// <summary>
+        /// Возвращает массив точек с промежуточными точками
+        /// </summary>
+        /// <param name="pastCoint">начальная точка</param>
+        /// <param name="nextCoint">конечная точка</param>
+        /// <returns></returns>
+        static public Point[] PassingAlgoritm(Dec pastCoint, Dec nextCoint)
+        {
+            List<Dec> decs = new List<Dec>();
+            if (nextCoint.Time < passingTimeLimit) passingValue = passingConstValue;
+            else passingValue = nextCoint.Time / 50;
 
-        //    int delay = (int)((nextCoint.Time / passingValue) * 92 / 100);
-        //    for (int i = 0; i <= passingValue; i++)
-        //    {
-        //        decs.Add(new Dec(
-        //            PassingAlgoritmData((float)pastCoint.DecX, (float)nextCoint.DecX, i),
-        //            PassingAlgoritmData((float)pastCoint.DecX, (float)nextCoint.DecX, i),
-        //            PassingAlgoritmData((float)pastCoint.DecX, (float)nextCoint.DecX, i),
-        //            PassingAlgoritmData((float)pastCoint.AnglA, (float)nextCoint.AnglA, i),
-        //            PassingAlgoritmData((float)pastCoint.AnglA, (float)nextCoint.AnglA, i),
-        //            PassingAlgoritmData((float)pastCoint.AnglA, (float)nextCoint.AnglA, i),
-        //            PassingAlgoritmData((float)pastCoint.CanGrab, (float)nextCoint.CanGrab, i),
-        //            delay
-        //        ));
+            int delay = (int)((nextCoint.Time / passingValue) * 92 / 100);
+            for (int i = 0; i <= passingValue; i++)
+            {
+                decs.Add(new Dec(
+                    PassingAlgoritmData((float)pastCoint.DecX, (float)nextCoint.DecX, i),
+                    PassingAlgoritmData((float)pastCoint.DecX, (float)nextCoint.DecX, i),
+                    PassingAlgoritmData((float)pastCoint.DecX, (float)nextCoint.DecX, i),
+                    PassingAlgoritmData((float)pastCoint.AnglA, (float)nextCoint.AnglA, i),
+                    PassingAlgoritmData((float)pastCoint.AnglA, (float)nextCoint.AnglA, i),
+                    PassingAlgoritmData((float)pastCoint.AnglA, (float)nextCoint.AnglA, i),
+                    PassingAlgoritmData((float)pastCoint.CanGrab, (float)nextCoint.CanGrab, i),
+                    delay
+                ));
 
-        //    }
-        //    return decs.ToArray();
-        //}
+            }
+            List<Point> points = new List<Point>();
+
+            foreach (Dec dec in decs)
+            {
+                points.Add(TaskDecision.DecToPoint(dec));
+            }
+
+            return points.ToArray();
+        }
     }
 
 

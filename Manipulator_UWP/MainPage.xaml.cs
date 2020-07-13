@@ -32,7 +32,7 @@ namespace Manipulator_UWP
 
         private System.ComponentModel.IContainer components = null;
         private Task send;                      //поток для приняти данных
-                                                //Task execution;                 //поток для отправки коллекции точек
+        //Task execution;                 //поток для отправки коллекции точек
 
 
         public MainPage()
@@ -49,11 +49,11 @@ namespace Manipulator_UWP
                 SerialPort sr = serialPort;
                 sr = new System.IO.Ports.SerialPort(components);
                 serialPort.BaudRate = 115200;
-                CommonFunction.SendMessage = ConsoleWrite;    //для доступа к консоли другим Page
 
                 // this.serialPort.WriteTimeout = 50;
                 serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(serialPort_DataReceived);
 
+                CommonFunction.SetSendMessage(ConsoleWrite);    //для доступа к консоли другим Page
                 comboSelectPort.Items.Clear();
                 GetPortNames();                                 //загрузить список портов в comboSelectPort
 
@@ -237,8 +237,13 @@ namespace Manipulator_UWP
             }
             mySplitView.IsPaneOpen = !mySplitView.IsPaneOpen;
         }
+        private void HamburgerButton_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            HamburgerButton.Content = "\uE700";
+            HamburgerMenuFlag = false;
+        }
 
-        int trying=0; //количество попыток подключения
+        int trying = 0; //количество попыток подключения
         private async void ConectButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -265,7 +270,7 @@ namespace Manipulator_UWP
                                 {
                                     ConectButton.Background = new SolidColorBrush(Windows.UI.Colors.LightGreen);
                                 });
-                            }
+                        }
                         catch (UnauthorizedAccessException)
                         {
                             ConsoleWrite("COM порт занят.", Colors.Red);
@@ -281,11 +286,11 @@ namespace Manipulator_UWP
                             {
                                 ConsoleWrite($"Не удалюсь подключиться к {serialPort.PortName}.", Colors.Red);
                                 trying = 0;
-                                return; 
+                                return;
                             }
-                            ConsoleWrite("Повторное подключение",Colors.Orange);
+                            ConsoleWrite("Повторное подключение", Colors.Orange);
                             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                             () =>                          {
+                             () => {
                                  ConectButton_Click(new object(), new RoutedEventArgs());
                              });
                         }
@@ -307,7 +312,7 @@ namespace Manipulator_UWP
 
                     serialPort.Close();
                     ConsoleWrite("Отключено от " + serialPort.PortName, Colors.Green);
-                    ConectButton.Background = new SolidColorBrush(Windows.UI.Colors.Gray); 
+                    ConectButton.Background = new SolidColorBrush(Windows.UI.Colors.Gray);
                 }
             }
             catch (IOException)
@@ -322,27 +327,6 @@ namespace Manipulator_UWP
                 ConsoleWrite("Повторное подключение", Colors.Orange);
                 ConectButton_Click(new object(), new RoutedEventArgs());
             }
-            //catch (ArgumentNullException)
-            //{
-            //    DialogResult dialogResult = MessageBox.Show("Не выбран COM-порт.\nПовторить поиск?",
-            //                                                "Ошибка!",
-            //                                                MessageBoxButtons.OKCancel,
-            //                                                MessageBoxIcon.Error);
-            //    if (dialogResult == DialogResult.OK)
-            //    {
-            //        comboBox.Items.Clear();
-            //        int portCount = 0;
-            //        foreach (string portName in System.IO.Ports.SerialPort.GetPortNames())
-            //        {
-            //            comboBox.Items.Add(portName);
-            //            portCount++;
-            //        }
-            //        if (portCount >= 2) comboBox.SelectedIndex = 2;
-            //        comboHomeMode.SelectedIndex = 1;
-
-            //        connectButton_Click_1(sender, e);
-            //    }
-            //}
             catch (InvalidOperationException)
             {
                 serialPort.Close();
@@ -355,7 +339,7 @@ namespace Manipulator_UWP
             }
             finally
             {
-               if(trying==0) ConectButton.IsEnabled = true;
+                if (trying == 0) ConectButton.IsEnabled = true;
             }
         }
 
@@ -377,5 +361,7 @@ namespace Manipulator_UWP
             }
             else programConfig.PortNum = comboSelectPort.SelectedIndex;
         }
+
+
     }
 }

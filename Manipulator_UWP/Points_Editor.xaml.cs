@@ -1,4 +1,4 @@
-﻿using KinematicTask;
+﻿using KinematicModeling;
 using ManipulatorSerialInterfase;
 using PointSpase;
 using System;
@@ -22,8 +22,8 @@ namespace Manipulator_UWP
     {
         private ManipulatorSerialPort serialPort;
         private ProgramConfig programConfig = ProgramConfig.Instance;
-        private static  System.Timers.Timer loopTimer;
-        private bool    clicFlag;
+        private static System.Timers.Timer loopTimer;
+        private bool clicFlag;
 
         public Points_Editor()
         {
@@ -45,15 +45,16 @@ namespace Manipulator_UWP
 
             var DecSystemList = new List<string>();
             if (CommonPoint.CanA > 0) { }
-            DecSystemList.Add("Обобщенные координаты");
-            DecSystemList.Add("Декардовые координаты");
+            DecSystemList.Add("Осевое перемещение");
+            DecSystemList.Add("Декартово перемещение");
             foreach (string DecSystem in DecSystemList)
             {
                 CBoxCoodSystem.Items.Add(DecSystem);
             }
-            CBoxCoodSystem.SelectedIndex = (int)CoordSystem.PointSystem;
+            CBoxCoodSystem.SelectedIndex = (int)CoordSystem;
             control = new PointControl();
             control.SetPointsEditor(this);
+            SetPTP_Checked(null, null);
             EditorUpdate();
 
             loopTimer = new System.Timers.Timer();
@@ -67,16 +68,16 @@ namespace Manipulator_UWP
         /// </summary>
         private void EditorUpdate()
         {
-            if (CBoxCoodSystem.SelectedIndex == (int)CoordSystem.PointSystem)
+            if (CBoxCoodSystem.SelectedIndex == (int)CoordSystems.PointSystem)
             {
                 control = new PointControl();
                 control.SetPointsEditor(this);
-                tBoxA.Text = CommonPoint.CanA.ToString();
-                tBoxB.Text = CommonPoint.CanB.ToString();
-                tBoxC.Text = CommonPoint.CanC.ToString();
-                tBoxD.Text = CommonPoint.CanD.ToString();
-                tBoxE.Text = CommonPoint.CanE.ToString();
-                tBoxF.Text = CommonPoint.CanF.ToString();
+                tBoxA.Text = Math.Round(CommonPoint.CanA,3).ToString();
+                tBoxB.Text = Math.Round(CommonPoint.CanB,3).ToString();
+                tBoxC.Text = Math.Round(CommonPoint.CanC,3).ToString();
+                tBoxD.Text = Math.Round(CommonPoint.CanD,3).ToString();
+                tBoxE.Text = Math.Round(CommonPoint.CanE,3).ToString();
+                tBoxF.Text = Math.Round(CommonPoint.CanF,3).ToString();
                 tBoxTime.Text = CommonPoint.Time.ToString();
 
                 pbCanal_A.Value = CommonPoint.CanA;
@@ -86,19 +87,19 @@ namespace Manipulator_UWP
                 pbCanal_E.Value = CommonPoint.CanE;
                 pbCanal_F.Value = CommonPoint.CanF;
             }
-            else if (CBoxCoodSystem.SelectedIndex == (int)CoordSystem.DecSystem)
+            else if (CBoxCoodSystem.SelectedIndex == (int)CoordSystems.DecSystem)
             {
                 control = new DecControl();
                 control.SetPointsEditor(this);
-                tBoxA.Text = CommonDec.DecX.ToString();
-                tBoxB.Text = CommonDec.DecY.ToString();
-                tBoxC.Text = CommonDec.DecZ.ToString();
-                tBoxD.Text = CommonDec.AnglA.ToString();
-                tBoxE.Text = CommonDec.AnglB.ToString();
-                tBoxF.Text = CommonDec.AnglC.ToString();
+                tBoxA.Text = Math.Round(CommonDec.DecX,3).ToString();
+                tBoxB.Text = Math.Round(CommonDec.DecY, 3).ToString();
+                tBoxC.Text = Math.Round(CommonDec.DecZ, 3).ToString();
+                tBoxD.Text = Math.Round(CommonDec.AnglA, 3).ToString();
+                tBoxE.Text = Math.Round(CommonDec.AnglB, 3).ToString();
+                tBoxF.Text = Math.Round(CommonDec.AnglC, 3).ToString();
                 tBoxTime.Text = CommonDec.Time.ToString();
 
-               // CommonPoint = TaskDecision.DecToPoint(CommonDec);
+                // CommonPoint = TaskDecision.DecToPoint(CommonDec);
                 pbCanal_A.Value = CommonPoint.CanA;
                 pbCanal_B.Value = CommonPoint.CanB;
                 pbCanal_C.Value = CommonPoint.CanC;
@@ -106,7 +107,7 @@ namespace Manipulator_UWP
                 pbCanal_E.Value = CommonPoint.CanE;
                 pbCanal_F.Value = CommonPoint.CanF;
 
-                CommonConsoleWrite( $"A: {Math.Round(CommonPoint.CanA, 1)}\tB: {Math.Round(CommonPoint.CanB, 1)}\tC: {Math.Round(CommonPoint.CanC, 1)}\t" +
+                CommonConsoleWrite($"A: {Math.Round(CommonPoint.CanA, 1)}\tB: {Math.Round(CommonPoint.CanB, 1)}\tC: {Math.Round(CommonPoint.CanC, 1)}\t" +
                                     $"D: {Math.Round(CommonPoint.CanD, 1)}\tE: {Math.Round(CommonPoint.CanE, 1)}\tF: {Math.Round(CommonPoint.CanF, 1)}");
             }
         }
@@ -201,7 +202,7 @@ namespace Manipulator_UWP
                 try
                 {
                     CommonDec[ch] += addValue;
-                    CommonPoint = KinematicTask.TaskDecision.DecToPoint(CommonDec);
+                    CommonPoint = TaskDecision.DecToPoint(CommonDec);
                     PointsEditor.EditorUpdate();
                     PointsEditor.serialPort.Write(CommonPoint);
                     await Task.Run(async () =>
@@ -217,12 +218,12 @@ namespace Manipulator_UWP
                                 try
                                 {
                                     CommonDec[ch] += addValue;
-                                    CommonPoint = KinematicTask.TaskDecision.DecToPoint(CommonDec);
+                                    CommonPoint = TaskDecision.DecToPoint(CommonDec);
                                     PointsEditor.serialPort.Write(CommonPoint);
                                     PointsEditor.EditorUpdate();
                                 }
-                                catch (MaxValueException e) { CommonConsoleWrite( e.Message, Colors.Red); CommonDec[ch] -= addValue; }
-                                catch (MinValueException e) { CommonConsoleWrite( e.Message, Colors.Red); CommonDec[ch] -= addValue; }
+                                catch (MaxValueException e) { CommonConsoleWrite(e.Message, Colors.Red); CommonDec[ch] -= addValue; }
+                                catch (MinValueException e) { CommonConsoleWrite(e.Message, Colors.Red); CommonDec[ch] -= addValue; }
                                 catch (Exception e) { CommonConsoleWrite("DecControl::ScrollFunction:\t" + e.Message, Colors.Red); }
                             });
                             Thread.Sleep(50);
@@ -231,8 +232,8 @@ namespace Manipulator_UWP
                     });
 
                 }
-                catch (MaxValueException e) { CommonConsoleWrite( e.Message, Colors.Red); CommonDec[ch] -= addValue; }
-                catch (MinValueException e) { CommonConsoleWrite( e.Message, Colors.Red); CommonDec[ch] -= addValue; }
+                catch (MaxValueException e) { CommonConsoleWrite(e.Message, Colors.Red); CommonDec[ch] -= addValue; }
+                catch (MinValueException e) { CommonConsoleWrite(e.Message, Colors.Red); CommonDec[ch] -= addValue; }
                 catch (Exception e) { CommonConsoleWrite("DecControl::ScrollFunction:\t" + e.Message, Colors.Red); }
 
             }
@@ -258,13 +259,13 @@ namespace Manipulator_UWP
 
         private void chanal_E_minus_GotFocus(object sender, RoutedEventArgs e) => control.ScrollFunction('e', -programConfig.StepChangevalue);
         private void chanal_E_plus_GotFocus(object sender, RoutedEventArgs e) => control.ScrollFunction('e', programConfig.StepChangevalue);
-  
+
         private void chanal_F_minus_GotFocus(object sender, RoutedEventArgs e) => control.ScrollFunction('f', -programConfig.StepChangevalue);
         private void chanal_F_plus_GotFocus(object sender, RoutedEventArgs e) => control.ScrollFunction('f', programConfig.StepChangevalue);
 
         private void chanal_TIME_minus_GotFocus(object sender, RoutedEventArgs e) => control.ScrollFunction('t', -programConfig.StepChangevalue * 20);
         private void chanal_TIME_plus_GotFocus(object sender, RoutedEventArgs e) => control.ScrollFunction('t', programConfig.StepChangevalue * 20);
-        
+
 
         #endregion
         private void Saveutton_Click(object sender, RoutedEventArgs e)
@@ -289,7 +290,10 @@ namespace Manipulator_UWP
         {
             if (serialPort.IsOpen)
             {
-                Point homePoint  = new Point(0, 135, 0, 0, 60, 0, programConfig.MaxGripValue, 500);
+                CBoxCoodSystem.SelectedIndex = (int)CoordSystems.PointSystem;
+                CoordSystem = (int)CoordSystems.PointSystem;
+                SetPTP_Checked(null,null);
+                Point homePoint = new Point(0, 135, 0, 0, 60, 0, programConfig.MaxGripValue, 500);
                 CommonPoint = homePoint;
                 serialPort.Write(homePoint);
                 EditorUpdate();
@@ -314,12 +318,11 @@ namespace Manipulator_UWP
             EditorUpdate();
         }
 
-        enum CoordSystem { PointSystem=0, DecSystem=1 }
         private void CBoxCoodSystem_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (control == null) return;
-
-            if (CBoxCoodSystem.SelectedIndex == (int)CoordSystem.PointSystem)
+            CoordSystem = (CoordSystems)CBoxCoodSystem.SelectedIndex;
+            if (CBoxCoodSystem.SelectedIndex == (int)CoordSystems.PointSystem)
             {
                 //pbCanal_A.Minimum = Point.MinPoint.CanA;
                 //pbCanal_A.Maximum = Point.MaxPoint.CanA;
@@ -341,12 +344,13 @@ namespace Manipulator_UWP
                 tBlock5.Text = "Канал E";
                 tBlock6.Text = "Канал F";
 
-                if(CommonDec!=null)
-                    CommonPoint = KinematicTask.TaskDecision.DecToPoint(CommonDec);
-
+                if (CommonDec != null)
+                    CommonPoint = TaskDecision.DecToPoint(CommonDec);
+                SetPTP_Checked(null,null);
+                SetLIN.IsEnabled = false;
                 EditorUpdate();
             }
-            else if (CBoxCoodSystem.SelectedIndex == (int)CoordSystem.DecSystem)
+            else if (CBoxCoodSystem.SelectedIndex == (int)CoordSystems.DecSystem)
             {
                 //pbCanal_A.Minimum = Dec.MinDec.DecX;
                 //pbCanal_A.Maximum = Dec.MaxDec.DecX;
@@ -367,21 +371,33 @@ namespace Manipulator_UWP
                 tBlock4.Text = "Угол A";
                 tBlock5.Text = "Угол B";
                 tBlock6.Text = "Угол C";
-
-                CommonDec = KinematicTask.TaskDecision.PointToDec(CommonPoint);
+                SetLIN_Checked(null, null);
+                SetLIN.IsEnabled = true;
+                CommonDec = TaskDecision.PointToDec(CommonPoint);
                 EditorUpdate();
             }
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            CBoxCoodSystem.SelectedItem = 0;
+            CBoxCoodSystem.SelectedIndex= (int)CoordSystem;
         }
 
+        private void SetPTP_Checked(object sender, RoutedEventArgs e)
+        {
+            CommonPoint.MovementType = MovementTypes.РТР;
+            CommonDec.MovementType   = MovementTypes.РТР;
+            SetPTP.IsChecked = true;
+            if (SetLIN.IsChecked == true) SetLIN.IsChecked = false;
 
+        }
 
-
-
-
+        private void SetLIN_Checked(object sender, RoutedEventArgs e)
+        {
+            CommonPoint.MovementType = MovementTypes.LIN;
+            CommonDec.MovementType   = MovementTypes.LIN;
+            SetLIN.IsChecked = true;
+            if (SetPTP.IsChecked == true) SetPTP.IsChecked = false;
+        }
     }
 }

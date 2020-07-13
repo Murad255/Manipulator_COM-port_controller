@@ -1,5 +1,5 @@
 ﻿using System;
-using KinematicTask;
+using KinematicModeling;
 using PointSpase;
 using KinematicModeling;
 

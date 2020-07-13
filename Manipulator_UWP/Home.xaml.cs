@@ -40,11 +40,15 @@ namespace Manipulator_UWP
             //Настройки кнопки запуска\останова передачи 
             if (StartExecution_status) ExecutionButton.Content = "\uE769";
             else ExecutionButton.Content = "\uE768";
+
+
         }
 
-        private void ExecutionButton_Click(object sender, RoutedEventArgs e)=>
-            ExecutionProcess2(ExecutionButtonChange);
-        
+        private void ExecutionButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            CommonFunction.ExecutionProcess3(ExecutionButtonChange);
+        }
 
         async void ExecutionButtonChange()
         {
@@ -61,7 +65,6 @@ namespace Manipulator_UWP
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             try {
-                if (PointList.Count < 1) return;
                 if (pointListFile == null)
                 {
                     //вызываем окно для выбора папки
@@ -100,19 +103,13 @@ namespace Manipulator_UWP
 
         private async void LoadListButton_Click(object sender, RoutedEventArgs e)
         {
-            try
+
+            if (pointListFile != null)
             {
-                if (pointListFile != null)
-                {
-                    PointList.Clear();
-                    PointList.SetJsonConvertPoint(await FileIO.ReadTextAsync(pointListFile));
-                    PointListView.Text = "";
-                    foreach (Point p in PointList) PointListView.Text += p.ToString() + "\n"; //выводит список точек
-                }
-            }
-            catch(Exception ex)
-            {
-                CommonConsoleWrite("Home::LoadListButton_Click:\t"+ex.Message);
+                PointList.Clear();
+                PointList.SetJsonConvertPoint(await FileIO.ReadTextAsync(pointListFile));
+                PointListView.Text = "";
+                foreach (Point p in PointList) PointListView.Text += p.ToString()+"\n"; //выводит список точек
             }
         }
 

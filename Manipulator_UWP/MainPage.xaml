@@ -28,7 +28,7 @@
 
                 <Button x:Name="HamburgerButton" RelativePanel.AlignLeftWithPanel="True"
                         FontFamily="Segoe MDL2 Assets" FontSize="36"
-                        Content="&#xE700;" Click="HamburgerButton_Click" Background="#CCFFFFFF"/>
+                        Content="&#xE700;" Click="HamburgerButton_Click" Background="#CCFFFFFF" PointerExited="HamburgerButton_PointerExited"/>
                 <TextBlock Name="TitleTextBlock" RelativePanel.RightOf="HamburgerButton"
                            FontSize="28" FontWeight="Bold" Margin="30 5 0 0" FocusVisualPrimaryBrush="White" Foreground="#FFF8F8F8" />
 

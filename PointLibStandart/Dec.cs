@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using PointSpase;
 
-namespace KinematicTask
+namespace KinematicModeling
 {
     public class Dec : PointParam
     {
 
         private double decX, decY, decZ, pXY, anglA, anglB, anglC;
 
-        private const double    maxXYZ=400.0;
-        private const double    minXYZ= -400.0;
-        private const double    maxAngle = 180.0;
-        private const double    minAngle = -180.0;
-        
+        private const double maxXYZ = 400.0;
+        private const double minXYZ = -400.0;
+        private const double maxAngle = 180.0;
+        private const double minAngle = -180.0;
+
         public static readonly Dec MinDec = new Dec(maxXYZ, maxXYZ, maxXYZ, maxAngle, maxAngle, maxAngle);
         public static readonly Dec MaxDec = new Dec(minXYZ, minXYZ, minXYZ, minAngle, minAngle, minAngle);
 
@@ -27,11 +27,11 @@ namespace KinematicTask
         public double AnglB { get { return anglB; } set { anglB = value; } }
         public double AnglC { get { return anglC; } set { anglC = value; } }
 
-        public Dec(double decX  , double decY , double decZ , double decA , double decB , double decC, float canGrab = 0, long time = 0, int numPoint = 0)
+        public Dec(double decX, double decY, double decZ, double decA, double decB, double decC, float canGrab = 0, long time = 0, int numPoint = 0)
         {
-            this.decX  = decX;
-            this.decY  = decY;
-            this.decZ  = decZ;
+            this.decX = decX;
+            this.decY = decY;
+            this.decZ = decZ;
             this.anglA = decA;
             this.anglB = decB;
             this.anglC = decC;
@@ -39,9 +39,9 @@ namespace KinematicTask
             if (canGrab > Point.MaxPoint[(char)Point.pointEnum.Grab]) throw new MaxValueException($"Значение подвижности на канале g больше предельного!\t {canGrab} > {Point.MaxPoint[(char)Point.pointEnum.Grab]}");
             if (canGrab < Point.MinPoint[(char)Point.pointEnum.Grab]) throw new MinValueException($"Значение подвижности на канале g меньше предельного!\t {canGrab} < {Point.MinPoint[(char)Point.pointEnum.Grab]}");
 
-            this.canGrab    = canGrab;
-            this.time       = time;
-            this.numPoint   = numPoint;
+            this.canGrab = canGrab;
+            this.time = time;
+            this.numPoint = numPoint;
 
             this.pXY = Math.Sqrt(decX * decX + decY * decY);
         }
@@ -57,7 +57,7 @@ namespace KinematicTask
 
             this.pXY = 0;
         }
-        public enum decEnum { X='a',Y='b',Z='c',A='d',B='e',C='f', Grab = 'g', Time ='t'}
+        public enum decEnum { X = 'a', Y = 'b', Z = 'c', A = 'd', B = 'e', C = 'f', Grab = 'g', Time = 't' }
         public double this[char ch]
         {
             set
