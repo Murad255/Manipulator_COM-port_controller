@@ -40,7 +40,7 @@ namespace Manipulator_UWP
             try
             {
                 InitializeComponent();
-                ConsoleWrite("Hello word ");
+                ConsoleWrite("Start ");
                 programConfig = ProgramConfig.Instance;
 
                 //Serial port initialize
@@ -55,7 +55,7 @@ namespace Manipulator_UWP
 
                 CommonFunction.SetSendMessage(ConsoleWrite);    //для доступа к консоли другим Page
                 comboSelectPort.Items.Clear();
-                GetPortNames();                                 //загрузить список портов в comboSelectPort
+                GetPortNames(false);                                 //загрузить список портов в comboSelectPort
 
                 // по умолчанию открываем страницу home.xaml
                 myFrame.Navigate(typeof(Home));
@@ -237,7 +237,8 @@ namespace Manipulator_UWP
             }
             mySplitView.IsPaneOpen = !mySplitView.IsPaneOpen;
         }
-        private void HamburgerButton_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+
+        private void mySplitView_PaneClosing(SplitView sender, SplitViewPaneClosingEventArgs args)
         {
             HamburgerButton.Content = "\uE700";
             HamburgerMenuFlag = false;
@@ -306,10 +307,8 @@ namespace Manipulator_UWP
                 }
                 else
                 {
-                    Point homePoint = new Point(0, 180, -90, 0, 30, 0, programConfig.MaxGripValue, 500);
-                    CommonPoint = homePoint;
-                    serialPort.Write(homePoint);
-
+                    Point homePoint = new Point(0, 180, -90, 0, 30, 0, programConfig.MaxGripValue, 1200);
+                    Passing.PassingAlgoritm(CommonPoint,homePoint, serialPort.Write);
                     serialPort.Close();
                     ConsoleWrite("Отключено от " + serialPort.PortName, Colors.Green);
                     ConectButton.Background = new SolidColorBrush(Windows.UI.Colors.Gray);
@@ -361,7 +360,6 @@ namespace Manipulator_UWP
             }
             else programConfig.PortNum = comboSelectPort.SelectedIndex;
         }
-
 
     }
 }

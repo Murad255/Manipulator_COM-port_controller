@@ -50,7 +50,8 @@ namespace KinematicModeling
             Vector V_25 = V_05 - V_02;
             Vector V_M = new Vector(V_05.x, V_05.y, V_02.z);
             Vector X_2 = KinematicMath.RotationOfVector(new Vector(1, 0, 0), new Vector(0, 0, 1), FI_1); //V_M - V_02;
-            double ALFA_1 = KinematicMath.AngleBetweenVectors(X_2, V_25);
+            Vector Z_2 = KinematicMath.RotationOfVector(new Vector(1, 0, 0), new Vector(0, 0, 1), FI_1-PI/2); //V_M - V_02;
+            double ALFA_1 = KinematicMath.AngleBetweenVectors(X_2, V_25, Z_2.Reverse());
             double BETTA_1 = Atan2(L_41, L_40);
             double BETTA_2 = Atan2(L_40, L_41);
             double L_25 = V_25.Abs();
@@ -60,7 +61,7 @@ namespace KinematicModeling
             double FI_2 = ALFA_1 + ALFA_2;
             double FI_3 = BETTA_1 + ALFA_3 - PI;
 
-            Vector Z_2 = (X_2 * V_02).Normalized();//
+            //Vector Z_2 = (X_2 * V_02).Normalized();//
             //Vector X_2 = V_X2.Normalized();
             Vector V_23 = KinematicMath.RotationOfVector(X_2, Z_2, FI_2) * L_2;
 
@@ -75,26 +76,27 @@ namespace KinematicModeling
             Vector Z_7 = V_75.Reverse().Normalized();
             Vector Z_5;
             if (X_5 == Z_7) Z_5 = Z_2;
-            else Z_5 = (V_45 * V_75).Normalized();//
+            else Z_5 = (V_45 * V_75).Normalized();
 
             Vector Z_5_ = KinematicMath.RotationOfVector(Z_5, new Vector(0, 0, 1), FI_1 - PI / 2);
-            Debug.WriteLine(Z_5_.ToString());
 
             if (Z_5_.x < 0)
             {
                 Z_5_ = Z_5.Reverse();
                 Debug.WriteLine("Z_5_ = ~Z_5");
-
             }
             //обработка сингулярности
             if (Z_5.x == -1) Z_5 = Z_5.Reverse();
-            double FI_4 = KinematicMath.AngleBetweenVectors(new Vector(Round(Z_2.x, accuracy), Round(Z_2.y, accuracy), Round(Z_2.z, accuracy)),
-                                                                new Vector(Round(Z_5.x, accuracy), Round(Z_5.y, accuracy), Round(Z_5.z, accuracy)));
+            double FI_4 = KinematicMath.AngleBetweenVectors(    new Vector(Round(Z_2.x, accuracy), Round(Z_2.y, accuracy), Round(Z_2.z, accuracy)),
+                                                                new Vector(Round(Z_5.x, accuracy), Round(Z_5.y, accuracy), Round(Z_5.z, accuracy)),
+                                                                V_45.Normalized().Reverse());
             if (FI_4 == PI) FI_4 = 0;
-            double FI_42 = KinematicMath.AngleBetweenVectors(Z_2, Z_5.Reverse());
-            double FI_5 = KinematicMath.AngleBetweenVectors(X_5, Z_7, Z_5_);
-            Vector Y_7 = (Z_5 * (new Vector(0, 0, -1))).Normalized();
-            double FI_6 = KinematicMath.AngleBetweenVectors(Z_5, Y_7) + Acos(Q_7.w) - PI / 2;
+            double FI_42    = KinematicMath.AngleBetweenVectors(Z_2, Z_5.Reverse(), Z_2*Z_5.Reverse());
+            double FI_5     = KinematicMath.AngleBetweenVectors(X_5, Z_7, Z_5_);
+            //Vector Y_7      = (Z_5 * (new Vector(0, 0, -1))).Normalized();
+            Vector X_7 = new Vector( new Quaternion(1, 0, 0, 0) * Q_p);
+            double t1 = KinematicMath.AngleBetweenVectors(Z_5, X_7, Z_7);
+            double FI_6 = -1*t1 ;//Acos(Q_7.w) - PI / 2;
 
             Point point = new Point();
 
@@ -104,7 +106,7 @@ namespace KinematicModeling
             point.CanC = (float)Round(180.0 / PI * FI_3, accuracy);
             point.CanD = (float)Round((180.0 / PI * FI_4), accuracy);
             point.CanE = (float)Round((180.0 / PI * FI_5), accuracy);
-            point.CanF = (float)Round((180.0 / PI * FI_6 - 90), accuracy);
+            point.CanF = (float)Round((180.0 / PI * FI_6), accuracy);
 
             point.Time                  = dec.Time;
             point.CanGrab               = dec.CanGrab;
@@ -114,6 +116,7 @@ namespace KinematicModeling
 
             return point;
         }
+
 
         /// <summary>
         /// Решение ПЗК манипулятора
@@ -136,15 +139,15 @@ namespace KinematicModeling
                );
             VectorQuaternion T4 = new VectorQuaternion(
                new Vector(0, L_41, L_40),
-               new Quaternion(new Vector(0, 0, 1), point.CanD / 180.0 * PI)
+               new Quaternion(new Vector(0, 1, 0), point.CanD / 180.0 * PI)
                );
             VectorQuaternion T5 = new VectorQuaternion(
                new Vector(0, 0, 0),
-               new Quaternion(new Vector(1, 0, 0), point.CanE / 180.0 * PI)
+               new Quaternion(new Vector(-1, 0, 0), point.CanE / 180.0 * PI)
                );
             VectorQuaternion T6 = new VectorQuaternion(
                new Vector(0, L_56, 0),
-               new Quaternion(new Vector(0, 0, 1), point.CanF / 180.0 * PI)
+               new Quaternion(new Vector(0, 1, 0), point.CanF / 180.0 * PI)
                );
             VectorQuaternion T7 = new VectorQuaternion(
                new Vector(0, 0, 0),
@@ -195,11 +198,15 @@ namespace KinematicModeling
         }
 
         [DebuggerDisplay("X={x}; Y={y}; Z={z}; W={w}")]
-        private struct Quaternion
+        private class Quaternion
         {
             public double x, y, z; // Вектор
             public double w;     // Скаляр
 
+            public Quaternion()
+            {
+                x = 0; y = 0; z = 0; w = 1;
+            }
             public Quaternion(double X, double Y, double Z, double W)
             {
                 x = X; y = Y; z = Z; w = W;
@@ -278,10 +285,14 @@ namespace KinematicModeling
         }
 
         [DebuggerDisplay("X={x}; Y={y}; Z={z}")]
-        private struct Vector
+        private class Vector
         {
             public double x, y, z; // Вектор
 
+            public Vector()
+            {
+                x = 0; y = 0; z = 0;
+            }
             public Vector(double X, double Y, double Z)
             {
                 x = X; y = Y; z = Z;
@@ -290,7 +301,8 @@ namespace KinematicModeling
             {
                 Vector V = new Vector();
                 V.x = Q.x; V.y = Q.y; V.z = Q.z;
-                this = V.Normalized();
+                V = V.Normalized();
+                x = V.x; y = V.y;z = V.z;
             }
 
             /// <summary>
@@ -453,8 +465,8 @@ namespace KinematicModeling
 
                 double angle = Atan2(Vector.Dot(N, Vector.Cross(V1n, V2n)), Vector.Dot(V1n, V2n));
                 if (debug) Debug.WriteLine("N:\t" + N.ToString() + "\t\tV1n:\t" + V1n.ToString() + "\t\tV2n:\t" + V2n.ToString());
-                double n = (V1.x * V2.x + V1.y * V2.y + V1.z * V2.z) >= 0 ? 1 : -1;
-                return -1 * n * angle;
+                //double n = (V1n.x * V2n.x + V1n.y * V2n.y + V1n.z * V2n.z) >= 0 ? 1 : -1;
+                return -1 * angle;// n * angle;
             }
             public static Vector RotationOfVector(Vector vector, Vector axis, double angle)
             {

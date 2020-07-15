@@ -28,7 +28,7 @@
 
                 <Button x:Name="HamburgerButton" RelativePanel.AlignLeftWithPanel="True"
                         FontFamily="Segoe MDL2 Assets" FontSize="36"
-                        Content="&#xE700;" Click="HamburgerButton_Click" Background="#CCFFFFFF" PointerExited="HamburgerButton_PointerExited"/>
+                        Content="&#xE700;" Click="HamburgerButton_Click" Background="#CCFFFFFF" />
                 <TextBlock Name="TitleTextBlock" RelativePanel.RightOf="HamburgerButton"
                            FontSize="28" FontWeight="Bold" Margin="30 5 0 0" FocusVisualPrimaryBrush="White" Foreground="#FFF8F8F8" />
 
@@ -41,7 +41,7 @@
                         FontFamily="Segoe MDL2 Assets" FontSize="30"
                         Content="&#xE8AB; "  Background="#CCFFFFFF" Padding="0,-2,-4,0" Click="ConectButton_Click" HorizontalAlignment="Center" Margin="0,0,0,11" VerticalAlignment="Bottom"/>
         </Grid>
-        <SplitView Name="mySplitView" Grid.Row="1"  OpenPaneLength="250"  PaneBackground="#FF27A8E4" >
+        <SplitView Name="mySplitView" Grid.Row="1"  OpenPaneLength="250"  PaneBackground="#FF27A8E4" PaneClosing="mySplitView_PaneClosing" >
             <SplitView.Pane>
                 <ListBox SelectionMode="Single" SelectionChanged="ListBox_SelectionChanged" Background="#FF47A0D3">
                     <ListBoxItem Name="home">

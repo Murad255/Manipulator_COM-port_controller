@@ -1,22 +1,22 @@
-﻿using System;
+﻿using KinematicModeling;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using KinematicModeling;
 using System.Threading;
-using Newtonsoft.Json;
-using System.IO;
+using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace Manipulator_UWP
 {
-    class ProgramConfig
+    internal class ProgramConfig
     {
 
         private static readonly Object s_lock = new Object();
         private static ProgramConfig instance = null;
-        
+
         private ProgramConfig()
         {
             strategy = new SinPassingStrategy();
@@ -56,9 +56,9 @@ namespace Manipulator_UWP
         private float stepChangevalue;
         public List<string> PortName { get { return portName; } }
 
-        public void AddPortName( string name)
+        public void AddPortName(string name)
         {
-            if(name!=null) portName.Add(name);
+            if (name != null) portName.Add(name);
             Save();
         }
         public void ClearPortName()
@@ -66,7 +66,7 @@ namespace Manipulator_UWP
             portName.Clear();
             Save();
         }
-        
+
 
         public int Speed
         {
@@ -88,7 +88,7 @@ namespace Manipulator_UWP
             }
         }
 
-        
+
         public float StepChangevalue
         {
             get { return Instance.stepChangevalue; }
@@ -146,59 +146,51 @@ namespace Manipulator_UWP
             }
         }
 
-        private async  void Load()
+        private async void Load()
         {
             try
             {
-
-                //string Path = $"{Environment.CurrentDirectory}\\programConfig.progc";
-                //var data = File.ReadAllText(Path);//File.ReadAllText($"{Environment.CurrentDirectory}\\{Path}");
                 StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-                // получаем файл
                 StorageFile configFile = await localFolder.GetFileAsync("programConfig.progc");
 
-
                 var data = await FileIO.ReadTextAsync(configFile);
-                ProgramConfig p = JsonConvert.DeserializeObject<ProgramConfig>(data);
-                
-                if (p == null) p = new ProgramConfig();
+                ProgramConfig programConfig = JsonConvert.DeserializeObject<ProgramConfig>(data);
+                if (programConfig == null) programConfig = new ProgramConfig();
             }
             catch (FileNotFoundException)
             {
-                ProgramConfig p = ProgramConfig.Instance;
-                p.Speed = 9600;
-                p.PortNum = 0;
-                p.MaxGripValue = 180;
-                p.MinGripValue = 0;
+                ProgramConfig programConfig = ProgramConfig.Instance;
+                programConfig.Speed = 9600;
+                programConfig.PortNum = 0;
+                programConfig.MaxGripValue = 180;
+                programConfig.MinGripValue = 0;
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-            
+
         }
 
-        bool saveProcessFlag = false;
-        private async  void Save()
+        private bool saveProcessFlag = false;
+        private async void Save()
         {
             try
             {
-                if (saveProcessFlag) await Task.Run(()=> { while (saveProcessFlag) { } });
+                if (saveProcessFlag) await Task.Run(() => { while (saveProcessFlag) { } });
+                saveProcessFlag = true;
+                StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+                StorageFile configFile = await localFolder.CreateFileAsync("programConfig.progc",
+                                                CreationCollisionOption.ReplaceExisting);
+                ProgramConfig prog = ProgramConfig.Instance;
 
-                    saveProcessFlag = true;
-                    //string Path = $"{Environment.CurrentDirectory}\\programConfig.progc";
-                    StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-                    StorageFile configFile = await localFolder.CreateFileAsync("programConfig.progc",
-                                                    CreationCollisionOption.ReplaceExisting);
-                    ProgramConfig prog = ProgramConfig.Instance;
+                await FileIO.WriteTextAsync(configFile, JsonConvert.SerializeObject(prog));
+                saveProcessFlag = false;
 
-                    await FileIO.WriteTextAsync(configFile, JsonConvert.SerializeObject(prog));
-                    saveProcessFlag = false;
-                
             }
             catch (Exception e)
             {
-                CommonFunction.CommonConsoleWrite(e.Message);
+                // CommonFunction.CommonConsoleWrite(e.Message);
             }
         }
     }
