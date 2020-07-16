@@ -12,6 +12,7 @@ namespace PointSpase
         protected long time;
         protected PassingStrategy contextStrategy;
      
+        public static void ChangeNumPoints(int num) { numPoints = num; }
         /// <summary>
         /// индекс точки
         /// </summary>

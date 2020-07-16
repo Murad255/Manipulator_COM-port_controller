@@ -146,11 +146,11 @@ namespace KinematicModeling
             {
                 decs.Add(new Dec(
                     PassingAlgoritmData((float)pastCoint.DecX, (float)nextCoint.DecX, i),
-                    PassingAlgoritmData((float)pastCoint.DecX, (float)nextCoint.DecX, i),
-                    PassingAlgoritmData((float)pastCoint.DecX, (float)nextCoint.DecX, i),
+                    PassingAlgoritmData((float)pastCoint.DecY, (float)nextCoint.DecY, i),
+                    PassingAlgoritmData((float)pastCoint.DecZ, (float)nextCoint.DecZ, i),
                     PassingAlgoritmData((float)pastCoint.AnglA, (float)nextCoint.AnglA, i),
-                    PassingAlgoritmData((float)pastCoint.AnglA, (float)nextCoint.AnglA, i),
-                    PassingAlgoritmData((float)pastCoint.AnglA, (float)nextCoint.AnglA, i),
+                    PassingAlgoritmData((float)pastCoint.AnglB, (float)nextCoint.AnglB, i),
+                    PassingAlgoritmData((float)pastCoint.AnglC, (float)nextCoint.AnglC, i),
                     PassingAlgoritmData((float)pastCoint.CanGrab, (float)nextCoint.CanGrab, i),
                     delay
                 ));

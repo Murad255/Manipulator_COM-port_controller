@@ -7,8 +7,12 @@ namespace PointSpase
        public static Point tempPoint = new Point();
 
 
-        public static readonly Point MinPoint = new Point() { canA = -90, canB = -50, canC = -140, canD = -90, canE = -80, canF = -98, canGrab = 0, time = 0 };
-        public static readonly Point MaxPoint = new Point() { canA = 90, canB = 228, canC = 130, canD = 90, canE = 100, canF = 82, canGrab = 180, time = long.MaxValue };
+        public static readonly Point MinPoint = new Point() { canA = -90, canB = -45, canC = -91, canD = -120, canE = -103, canF = -105, canGrab = 0, time = 0 };
+        public static readonly Point MaxPoint = new Point() { canA = 90,  canB = 190, canC = 93,  canD = 120,  canE = 114,  canF =  105, canGrab = 180, time = long.MaxValue };
+
+        public static readonly Point PhysicalMinPoint = new Point() { canA = -122, canB = -50, canC = -140, canD = -110, canE = -104, canF = -106, canGrab = 0, time = 0 };
+        public static readonly Point PhysicalMaxPoint = new Point() { canA = 122, canB = 228, canC = 130, canD = 118, canE = 132,     canF = 112, canGrab = 180, time = long.MaxValue };
+
         private float canA, canB, canC, canD, canE, canF; //обобщенные координаты (углы поворота сервориводов)
 
         #region индексаторы полей

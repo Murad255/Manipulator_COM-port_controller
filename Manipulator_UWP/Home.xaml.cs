@@ -108,6 +108,7 @@ namespace Manipulator_UWP
             {
                 PointList.Clear();
                 PointList.SetJsonConvertPoint(await FileIO.ReadTextAsync(pointListFile));
+                Point.ChangeNumPoints(PointList.Count);
                 PointListView.Text = "";
                 foreach (Point p in PointList) PointListView.Text += p.ToString()+"\n"; //выводит список точек
             }
@@ -121,6 +122,7 @@ namespace Manipulator_UWP
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
+            Point.ChangeNumPoints(0);
             PointList.Clear();
             PointListView.Text = "";
         }

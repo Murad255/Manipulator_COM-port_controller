@@ -41,6 +41,7 @@ namespace Manipulator_UWP
             {
                 InitializeComponent();
                 ConsoleWrite("Start ");
+
                 programConfig = ProgramConfig.Instance;
 
                 //Serial port initialize

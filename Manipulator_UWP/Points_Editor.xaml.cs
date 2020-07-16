@@ -55,7 +55,7 @@ namespace Manipulator_UWP
             CBoxCoodSystem.SelectedIndex = (int)CoordSystem;
             control = new PointControl();
             control.SetPointsEditor(this);
-            SetPTP_Checked(null, null);
+   
             EditorUpdate();
 
             loopTimer = new System.Timers.Timer();
@@ -87,6 +87,17 @@ namespace Manipulator_UWP
                 pbCanal_D.Value = CommonPoint.CanD;
                 pbCanal_E.Value = CommonPoint.CanE;
                 pbCanal_F.Value = CommonPoint.CanF;
+
+                tBlock1.Text = "Канал А";
+                tBlock2.Text = "Канал B";
+                tBlock3.Text = "Канал C";
+                tBlock4.Text = "Канал D";
+                tBlock5.Text = "Канал E";
+                tBlock6.Text = "Канал F";
+
+                SetPTP_Checked(null, null);
+                SetLIN.IsEnabled = false;
+                
             }
             else if (CBoxCoodSystem.SelectedIndex == (int)CoordSystems.DecSystem)
             {
@@ -107,6 +118,16 @@ namespace Manipulator_UWP
                 pbCanal_D.Value = CommonPoint.CanD;
                 pbCanal_E.Value = CommonPoint.CanE;
                 pbCanal_F.Value = CommonPoint.CanF;
+
+                tBlock1.Text = "Ось X";
+                tBlock2.Text = "Ось Y";
+                tBlock3.Text = "Ось Z";
+                tBlock4.Text = "Угол A";
+                tBlock5.Text = "Угол B";
+                tBlock6.Text = "Угол C";
+                SetLIN_Checked(null, null);
+                SetLIN.IsEnabled = true;
+
                 Dec dec = KinematicModeling.TaskDecision.PointToDec(CommonPoint);
 
                 Debug.WriteLine($"A: {Math.Round(CommonPoint.CanA, 1)}\tB: {Math.Round(CommonPoint.CanB, 1)}\tC: {Math.Round(CommonPoint.CanC, 1)}\t" +
@@ -306,14 +327,15 @@ namespace Manipulator_UWP
         {
             if (CommonPoint.CanGrab == programConfig.MinGripValue)
             {
-                CommonPoint['g'] = programConfig.MaxGripValue;
+                CommonPoint.CanGrab = programConfig.MaxGripValue;
+                CommonDec.CanGrab = programConfig.MaxGripValue;
                 GripButton.Content = "Захват";
             }
             else
             {
-                CommonPoint['g'] = programConfig.MinGripValue;
+                CommonPoint.CanGrab = programConfig.MinGripValue;
+                CommonDec.CanGrab = programConfig.MinGripValue;
                 GripButton.Content = "Разжать";
-
             }
             serialPort.Write(CommonPoint);
             EditorUpdate();
@@ -325,32 +347,15 @@ namespace Manipulator_UWP
             CoordSystem = (CoordSystems)CBoxCoodSystem.SelectedIndex;
             if (CBoxCoodSystem.SelectedIndex == (int)CoordSystems.PointSystem)
             {
-                tBlock1.Text = "Канал А";
-                tBlock2.Text = "Канал B";
-                tBlock3.Text = "Канал C";
-                tBlock4.Text = "Канал D";
-                tBlock5.Text = "Канал E";
-                tBlock6.Text = "Канал F";
-
                 if (CommonDec != null)
                     CommonPoint = TaskDecision.DecToPoint(CommonDec);
-                SetPTP_Checked(null,null);
-                SetLIN.IsEnabled = false;
-                EditorUpdate();
             }
             else if (CBoxCoodSystem.SelectedIndex == (int)CoordSystems.DecSystem)
             {
-                tBlock1.Text = "Ось X";
-                tBlock2.Text = "Ось Y";
-                tBlock3.Text = "Ось Z";
-                tBlock4.Text = "Угол A";
-                tBlock5.Text = "Угол B";
-                tBlock6.Text = "Угол C";
-                SetLIN_Checked(null, null);
-                SetLIN.IsEnabled = true;
                 CommonDec = TaskDecision.PointToDec(CommonPoint);
-                EditorUpdate();
             }
+            EditorUpdate();
+
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

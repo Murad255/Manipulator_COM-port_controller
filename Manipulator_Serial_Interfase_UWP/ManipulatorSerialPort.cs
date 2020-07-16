@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO.Ports;
 using PointSpase;
 using System.Threading;
+using static PointSpase.Point;
 
 namespace ManipulatorSerialInterfase
 {
@@ -98,21 +99,21 @@ namespace ManipulatorSerialInterfase
         {
             string writeSrt = null;
             string deb = "str";
-            writeSrt += BinPacskage((int)chanal.chanalA, Map(p.CanA, Point.MinPoint.CanA, Point.MaxPoint.CanA));
-            writeSrt += BinPacskage((int)chanal.chanalB, Map(p.CanB, Point.MinPoint.CanB, Point.MaxPoint.CanB));
-            writeSrt += BinPacskage((int)chanal.chanalC, Map(p.CanC, Point.MinPoint.CanC, Point.MaxPoint.CanC));
-            writeSrt += BinPacskage((int)chanal.chanalD, Map(p.CanD, Point.MinPoint.CanD, Point.MaxPoint.CanD));
-            writeSrt += BinPacskage((int)chanal.chanalE, Map(p.CanE, Point.MinPoint.CanE, Point.MaxPoint.CanE));
-            writeSrt += BinPacskage((int)chanal.chanalF, Map(p.CanF, Point.MinPoint.CanF, Point.MaxPoint.CanF));
-            writeSrt += BinPacskage((int)chanal.grabChanal, Map(p.CanGrab, Point.MinPoint.CanGrab, Point.MaxPoint.CanGrab));
+            writeSrt += BinPacskage((int)chanal.chanalA, Map(p.CanA, Point.PhysicalMinPoint.CanA, Point.PhysicalMaxPoint.CanA));
+            writeSrt += BinPacskage((int)chanal.chanalB, Map(p.CanB, Point.PhysicalMaxPoint.CanB, Point.PhysicalMinPoint.CanB));
+            writeSrt += BinPacskage((int)chanal.chanalC, Map(p.CanC, Point.PhysicalMinPoint.CanC, Point.PhysicalMaxPoint.CanC));
+            writeSrt += BinPacskage((int)chanal.chanalD, Map(p.CanD, Point.PhysicalMinPoint.CanD, Point.PhysicalMaxPoint.CanD));
+            writeSrt += BinPacskage((int)chanal.chanalE, Map(p.CanE, Point.PhysicalMinPoint.CanE, Point.PhysicalMaxPoint.CanE));
+            writeSrt += BinPacskage((int)chanal.chanalF, Map(p.CanF, Point.PhysicalMinPoint.CanF, Point.PhysicalMaxPoint.CanF));
+            writeSrt += BinPacskage((int)chanal.grabChanal, Map(p.CanGrab, Point.PhysicalMinPoint.CanGrab, Point.PhysicalMaxPoint.CanGrab));
 
-            deb += BinPacskage2((int)chanal.chanalA, Map(p.CanA, Point.MinPoint.CanA, Point.MaxPoint.CanA)) + '\t';
-            deb += BinPacskage2((int)chanal.chanalB, Map(p.CanB, Point.MinPoint.CanB, Point.MaxPoint.CanB)) + '\t';
-            deb += BinPacskage2((int)chanal.chanalC, Map(p.CanC, Point.MinPoint.CanC, Point.MaxPoint.CanC)) + '\t';
-            deb += BinPacskage2((int)chanal.chanalD, Map(p.CanD, Point.MinPoint.CanD, Point.MaxPoint.CanD)) + '\t';
-            deb += BinPacskage2((int)chanal.chanalE, Map(p.CanE, Point.MinPoint.CanE, Point.MaxPoint.CanE)) + '\t';
-            deb += BinPacskage2((int)chanal.chanalF, Map(p.CanF, Point.MinPoint.CanF, Point.MaxPoint.CanF)) + '\t';
-            deb += BinPacskage2((int)chanal.grabChanal, Map(p.CanGrab, Point.MinPoint.CanGrab, Point.MaxPoint.CanGrab));
+            deb += BinPacskage2((int)chanal.chanalA, Map(p.CanA, Point.PhysicalMinPoint.CanA, Point.PhysicalMaxPoint.CanA)) + '\t';
+            deb += BinPacskage2((int)chanal.chanalB, Map(p.CanB, Point.PhysicalMaxPoint.CanB, Point.PhysicalMinPoint.CanB)) + '\t';
+            deb += BinPacskage2((int)chanal.chanalC, Map(p.CanC, Point.PhysicalMinPoint.CanC, Point.PhysicalMaxPoint.CanC)) + '\t';
+            deb += BinPacskage2((int)chanal.chanalD, Map(p.CanD, Point.PhysicalMinPoint.CanD, Point.PhysicalMaxPoint.CanD)) + '\t';
+            deb += BinPacskage2((int)chanal.chanalE, Map(p.CanE, Point.PhysicalMinPoint.CanE, Point.PhysicalMaxPoint.CanE)) + '\t';
+            deb += BinPacskage2((int)chanal.chanalF, Map(p.CanF, Point.PhysicalMinPoint.CanF, Point.PhysicalMaxPoint.CanF)) + '\t';
+            deb += BinPacskage2((int)chanal.grabChanal, Map(p.CanGrab, Point.PhysicalMinPoint.CanGrab, Point.PhysicalMaxPoint.CanGrab));
             deb += '\n';
             if (this.IsOpen)
                 Write(writeSrt);
@@ -130,13 +131,13 @@ namespace ManipulatorSerialInterfase
             {
                 string writeSrt = null;
                 //собираем строку для отправки
-                writeSrt += BinPacskage((int)chanal.chanalA, Map(p.CanA, Point.MinPoint.CanA, Point.MaxPoint.CanA));
-                writeSrt += BinPacskage((int)chanal.chanalB, Map(p.CanB, Point.MaxPoint.CanB, Point.MinPoint.CanB));//для B инвертированно
-                writeSrt += BinPacskage((int)chanal.chanalC, Map(p.CanC, Point.MinPoint.CanC, Point.MaxPoint.CanC));
-                writeSrt += BinPacskage((int)chanal.chanalD, Map(p.CanD, Point.MinPoint.CanD, Point.MaxPoint.CanD));
-                writeSrt += BinPacskage((int)chanal.chanalE, Map(p.CanE, Point.MinPoint.CanE, Point.MaxPoint.CanE));
-                writeSrt += BinPacskage((int)chanal.chanalF, Map(p.CanF, Point.MinPoint.CanF, Point.MaxPoint.CanF));
-                writeSrt += BinPacskage((int)chanal.grabChanal, Map(p.CanGrab, Point.MinPoint.CanGrab, Point.MaxPoint.CanGrab));
+                writeSrt += BinPacskage((int)chanal.chanalA, Map(p.CanA, PhysicalMinPoint.CanA, PhysicalMaxPoint.CanA));
+                writeSrt += BinPacskage((int)chanal.chanalB, Map(p.CanB, PhysicalMaxPoint.CanB, PhysicalMinPoint.CanB));//для B инвертированно
+                writeSrt += BinPacskage((int)chanal.chanalC, Map(p.CanC, PhysicalMinPoint.CanC, PhysicalMaxPoint.CanC));
+                writeSrt += BinPacskage((int)chanal.chanalD, Map(p.CanD, PhysicalMinPoint.CanD, PhysicalMaxPoint.CanD));
+                writeSrt += BinPacskage((int)chanal.chanalE, Map(p.CanE, PhysicalMinPoint.CanE, PhysicalMaxPoint.CanE));
+                writeSrt += BinPacskage((int)chanal.chanalF, Map(p.CanF, PhysicalMinPoint.CanF, PhysicalMaxPoint.CanF));
+                writeSrt += BinPacskage((int)chanal.grabChanal, Map(p.CanGrab, PhysicalMinPoint.CanGrab, PhysicalMaxPoint.CanGrab));
                 if (this.IsOpen && this.CtsHolding)
                     Write(writeSrt);
                 else throw new Exception("COM порт закрыт");
