@@ -8,6 +8,7 @@ using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using KinematicModeling;
 using static Manipulator_UWP.CommonFunction;
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -30,6 +31,12 @@ namespace Manipulator_UWP
         {
             this.InitializeComponent();
             serialPort = ManipulatorSerialPort.Instance;
+            if (programConfig.FilePozition != null)
+            {
+                pointListFile = programConfig.FilePozition;
+                filePozition.Text = pointListFile.Path;
+            }
+
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -76,6 +83,7 @@ namespace Manipulator_UWP
 
                     pointListFile = await savePicker.PickSaveFileAsync();
                     filePozition.Text = pointListFile.Path;
+                    programConfig.FilePozition = pointListFile;
                 }
 
                 if (pointListFile != null) await FileIO.WriteTextAsync(pointListFile, PointList.GetJsonConvertString());
@@ -97,7 +105,7 @@ namespace Manipulator_UWP
             pointListFile = await openPicker.PickSingleFileAsync();
             if (pointListFile == null) return;
             filePozition.Text = pointListFile.Path;
-
+            programConfig.FilePozition = pointListFile;
             LoadListButton_Click(sender,  e);
         }
 
@@ -111,6 +119,25 @@ namespace Manipulator_UWP
                 Point.ChangeNumPoints(PointList.Count);
                 PointListView.Text = "";
                 foreach (Point p in PointList) PointListView.Text += p.ToString()+"\n"; //выводит список точек
+
+                FullPointList.Clear();
+                Passing.pastPoint = PointList[0];
+                //проходимся по всем точкам и выролняем их отправку 
+                foreach (Point point in PointList)
+                {
+                    if (point.MovementType == MovementTypes.РТР)
+                    {
+                        FullPointList.AddRange(Passing.PassingAlgoritm(Passing.pastPoint, point));
+                        Passing.pastPoint = point;
+                    }
+                    else if (point.MovementType == MovementTypes.LIN)
+                    {
+                        Dec startDec = TaskDecision.PointToDec(Passing.pastPoint);
+                        Dec endDec = TaskDecision.PointToDec(point);
+                        FullPointList.AddRange(Passing.PassingAlgoritm(startDec, endDec));
+                        Passing.pastPoint = point;
+                    }
+                }
             }
         }
 
@@ -124,6 +151,7 @@ namespace Manipulator_UWP
         {
             Point.ChangeNumPoints(0);
             PointList.Clear();
+            FullPointList.Clear();
             PointListView.Text = "";
         }
     }

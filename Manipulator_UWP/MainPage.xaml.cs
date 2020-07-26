@@ -40,7 +40,7 @@ namespace Manipulator_UWP
             try
             {
                 InitializeComponent();
-                ConsoleWrite("Start ");
+                ConsoleWrite("Start");
 
                 programConfig = ProgramConfig.Instance;
 
@@ -56,7 +56,7 @@ namespace Manipulator_UWP
 
                 CommonFunction.SetSendMessage(ConsoleWrite);    //для доступа к консоли другим Page
                 comboSelectPort.Items.Clear();
-                GetPortNames(false);                                 //загрузить список портов в comboSelectPort
+                GetPortNames(false);                            //загрузить список портов в comboSelectPort
 
                 // по умолчанию открываем страницу home.xaml
                 myFrame.Navigate(typeof(Home));
@@ -90,7 +90,7 @@ namespace Manipulator_UWP
                             Thread.Sleep(50);     //ожидаем завершения передачи
                             foreach (char c in serialPort.RX_Data)
                             {
-                                if ((c != '\n') && RX_countSumbol <= 20)
+                                if ((c != '\r') && (c != '\0') && (c != '\n') && !((RX_countSumbol > 100)&& (c != ' ')))
                                 {
                                     RX_Message += c.ToString();
                                     RX_countSumbol++;
@@ -98,7 +98,8 @@ namespace Manipulator_UWP
 
                                 else
                                 {
-                                    ConsoleWrite(RX_Message, Colors.Blue);
+                                    if((RX_Message != "\0") && (RX_Message != "\n") && (RX_Message != ""))
+                                        ConsoleWrite(RX_Message, Colors.Blue);
                                     RX_Message = "";
                                     RX_countSumbol = 0;
                                 }
@@ -129,7 +130,6 @@ namespace Manipulator_UWP
                 Console.Children.Insert(0, printTextBlock);
             });
         }
-
         private async void ConsoleWrite(string message)
         {
 
@@ -148,28 +148,32 @@ namespace Manipulator_UWP
 
         }
 
-
         private async void GetPortNames(bool debug = true)
         {
-            try
-            {
+            
                 string aqs = SerialDevice.GetDeviceSelector();
                 var deviceCollection = await DeviceInformation.FindAllAsync(aqs);
                 portNamesList = new List<string>();
-                foreach (var item in deviceCollection)
+            foreach (var item in deviceCollection)
+            {
+                try
                 {
                     var serialDevice = await SerialDevice.FromIdAsync(item.Id);
-                    var portName = serialDevice.PortName;
-                    portNamesList.Add(portName);
+                    if (serialDevice?.PortName != null)
+                    {
+                        var portName = serialDevice.PortName;
+                        portNamesList.Add(portName);
+                        serialPort.PortName = portName;
+                        serialPort.Close();
+                    }
+                }
+                catch (Exception e)
+                {
+                    if (debug) ConsoleWrite(e.ToString(), Colors.Red);
                 }
             }
-            catch (Exception e)
-            {
-                if (debug) ConsoleWrite(e.ToString(), Colors.Red);
-            }
-            finally
-            {
-                int portCount = 1;
+
+            int portCount = 1;
                 if (portNamesList != null)
                 {
                     comboSelectPort.Items.Clear();
@@ -187,9 +191,10 @@ namespace Manipulator_UWP
                         portCount++;
                     }
                 comboSelectPort.Items.Add("Добавить другой");
+                comboSelectPort.Items.Add("Обновить список");
+
                 if (portCount > programConfig.PortNum) comboSelectPort.SelectedIndex = programConfig.PortNum;
 
-            }
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -251,7 +256,7 @@ namespace Manipulator_UWP
             try
             {
                 ConectButton.IsEnabled = false;
-                if (!(serialPort.IsOpen && serialPort.CtsHolding))
+                if (!serialPort.IsOpen )
                 {
                     ConectButton.Background = new SolidColorBrush(Windows.UI.Colors.Gray);
                     serialPort.PortName = ((string)comboSelectPort.SelectedItem);
@@ -262,9 +267,7 @@ namespace Manipulator_UWP
                         {
                             //  serialPort.BaudRate = programConfig.Speed;
                             serialPort.Open();
-                            Point homePoint = new Point(0, 90, 0, 0, 0, 0, programConfig.MaxGripValue, 500);
-                            CommonPoint = homePoint;
-                            serialPort.Write(homePoint);
+
                             trying = 0;
                             ConsoleWrite("подключено к " + serialPort.PortName, Colors.Green);
                             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
@@ -272,6 +275,10 @@ namespace Manipulator_UWP
                                 {
                                     ConectButton.Background = new SolidColorBrush(Windows.UI.Colors.LightGreen);
                                 });
+                            Point homePoint = new Point(0, 90, 0, 0, 0, 0, programConfig.MaxGripValue, 500);
+                            CommonPoint = homePoint;
+                            Thread.Sleep(50);                            
+                            serialPort.Write(homePoint);
                         }
                         catch (UnauthorizedAccessException)
                         {
@@ -358,6 +365,12 @@ namespace Manipulator_UWP
                 comboSelectPort.Items.Add(AddWindow.PortName);
                 programConfig.AddPortName(AddWindow.PortName);
                 ConsoleWrite($"{AddWindow.PortName} добавлен", Colors.Green);
+            }
+            else if ((string)comboSelectPort.SelectedItem == "Обновить список")
+            {
+                GetPortNames();
+                if (comboSelectPort.Items.Count > programConfig.PortNum) comboSelectPort.SelectedIndex = programConfig.PortNum;
+                else comboSelectPort.SelectedIndex = 0;
             }
             else programConfig.PortNum = comboSelectPort.SelectedIndex;
         }

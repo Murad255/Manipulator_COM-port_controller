@@ -21,6 +21,7 @@ namespace Manipulator_UWP
         static Point        commonPoint = new Point();
         static Dec          commonDec = new Dec();
         static Points       pointList = new Points();
+        static Points       fullPointList = new Points(); //массив точек с промежуточными значениями
         static private Task execution;               //поток для отправки коллекции точек
 
         static ManipulatorSerialPort    serialPort = ManipulatorSerialPort.Instance;
@@ -54,6 +55,12 @@ namespace Manipulator_UWP
         {
             get { return pointList; }
             set { if (value != null) pointList = value; }
+        }
+
+        static public Points FullPointList
+        {
+            get { return fullPointList; }
+            set { fullPointList = value; }
         }
 
         /// <summary>
@@ -252,31 +259,31 @@ namespace Manipulator_UWP
                     {
                         try
                         {
-                            List<Point> tempPoints = new List<Point>();
-                            Passing.pastPoint = pointList[0];
-                            //проходимся по всем точкам и выролняем их отправку 
-                            foreach (Point point in pointList)
-                            {
-                                if (point.MovementType == MovementTypes.РТР)
-                                {
-                                    tempPoints.AddRange(Passing.PassingAlgoritm(Passing.pastPoint, point));
-                                    Passing.pastPoint = point;
-                                }
-                                else if(point.MovementType == MovementTypes.LIN)
-                                {
-                                    Dec startDec = TaskDecision.PointToDec(Passing.pastPoint);
-                                    Dec endDec = TaskDecision.PointToDec(point);
-                                    tempPoints.AddRange(Passing.PassingAlgoritm(startDec, endDec));
-                                    Passing.pastPoint = point;
-                                }
-                            }
+                           // List<Point> tempPoints = new List<Point>();
+                            //Passing.pastPoint = pointList[0];
+                            ////проходимся по всем точкам и выролняем их отправку 
+                            //foreach (Point point in pointList)
+                            //{
+                            //    if (point.MovementType == MovementTypes.РТР)
+                            //    {
+                            //        tempPoints.AddRange(Passing.PassingAlgoritm(Passing.pastPoint, point));
+                            //        Passing.pastPoint = point;
+                            //    }
+                            //    else if(point.MovementType == MovementTypes.LIN)
+                            //    {
+                            //        Dec startDec = TaskDecision.PointToDec(Passing.pastPoint);
+                            //        Dec endDec = TaskDecision.PointToDec(point);
+                            //        tempPoints.AddRange(Passing.PassingAlgoritm(startDec, endDec));
+                            //        Passing.pastPoint = point;
+                            //    }
+                            //}
 
                             do
                             {
                                 Passing.PassingAlgoritm(CommonPoint,
                                     pointList[0],
                                     serialPort.Write);
-                                foreach (Point point in tempPoints)
+                                foreach (Point point in FullPointList)
                                 {
                                     if (eexecutionToken.IsCancellationRequested) return; //принудительное закрытие задачи
                                     serialPort.Write(point);
@@ -284,7 +291,7 @@ namespace Manipulator_UWP
 
                                     if (debugFlag) CommonConsoleWrite(point.ToString());
                                 }
-                                commonPoint = Point.equivalent(tempPoints[tempPoints.Count - 1]);
+                                commonPoint = Point.equivalent(FullPointList[FullPointList.Count - 1]);
                             } while (cycleStatus && startExecution_status);
 
                             startExecution_status = false;

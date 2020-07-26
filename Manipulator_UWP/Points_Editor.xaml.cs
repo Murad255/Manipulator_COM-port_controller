@@ -177,7 +177,7 @@ namespace Manipulator_UWP
                 try
                 {
                     //serialWrite(ch + trackBar.Value.ToString() + 'z');
-                    if (!(PointsEditor.serialPort.IsOpen && PointsEditor.serialPort.CtsHolding))
+                    if (!PointsEditor.serialPort.IsOpen )
                         throw new Exception("COM порт закрыт");
                     CommonPoint[ch] = CommonPoint[ch] + addValue;
                     PointsEditor.EditorUpdate();
@@ -227,6 +227,8 @@ namespace Manipulator_UWP
                 PointsEditor.clicFlag = true;
                 try
                 {
+                    if (!PointsEditor.serialPort.IsOpen)
+                        throw new Exception("COM порт закрыт");
                     CommonDec[ch] += addValue;
                     CommonPoint = TaskDecision.DecToPoint(CommonDec);
                     PointsEditor.EditorUpdate();
@@ -296,6 +298,20 @@ namespace Manipulator_UWP
                 if (CommonPoint.Time < 249) throw new Exception("Задержка меньше 250 мс.\n");
                 PointList.Add(Point.equivalent(CommonPoint));
 
+                if (PointList.Count < 2) return;
+                Point past = PointList[PointList.Count-2];
+
+                if (CommonPoint.MovementType == MovementTypes.РТР)
+                    FullPointList.AddRange(Passing.PassingAlgoritm(past, CommonPoint));
+                
+                else if (CommonPoint.MovementType == MovementTypes.LIN)
+                {
+                    Dec startDec = TaskDecision.PointToDec(past);
+                    Dec endDec = TaskDecision.PointToDec(CommonPoint);
+                    FullPointList.AddRange(Passing.PassingAlgoritm(startDec, endDec));
+                }
+                
+
             }
             catch (FormatException fe)
             {
@@ -318,7 +334,6 @@ namespace Manipulator_UWP
                 CommonPoint = homePoint;
                 serialPort.Write(homePoint);
                 EditorUpdate();
-
             }
 
         }

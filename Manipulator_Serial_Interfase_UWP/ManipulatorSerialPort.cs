@@ -138,7 +138,7 @@ namespace ManipulatorSerialInterfase
                 writeSrt += BinPacskage((int)chanal.chanalE, Map(p.CanE, PhysicalMinPoint.CanE, PhysicalMaxPoint.CanE));
                 writeSrt += BinPacskage((int)chanal.chanalF, Map(p.CanF, PhysicalMinPoint.CanF, PhysicalMaxPoint.CanF));
                 writeSrt += BinPacskage((int)chanal.grabChanal, Map(p.CanGrab, PhysicalMinPoint.CanGrab, PhysicalMaxPoint.CanGrab));
-                if (this.IsOpen && this.CtsHolding)
+                if (this.IsOpen) // && this.CtsHolding)
                     Write(writeSrt);
                 else throw new Exception("COM порт закрыт");
             }

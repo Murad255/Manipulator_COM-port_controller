@@ -25,6 +25,8 @@ namespace Manipulator_UWP
             filePozition = null;
             portName = new List<string>();
             speedComboCount = 9;
+            //StepChangevalue = 1;
+
         }
 
         public static ProgramConfig Instance
@@ -159,11 +161,14 @@ namespace Manipulator_UWP
             }
             catch (FileNotFoundException)
             {
-                ProgramConfig programConfig = ProgramConfig.Instance;
+                ProgramConfig programConfig = new ProgramConfig();
                 programConfig.Speed = 9600;
+                programConfig.SpeedComboCount = 0;
                 programConfig.PortNum = 0;
                 programConfig.MaxGripValue = 180;
                 programConfig.MinGripValue = 0;
+                programConfig.FilePozition = null;
+                programConfig.StepChangevalue = 1;
             }
             catch (Exception e)
             {
